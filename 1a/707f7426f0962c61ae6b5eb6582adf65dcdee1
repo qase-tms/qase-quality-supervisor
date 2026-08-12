@@ -1,0 +1,25 @@
+tests/test-deny-destructive.sh
+  s_12aaa6e0f40c67::t_5bbe11145671fb 1-21
+hooks/hooks.json
+  s_12aaa6e0f40c67::t_7c2e099463f910 1-16
+CHANGELOG.md
+  s_12aaa6e0f40c67::t_8eb689723e1e49 10-12
+hooks/deny-destructive.sh
+  s_12aaa6e0f40c67::t_27ab67e7be316f 1-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "1a707f7426f0962c61ae6b5eb6582adf65dcdee1",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
