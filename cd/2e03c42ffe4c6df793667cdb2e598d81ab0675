@@ -1,0 +1,21 @@
+docs/superpowers/specs/2026-08-12-packaging-publish-readiness-design.md
+  s_12aaa6e0f40c67::t_20fb17531c180d 1-60,62-79,84-131
+  s_12aaa6e0f40c67::t_7b0d926cb04ecb 61
+  s_12aaa6e0f40c67::t_72a1d08e124c72 80-83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "cd2e03c42ffe4c6df793667cdb2e598d81ab0675",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
