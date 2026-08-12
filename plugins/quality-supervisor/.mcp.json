@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "qase": {
+      "command": "npx",
+      "args": ["-y", "@qase/mcp-server"],
+      "env": {
+        "QASE_API_TOKEN": "${QASE_API_TOKEN}"
+      }
+    }
+  }
+}
