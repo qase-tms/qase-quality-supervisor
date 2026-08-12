@@ -1,0 +1,19 @@
+docs/superpowers/plans/2026-08-12-packaging-publish-readiness.md
+  s_12aaa6e0f40c67::t_6de57d25d40ec2 319-323
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "28ab604c3eeac957e9b5bcff8a6e0fd7208becd2",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
