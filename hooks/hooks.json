@@ -1,0 +1,16 @@
+{
+  "description": "Blocks any Qase MCP tool call that could delete data — enforces the plugin's non-destructive design principle technically, not just in prompt text.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__qase__.*delete.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/deny-destructive.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
