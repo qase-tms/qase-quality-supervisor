@@ -7,6 +7,9 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 - `LICENSE` (MIT).
+- `hooks/hooks.json` + `hooks/deny-destructive.sh`: a `PreToolUse` hook that
+  blocks any `mcp__qase__*delete*` tool call, so "skills never delete Qase
+  data" is enforced technically, not only in skill prompt text.
 
 ## [0.1.0] - 2026-08-12
 
