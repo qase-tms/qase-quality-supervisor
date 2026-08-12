@@ -316,7 +316,11 @@ Expected: ends with `==> All checks passed` and exit code `0`. This step registe
 
 - [ ] **Step 3: Confirm the failure path works**
 
-Temporarily rename `skills/failure-triage` to `skills/failure-triage.bak`, rerun `bash scripts/verify-plugin.sh`, and confirm it fails with the `FAIL: expected 5 skills` message and a non-zero exit code (check with `echo $?`). Then rename it back to `skills/failure-triage` and rerun to confirm it passes again.
+Temporarily move `skills/failure-triage` **out of the repo tree** (e.g. `mv skills/failure-triage /tmp/failure-triage-temp`), rerun `bash scripts/verify-plugin.sh`, and confirm it fails with the `FAIL: expected 5 skills` message and a non-zero exit code. Then move it back and rerun to confirm it passes again.
+
+Two gotchas, both confirmed by running this during implementation:
+- Renaming the directory in place (e.g. to `skills/failure-triage.bak`) does **not** trigger the failure — the CLI discovers skills by finding `SKILL.md` files, not by directory name, so a renamed directory still counts toward `Skills (5)`. The directory must leave the tree.
+- Check the exit code with `bash scripts/verify-plugin.sh; echo $?` — do **not** pipe the script to `tail`/`head` first, or `$?` reports the pager's exit code (0) instead of the script's.
 
 - [ ] **Step 4: Append to CHANGELOG.md**
 
