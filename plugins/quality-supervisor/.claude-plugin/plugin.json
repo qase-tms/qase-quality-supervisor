@@ -1,0 +1,22 @@
+{
+  "name": "quality-supervisor",
+  "version": "0.1.0",
+  "description": "Agentic QA quality-intelligence skills for Qase: coverage-gap analysis, failure triage & root-cause, flakiness/stability analysis, and release-readiness assessment — driven through the Qase MCP server.",
+  "author": {
+    "name": "Qase"
+  },
+  "homepage": "https://www.qase.io/",
+  "repository": "https://github.com/qase-tms/qase-quality-supervisor",
+  "license": "MIT",
+  "keywords": [
+    "qase",
+    "qa",
+    "test-management",
+    "quality",
+    "mcp",
+    "coverage",
+    "flakiness",
+    "release-readiness",
+    "triage"
+  ]
+}

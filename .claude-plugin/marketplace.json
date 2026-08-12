@@ -1,0 +1,18 @@
+{
+  "name": "quality-supervisor",
+  "owner": {
+    "name": "Qase",
+    "url": "https://www.qase.io/"
+  },
+  "metadata": {
+    "description": "Marketplace for the Quality Supervisor plugin — agentic QA quality-intelligence skills for Qase.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "quality-supervisor",
+      "source": "./plugins/quality-supervisor",
+      "description": "Coverage-gap analysis, failure triage, flakiness/stability, and release-readiness skills for Qase, driven through the Qase MCP server."
+    }
+  ]
+}
