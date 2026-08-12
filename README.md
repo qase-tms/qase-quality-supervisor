@@ -1,0 +1,1 @@
+# qase-quality-supervisor
