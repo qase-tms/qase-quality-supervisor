@@ -1,21 +1,27 @@
-# Quality Supervisor — Plugin Marketplace
+# Quality Supervisor
 
-Agentic QA **quality-intelligence** for Qase, packaged as an installable plugin
-for Claude / Cowork / Claude Code and other MCP-capable AI clients.
+Agentic QA **quality-intelligence** for Qase, delivered as an installable
+plugin for Claude Desktop / Cowork / Claude Code (and other MCP-capable AI
+clients such as Cursor, VS Code, or Atlassian Rovo) — while Qase stays the
+system of record.
 
-This repository is a **plugin marketplace**: colleagues add it once and install
-(and update) the `quality-supervisor` plugin from it.
+It closes the "quality skills" gap between simple test-data CRUD and the
+higher-order analysis competitors demo: coverage, triage, flakiness, and
+release readiness.
 
-## What's in the plugin
+This repository is both the plugin **and** its plugin marketplace: colleagues
+add it once and install (and update) `quality-supervisor` from it.
+
+## What's inside
 
 | Component | Name | Purpose |
 |-----------|------|---------|
 | Skill | `coverage-gap-analysis` | Find untested requirements/suites/critical paths; draft missing cases on approval. |
 | Skill | `failure-triage` | Cluster a run's failures, classify bug vs. automation vs. env vs. flaky, create + link defects. |
-| Skill | `flakiness-stability` | Quantify flaky/unstable tests; confirm by re-run; recommend quarantine/fix. |
+| Skill | `flakiness-stability` | Quantify flaky/unstable tests via history + `isFlaky`; confirm by re-run; recommend quarantine/fix. |
 | Skill | `release-readiness` | Five-dimension go / no-go quality gate for a milestone, plan, or release. |
-| Agent | `quality-supervisor` | Orchestrator that routes a quality question to the right skill(s). |
-| Command | `/quality-report` | Read-only consolidated sweep across all four skills. |
+| Agent | `quality-supervisor` | Orchestrator that routes a quality question to the right skill(s) and rolls up results. |
+| Command | `/quality-report` | Read-only consolidated sweep: coverage + flakiness + triage + readiness. |
 
 ## Install (for your colleagues)
 
@@ -31,37 +37,67 @@ marketplace if your build supports it.
 
 ## Requirements
 
-- **Qase MCP server** — the plugin ships `.mcp.json` that launches
-  `@qase/mcp-server` via `npx`. Each user provides their own **`QASE_API_TOKEN`**
-  (create at `app.qase.io` → API tokens). For Atlassian Rovo / hosted clients,
-  switch `.mcp.json` to the remote OAuth endpoint (the `feat/oauth` build of the
-  Qase MCP server).
+- **Qase MCP server** connected in your AI client. This repo ships `.mcp.json`
+  that launches `@qase/mcp-server` via `npx`, authenticated with your own
+  **`QASE_API_TOKEN`** environment variable (create a token at `app.qase.io` →
+  API tokens). Credentials are never bundled — each user authenticates
+  individually.
 - A Qase **project code** to target.
 
-Credentials are never bundled — each user authenticates individually.
+> The skills are written against the consolidated Qase MCP tool surface
+> (`qase_project_context`, `qql_search`, `qase_get`, `qase_case_upsert`,
+> `qase_triage_defect`, `qase_regression_run`, `qase_ci_report`,
+> `qase_defect_upsert`, `qase_result_record`, `qase_discover_tools`,
+> `qase_api`, plus `qql_help`). Non-core tools are activated on demand via
+> `qase_discover_tools`.
+
+### OAuth / remote deployment (Rovo & hosted clients)
+
+For Atlassian Rovo and other hosted clients, point `.mcp.json` at the remote,
+OAuth-authenticated Qase MCP endpoint instead of the local `npx` command once
+it is available in your environment (the `feat/oauth` build of the Qase MCP
+server adds remote OAuth transport). No API token is stored in that mode — the
+client performs the OAuth flow.
 
 ## Design principles
 
-Qase stays the system of record. Skills read to analyze and only write (cases,
-defects, tags, runs) after the user confirms. No skill calls a destructive
-(`*_delete`) tool.
+- **Qase is the system of record.** Skills read to analyze; they write (cases,
+  defects, tags, runs) only after you confirm.
+- **Evidence-backed.** Every finding shows the QQL behind it.
+- **Non-destructive.** No skill calls a `*_delete` tool.
+- **Human-in-the-loop.** Bulk writes require a sample and a yes first.
+
+## Usage examples
+
+- "Where are our coverage gaps in project WEB?"
+- "Triage the latest run in WEB and tell me what's a real bug."
+- "What's our flake rate this month and which tests should we quarantine?"
+- "Are we ready to ship milestone 2.3?" or `/quality-report WEB 2.3`
 
 ## Repository layout
 
 ```
 .
 ├── .claude-plugin/
-│   └── marketplace.json          # marketplace manifest (lists the plugin)
-├── plugins/
-│   └── quality-supervisor/       # the plugin itself
-│       ├── .claude-plugin/plugin.json
-│       ├── .mcp.json
-│       ├── agents/
-│       ├── commands/
-│       ├── skills/
-│       └── README.md
+│   ├── marketplace.json   # marketplace manifest (lists this plugin, source ".")
+│   └── plugin.json        # plugin manifest
+├── .mcp.json               # Qase MCP server wiring
+├── agents/
+│   └── quality-supervisor.md
+├── commands/
+│   └── quality-report.md
+├── skills/
+│   ├── coverage-gap-analysis/
+│   ├── failure-triage/
+│   ├── flakiness-stability/
+│   └── release-readiness/
 └── README.md
 ```
+
+## Notes
+
+"Quality Supervisor" is the plugin/agent name. It composes the four skills into
+one quality workflow; each skill also works standalone when triggered directly.
 
 ## License
 
