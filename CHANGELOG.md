@@ -15,6 +15,9 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   committed to a JSON file, and confirms the plugin installs via the
   `claude` CLI with the expected component inventory (5 skills, 1 agent, 1
   hook).
+- `.github/workflows/validate.yml`: runs `scripts/verify-plugin.sh` on every
+  push and pull request, so a manifest regression or a leaked credential
+  fails CI instead of shipping.
 
 ## [0.1.0] - 2026-08-12
 
