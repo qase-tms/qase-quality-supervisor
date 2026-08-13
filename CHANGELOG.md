@@ -35,6 +35,19 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   count it does not act on, and the API has no defect-side way to attach
   results, so the evidence goes into the defect body instead.
 
+- `release-readiness` rewritten. Scope is resolved by milestone, plan, or run
+  title rather than ID — the old `milestone = <id>` and `run in (<ids>)` forms
+  were rejected outright — and results are no longer scoped by milestone, since
+  `result.milestone` is inherited from the case, not the run, and returns nothing
+  on the common setup where runs carry the milestone but cases don't. Execution
+  progress and pass rate come from each run's own `stats`, with `untested`
+  reported alongside the pass rate: a run where nothing executed has no failures
+  and previously read as green. The defect dimension now checks whether the
+  project tracks defects at all before reporting "no blockers", and a new
+  INSUFFICIENT EVIDENCE verdict covers empty scopes and incomplete execution
+  instead of guessing. Decisive numbers are cross-checked against REST, because
+  the two sources disagree — on one project QQL returned a run as live that REST
+  reported as not found, and their run totals differed twofold.
 - `coverage-gap-analysis` rewritten. Its requirements lens was unimplementable —
   Qase exposes no link between a requirement and its cases in either direction,
   and the REST endpoint the skill fell back to does not exist — so the skill now
