@@ -35,6 +35,19 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   count it does not act on, and the API has no defect-side way to attach
   results, so the evidence goes into the defect body instead.
 
+- `quality-supervisor` agent and `/quality-report` command brought in line with
+  the rewritten skills. The agent's tool list claimed `qase_run_upsert` as core
+  when it is discoverable, and omitted `qase_case_bulk_create`,
+  `qase_external_issue_link`, and the fact that discoverable tools need
+  activating at all. It now also carries the cross-cutting rules the skills
+  depend on — absent data is not good news, report denominators, route
+  consistently-failing tests to triage rather than quarantine — and points at
+  `references/qql.md`. The command no longer implies release-readiness can assess
+  a whole project without a scope, and gained a Data confidence section so limits
+  travel with the report instead of being dropped from it.
+- `coverage-gap-analysis`: `qase_suite_upsert` is a discoverable tool, so the
+  skill now says to activate it via `qase_discover_tools` first, and offers
+  `qase_case_bulk_create` for drafting cases in batches.
 - `release-readiness` rewritten. Scope is resolved by milestone, plan, or run
   title rather than ID — the old `milestone = <id>` and `run in (<ids>)` forms
   were rejected outright — and results are no longer scoped by milestone, since

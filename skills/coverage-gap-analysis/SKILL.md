@@ -74,7 +74,10 @@ them rather than quoting raw slugs at the user.
 - `qql_search` — all the counting below. Use aggregation, not row fetching.
 - `qase_api` — the suite listing (`GET /v1/suite/{code}`), which is the only way
   to see empty suites.
-- `qase_case_upsert`, `qase_suite_upsert` — drafting cases (write steps).
+- `qase_case_upsert` — create one case; `qase_case_bulk_create` for many in one
+  call. Both are core tools (write steps).
+- `qase_suite_upsert` — **discoverable, not core**: activate it first with
+  `qase_discover_tools` or the call will fail with "unknown tool".
 
 ## Workflow
 
@@ -235,8 +238,10 @@ set, mark it.
 If the user asks for the missing cases:
 
 1. Draft them with clear titles, preconditions, steps, expected results.
-2. Ensure the target suite exists (`qase_suite_upsert` if needed).
-3. Create with `qase_case_upsert`. Enum fields accept labels (`"High"`).
+2. Ensure the target suite exists. Creating one needs `qase_suite_upsert`, which
+   is discoverable — activate it via `qase_discover_tools` first.
+3. Create them: `qase_case_upsert` for one, `qase_case_bulk_create` for a batch
+   (same case body, one request). Enum fields accept labels (`"High"`).
 4. Tag them so a human can review what was generated, and report the IDs.
 
 Never bulk-create dozens of cases without showing a sample and getting a yes.
