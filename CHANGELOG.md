@@ -27,9 +27,9 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   2 hooks). `--static-only` skips the install phase.
 - `.github/workflows/validate.yml`: runs the verification on every push and
   pull request, so a manifest regression, a broken hook, or a leaked
-  credential fails CI instead of shipping. Split into a blocking `static`
-  job and a non-blocking `install` job, the latter until the CLI's install
-  flow is observed working on headless runners.
+  credential fails CI instead of shipping. Split into a `static` job and an
+  `install` job; both block, the CLI's install flow having been confirmed to
+  work on GitHub's runners without an authenticated session.
 
 ## [0.1.0] - 2026-08-12
 

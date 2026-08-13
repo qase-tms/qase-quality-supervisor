@@ -35,14 +35,11 @@ jobs:
         run: bash scripts/verify-plugin.sh --static-only
 
   # The marketplace-add -> install -> `plugin details` inventory assertions.
-  # Whether these CLI subcommands work in a headless runner without an
-  # authenticated session is unverified, so this job is non-blocking until it
-  # has been observed green on real runners. Once it is, drop
-  # continue-on-error so inventory regressions block merges too.
+  # Confirmed working on GitHub's runners without an authenticated Claude Code
+  # session (run 31681253740), so this job is blocking like `static`.
   install:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
