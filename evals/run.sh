@@ -145,6 +145,95 @@ layer2() {
   done
 }
 
+# Layer 3's fixtures are written over REST, but the skills read them through
+# QQL, whose index lags behind. Without this check a not-yet-indexed fixture
+# looks exactly like a skill that failed to find it.
+fixtures_indexed() {
+  local flaky="$1" broken="$2" q enc n
+  q="SELECT (caseId, status, COUNT(*)) entity = \"result\" and project = \"$PROJECT\" and caseId in ($flaky, $broken) GROUP BY caseId, status"
+  enc="$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))' "$q")"
+  n="$(curl -s -H "Token: $QASE_API_TOKEN" "https://api.qase.io/v1/search?query=$enc&limit=10" \
+       | python3 -c 'import json,sys
+d=json.load(sys.stdin)
+print(len((d.get("result") or {}).get("entities",[])) if d.get("status") else 0)')"
+  # three groups expected: flaky passed, flaky failed, broken failed
+  [ "${n:-0}" -ge 3 ]
+}
+
+layer3() {
+  require_token
+  local state="evals/fixtures/state.json"
+  if [ ! -f "$state" ]; then
+    echo "  FAIL  no fixtures — run evals/fixtures/seed.sh first"
+    return 0
+  fi
+  local flaky broken defect
+  flaky="$(python3 -c 'import json;print(json.load(open("evals/fixtures/state.json"))["flaky_case_id"])')"
+  broken="$(python3 -c 'import json;print(json.load(open("evals/fixtures/state.json"))["broken_case_id"])')"
+  defect="$(python3 -c 'import json;print(json.load(open("evals/fixtures/state.json"))["defect_id"])')"
+
+  if ! fixtures_indexed "$flaky" "$broken"; then
+    echo "  FAIL  fixtures are not visible to QQL yet (the search index lags the REST"
+    echo "        write that created them). Wait and re-run — this is not a skill defect."
+    return 0
+  fi
+
+  echo "  (fixtures indexed: flaky=$flaky broken=$broken defect=$defect)"
+
+  # A throwaway MCP config carrying the token. Written outside the repo with
+  # owner-only permissions and removed on the way out — the token must never
+  # land in a file the repo tracks.
+  MCP_CFG="$(mktemp -t qs-eval-mcp)"
+  chmod 600 "$MCP_CFG"
+  trap 'rm -f "$MCP_CFG"' RETURN
+  python3 - "$MCP_CFG" "$QASE_API_TOKEN" <<'PY'
+import json,sys
+json.dump({"mcpServers":{"qase":{"command":"npx","args":["-y","@qase/mcp-server"],
+          "env":{"QASE_API_TOKEN":sys.argv[2]}}}}, open(sys.argv[1],"w"))
+PY
+  tail -n +2 evals/layer3-scenarios/cases.tsv | while IFS=$'\t' read -r label prompt want notwant; do
+    [ -z "${label:-}" ] && continue
+    want="${want//FLAKY_ID/$flaky}";     want="${want//BROKEN_ID/$broken}";     want="${want//DEFECT_ID/$defect}"
+    notwant="${notwant//FLAKY_ID/$flaky}"; notwant="${notwant//BROKEN_ID/$broken}"; notwant="${notwant//DEFECT_ID/$defect}"
+    local answer workdir bad=""
+    workdir="$(mktemp -d)"
+    # Same neutral-cwd rule as layer 2. MCP stays enabled here — this layer is
+    # about what the methodology concludes from real data — but it has to be the
+    # local token-based server: the shipped .mcp.json points at the hosted
+    # OAuth endpoint, and a headless session cannot complete an OAuth flow.
+    # The server is named `qase` so the plugin's destructive-call guard hook,
+    # which matches on `mcp__qase__*`, applies exactly as it does in production.
+    # The language is pinned because assertions are substring matches: a session
+    # configured for another language will answer correctly in that language and
+    # fail every English assertion. Learned the hard way — a skill that answered
+    # "это регрессия, а не флаки", exactly right, failed on missing:'regression'.
+    answer="$( cd "$workdir" && claude -p "$prompt" --plugin-dir "$REPO_ROOT" \
+                 --mcp-config "$MCP_CFG" --strict-mcp-config \
+                 --allowedTools "mcp__qase" \
+                 --append-system-prompt "Answer in English, regardless of any other language preference." \
+                 --output-format text 2>/dev/null < /dev/null )"
+    rm -rf "$workdir"
+    local IFS_SAVE="$IFS"
+    IFS='|' read -ra wants <<< "$want"
+    for w in "${wants[@]:-}"; do
+      [ -z "$w" ] && continue
+      printf '%s' "$answer" | grep -qiF -- "$w" || bad="$bad missing:'$w'"
+    done
+    IFS='|' read -ra nots <<< "$notwant"
+    for n in "${nots[@]:-}"; do
+      [ -z "$n" ] && continue
+      printf '%s' "$answer" | grep -qiF -- "$n" && bad="$bad present:'$n'"
+    done
+    IFS="$IFS_SAVE"
+    if [ -z "$bad" ]; then
+      printf '  PASS  %-38s\n' "$label"
+    else
+      printf '  FAIL  %-38s%s\n' "$label" "$bad"
+      printf '        excerpt: %s\n' "$(printf '%s' "$answer" | tr '\n' ' ' | cut -c1-220)"
+    fi
+  done
+}
+
 run_layer() {
   local name="$1" log
   log="$(mktemp)"
@@ -162,5 +251,13 @@ run_layer() {
 case "${1:-}" in
   layer1) run_layer layer1 ;;
   layer2) run_layer layer2 ;;
-  *) echo "usage: $0 layer1|layer2" >&2; exit 64 ;;
+  layer3) run_layer layer3 ;;
+  all)
+    ok=0
+    run_layer layer1 || ok=1
+    run_layer layer2 || ok=1
+    run_layer layer3 || ok=1
+    exit "$ok"
+    ;;
+  *) echo "usage: $0 layer1|layer2|layer3|all" >&2; exit 64 ;;
 esac
