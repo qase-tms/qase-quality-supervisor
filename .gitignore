@@ -3,3 +3,4 @@ node_modules/
 *.log
 .superpowers/
 docs/superpowers/
+evals/fixtures/state.json
