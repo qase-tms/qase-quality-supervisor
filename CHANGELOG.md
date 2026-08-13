@@ -35,6 +35,18 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   count it does not act on, and the API has no defect-side way to attach
   results, so the evidence goes into the defect body instead.
 
+- `coverage-gap-analysis` rewritten. Its requirements lens was unimplementable —
+  Qase exposes no link between a requirement and its cases in either direction,
+  and the REST endpoint the skill fell back to does not exist — so the skill now
+  reports requirement coverage as unavailable, while still counting requirements
+  by status and type. Execution coverage is derived by comparing the case total
+  against the number of distinct cases with results, which yields the
+  never-executed count in two queries instead of paging two full lists. Empty
+  suites come from the suite listing's `cases_count`, since a `GROUP BY suite`
+  structurally cannot show a suite that has no cases. Risk weighting now checks
+  whether priority is populated at all before ranking by it, because on a project
+  where nearly every case is "Not set" the old ranking described a handful of
+  outliers as the risk picture.
 - `.mcp.json` now points at the hosted, OAuth-authenticated endpoint
   (`https://mcp.qase.io/mcp`) instead of launching the server via `npx`, so
   installing the plugin no longer involves creating or storing an API token. The

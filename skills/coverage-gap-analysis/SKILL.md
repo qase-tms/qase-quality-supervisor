@@ -1,132 +1,253 @@
 ---
 name: coverage-gap-analysis
 description: >-
-  Find untested or under-tested areas of a Qase project and turn them into
-  ready-to-review test cases. Use when the user asks about test coverage,
-  coverage gaps, "what isn't tested," untested requirements/features,
-  missing test cases, cases without automation, or wants to generate cases
-  to close a gap. Part of the Quality Supervisor plugin; powered by the Qase
-  MCP server.
+  Find where a Qase project's test coverage is thin: cases that have never been
+  executed, manual cases that should be automated, empty or unfiled suites, and
+  stale cases. Use when the user asks about test coverage, coverage gaps, what
+  isn't tested, which tests aren't automated, untested areas, or wants cases
+  drafted to close a gap. Part of the Quality Supervisor plugin; powered by the
+  Qase MCP server.
 ---
 
 # Quality Supervisor — Coverage / Gap Analysis
 
-Identify where a Qase project lacks test coverage — untested requirements,
-suites with thin or no cases, un-automated critical paths, stories shipped
-without tests — and (on request) draft the missing cases for human review.
+Find where a project's coverage is thin, rank the gaps by what they actually
+risk, and — on request — draft the missing cases.
 
-Qase stays the system of record. This skill **reads** to find gaps and only
-**writes** new/updated cases after the user confirms.
+**Read the plugin's `references/qql.md` before writing any query** — it sits two
+levels up from this skill's directory (`../../references/qql.md`). Field names
+differ per entity and a wrong name is a hard error, not an empty result.
 
 ## When to use
+
 - "Where are our coverage gaps?" / "What isn't tested in project ABC?"
-- "Which requirements/user stories have no linked test cases?"
-- "Which suites are thin or empty?" / "What critical cases aren't automated?"
-- "Generate the missing test cases for <feature/requirement>."
+- "Which cases aren't automated?" / "Which suites are empty?"
+- "What's never been run?" / "Generate the missing cases for <feature>."
+
+## What "coverage" can and cannot mean here
+
+Decide which question you are answering and say so — these are different gaps
+with different fixes:
+
+| Lens | Question | Available? |
+|---|---|---|
+| **Execution** | which cases have never run? | yes |
+| **Automation** | which cases are still manual? | yes |
+| **Structure** | which suites are empty or unfiled? | yes |
+| **Freshness** | which cases are stale? | yes |
+| **Requirements** | which requirements have no tests? | **partly — see below** |
+
+**Requirements are readable; their coverage is not.** You can query them —
+
+```
+SELECT (status, COUNT(*)) entity = "requirement" and project = "CODE" GROUP BY status
+entity = "requirement" and project = "CODE" and status = "Implemented"
+```
+
+— and the response carries `id`, `title`, `description`, `status`, `type`, and
+`parent_id`, so requirement hierarchy (epic → user story → feature) is available
+too.
+
+What is **not** available is the link between a requirement and its test cases.
+No field on either entity exposes it, in either direction; nothing is filterable
+on it; `qase_get` doesn't support requirements; and there is no requirements
+endpoint in the REST API. So "which requirements have no tests" cannot be
+answered, only "which requirements exist, and in what state".
+
+If the user asks for requirement coverage, say that directly. A useful honest
+substitute — clearly labelled as a proxy, not coverage — is to list requirements
+marked `Implemented` and let the team judge whether tests exist for them.
+Never present it as measured coverage.
+
+Note when reporting: QQL **filters** on labels (`type = "User story"`, which is
+case-sensitive here) while the **response** returns slugs (`user-story`). Map
+them rather than quoting raw slugs at the user.
 
 ## Prerequisites
-- Qase MCP server connected and authenticated.
-- A target **project code** (e.g. `DEMO`). If the user hasn't given one, ask,
-  or infer it from context. Never guess silently.
 
-## Tools this skill uses
-- `qase_project_context` — one call for project details, suites tree,
-  milestones, environments, custom fields, users. **Always call first.**
-- `qql_search` — the analytical workhorse; query cases, requirements, results.
-- `qase_get` — fetch a specific entity (requirement, case, suite) with `fields`
-  projection when you need detail.
-- `qql_help` — confirm QQL syntax/fields if a query is rejected.
-- `qase_discover_tools` — activate any non-core tool you need (`query:"..."`).
-- `qase_case_upsert` — create/update cases to close gaps (write step).
-- `qase_suite_upsert` — create a suite to hold new cases if needed.
-- `qase_api` — escape hatch (`/v1/...`) for anything a dedicated tool misses,
-  e.g. requirement→case coverage links.
+- A **project code**. If the user didn't give one, ask — never guess.
+- QQL access (Business/Enterprise) for everything except the suite listing.
+
+## Tools
+
+- `qase_project_context` — project metadata. Call first.
+- `qql_search` — all the counting below. Use aggregation, not row fetching.
+- `qase_api` — the suite listing (`GET /v1/suite/{code}`), which is the only way
+  to see empty suites.
+- `qase_case_upsert`, `qase_suite_upsert` — drafting cases (write steps).
 
 ## Workflow
 
-### 1. Seed context
-Call `qase_project_context` with the project code. Note the suites tree,
-custom fields (esp. anything like "Requirement", "Component", "Layer"), and
-whether requirements are in use.
+### 1. Establish the denominator
 
-### 2. Establish the coverage denominator
-Decide what "should be tested." Pick the lens the user wants:
-- **Requirements lens** — every requirement should have ≥1 linked case.
-  ```
-  entity = "requirement" and project = "DEMO"
-  ```
-  Then for each requirement, check for linked cases. If QQL doesn't expose the
-  link directly, use `qase_get` on the requirement or `qase_api`
-  (`GET /v1/requirement/...`) to read coverage.
-- **Suite/structure lens** — every functional suite should hold cases.
-  Walk the suites tree from `qase_project_context`; flag suites with 0 cases:
-  ```
-  entity = "case" and project = "DEMO" and suite = <suiteId>
-  ```
-- **Recent-delivery lens** — anything created/updated recently but untested,
-  using `now()`:
-  ```
-  entity = "case" and project = "DEMO" and created >= now("-30d")
-  ```
-
-### 3. Find the gaps
-Run targeted QQL. Confirm field names with `qql_help` if a query errors — QQL
-field values are case-sensitive; `~` is case-insensitive substring:
-- Cases with **no automation** (automation gap):
-  ```
-  entity = "case" and project = "DEMO" and automation = "Not automated"
-  ```
-- **High-priority** cases that are not automated (risk-weighted gap):
-  ```
-  entity = "case" and project = "DEMO" and priority in ("high","critical") and automation = "Not automated"
-  ```
-- Cases **never executed** or with no recent result — cross-reference
-  `entity = "result"` for the project and diff against the case list.
-- Requirements with **no coverage** — list requirements, then subtract those
-  that have linked cases.
-
-### 4. Rank by risk
-Don't dump a flat list. Rank gaps by: priority/severity of the area, whether
-it's on a milestone or release, recency of related code/requirement changes,
-and blast radius. Present the top gaps first.
-
-### 5. Report
-Output a concise, skimmable summary (see format below). Always show your QQL so
-the user can reproduce it.
-
-### 6. Close gaps (only on confirmation)
-If the user says "generate the missing cases":
-1. Draft cases with clear titles, preconditions, steps, expected results.
-2. Ensure the target suite exists (`qase_suite_upsert` if needed).
-3. Create with `qase_case_upsert` (enum fields accept labels like `"high"`).
-   Keep titles unique.
-4. Tag AI-drafted cases (label or `cf[...]`) so humans can review, and report
-   exactly what was created with IDs.
-Never bulk-create dozens of cases without showing a sample and getting a yes.
-
-## Output format
 ```
-## Coverage Gap Report — <PROJECT> (<date>)
-Lens: <requirements | suite | recent delivery>
-Denominator: <N requirements / N suites / N cases considered>
+entity = "case" and project = "CODE"
+```
 
-### Top gaps (risk-ranked)
-1. <Area/Requirement> — <why it matters> — <gap: 0 cases | not automated | never run>
+Take `total`. Every gap below is a fraction of this, and a gap count without it
+is meaningless — "40 cases aren't automated" reads very differently against 50
+cases than against 18,000.
+
+Call `qase_project_context` too, for the suite tree and milestones. If it reports
+a truncated collection, respect that: it caps at 100 per collection, so on a
+large project treat its suite list as a sample, not the tree.
+
+### 2. Execution coverage — what has never run
+
+Two aggregate queries, no enumeration:
+
+```
+entity = "case" and project = "CODE"
+SELECT (COUNT(id)) entity = "result" and project = "CODE" GROUP BY caseId
+```
+
+The second query's `total` is the number of **distinct cases that have at least
+one result**. Subtract it from the case total and you have the never-executed
+count — one number, two calls, no matter how large the project.
+
+Two caveats to state rather than hide:
+
+- results survive their cases, so a deleted case can still contribute a group.
+  That inflates the executed count and makes the gap a **lower bound**.
+- this counts "ever executed". For "executed recently", add
+  `and ended >= now("-90d")` to the second query and label it accordingly — a
+  case last run two years ago is a different kind of gap.
+
+To **name** the never-executed cases rather than count them, scope down first —
+one suite (`suiteTree = "…"`), one milestone, or one priority — and compare the
+case list against that scope's executed IDs. Enumerating them project-wide means
+paging both lists in full; don't attempt it on a large project, and say why.
+
+### 3. Automation coverage
+
+```
+SELECT (automation, COUNT(*)) entity = "case" and project = "CODE" GROUP BY automation
+```
+
+One query, whole distribution. Aggregated responses return the enum as an
+integer: 0 = Manual, 1 = To be automated, 2 = Automated.
+
+`To be automated` is the interesting bucket — someone already decided those
+should be automated and it hasn't happened. Report it separately from `Manual`
+rather than lumping both into "not automated".
+
+### 4. Structure — empty and unfiled suites
+
+A `GROUP BY suite` **cannot find empty suites**: a suite with no cases produces
+no group. Use the suite listing, which carries `cases_count` per suite:
+
+```
+GET /v1/suite/{code}?limit=100
+```
+
+Paginate with `offset` until `total` is covered. Flag suites with
+`cases_count == 0`, and thin ones (1–2 cases) where siblings have many.
+
+Cases filed nowhere are the mirror-image gap:
+
+```
+entity = "case" and project = "CODE" and suite is empty
+```
+
+For per-area depth, `suiteTree` matches a suite **and all its descendants**,
+which is what you want for "how covered is area X":
+
+```
+entity = "case" and project = "CODE" and suiteTree = "tests/api/billing"
+```
+
+### 5. Risk weighting — check it is possible first
+
+```
+SELECT (priority, COUNT(*)) entity = "case" and project = "CODE" GROUP BY priority
+```
+
+Integer codes: 0 = Not set, 1 = High, 2 = Medium, 3 = Low. **`priority` has no
+"critical" value** — critical is a *severity*, and `priority = "critical"` fails
+outright.
+
+Look at how much is `Not set` before ranking anything by priority. If most cases
+have no priority, then "high-priority cases that aren't automated" describes a
+handful of outliers, not the real risk — and the honest finding is that the
+project has no usable risk metadata. Report that instead of a confident ranking
+built on 0.4% of the data.
+
+When priority *is* populated, the risk-weighted gap is:
+
+```
+entity = "case" and project = "CODE" and automation = "Manual" and priority = "High"
+```
+
+### 6. Freshness
+
+```
+entity = "case" and project = "CODE" and updated <= now("-6m")
+```
+
+Cases untouched for a long time while the product moved on are a quieter gap
+than a missing case — they may pass while testing behaviour that no longer
+matters. Report as a count with a couple of examples; don't infer staleness is a
+defect without knowing the area.
+
+### 7. Rank and report
+
+Rank by what a gap risks, not by count: an untested area covered by a milestone
+in flight outranks a large pile of stale low-priority cases. Say what each gap
+means, not just its size.
+
+```
+## Coverage Gaps — <PROJECT>
+Denominator: <N> cases · <M> suites
+
+### Execution
+Never executed: <n> (<x>% of cases, lower bound) · not run in 90d: <n>
+
+### Automation
+Manual: <n> · To be automated: <n> · Automated: <n> (<x>% automated)
+
+### Structure
+Empty suites: <n> of <M> · thin suites (1-2 cases): <n> · cases with no suite: <n>
+
+### Risk weighting
+Priority set on <n> of <N> cases (<x>%). <either the High+Manual gap, or:
+"risk ranking isn't meaningful on this project — priority is unset for <x>%">
+
+### Freshness
+Not updated in 6 months: <n>
+
+### Requirements
+<n> requirements, by status: <breakdown>. Coverage per requirement is **not
+measurable** — Qase exposes no link between requirements and cases.
+
+### Top gaps (ranked)
+1. <area/lens> — <why it matters> — <the number>
    QQL: <query>
-2. ...
-
-### Summary
-- Untested requirements: N
-- Empty/thin suites: N
-- High-priority cases without automation: N
 
 ### Recommended next steps
-- <e.g. "Draft 6 cases for REQ-14 checkout flow — say the word.">
+- <e.g. "Draft 6 cases for the empty billing/refunds suite — say the word.">
 ```
 
+Always show the queries. If any figure came from a page rather than the whole
+set, mark it.
+
+### 8. Close gaps (only after approval)
+
+If the user asks for the missing cases:
+
+1. Draft them with clear titles, preconditions, steps, expected results.
+2. Ensure the target suite exists (`qase_suite_upsert` if needed).
+3. Create with `qase_case_upsert`. Enum fields accept labels (`"High"`).
+4. Tag them so a human can review what was generated, and report the IDs.
+
+Never bulk-create dozens of cases without showing a sample and getting a yes.
+
 ## Guardrails
-- Read-only until the user approves writes. Confirm before any `*_upsert`.
-- Never call `*_delete` tools in this skill.
-- State assumptions (which lens, what "covered" means) explicitly.
-- If a QQL field is unknown, call `qql_help` rather than guessing.
-- Keep Qase as source of truth; the LLM drafts, humans approve.
+
+- Read-only until the user approves a write.
+- Never call a `*_delete` tool. (A hook blocks them anyway.)
+- Always report gaps against the denominator, never as bare counts.
+- State which lens you used — "coverage" without a stated definition is noise.
+- Never present requirement coverage as measured; it isn't available.
+- Prefer aggregation over paging. If you paged, say how much you saw.
+- Don't infer intent from metadata absence: an unset priority means nobody set
+  it, not that the case is unimportant.
