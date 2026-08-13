@@ -1,0 +1,30 @@
+skills/failure-triage/SKILL.md
+  s_12aaa6e0f40c67::t_8256fccb1167cf 5-9
+evals/README.md
+  s_12aaa6e0f40c67::t_8e7e8801c520ba 58-75
+skills/coverage-gap-analysis/SKILL.md
+  s_12aaa6e0f40c67::t_30e2e9423e0e2d 4-9
+skills/release-readiness/SKILL.md
+  s_12aaa6e0f40c67::t_292859f9c8ffa4 5-9
+skills/flakiness-stability/SKILL.md
+  s_12aaa6e0f40c67::t_f06dd32455d370 4-9
+evals/run.sh
+  s_12aaa6e0f40c67::t_ecb84fa54691c1 117-119,135,137-139
+  s_12aaa6e0f40c67::t_8ba4e014b56aad 144-150
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "99a70218730ac35516bd7205d77c8a6b4c7c9a82",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
