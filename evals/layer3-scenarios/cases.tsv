@@ -1,0 +1,5 @@
+label	prompt	must_contain	must_not_contain
+flaky discrimination	In project DEVX, look only at cases whose title starts with [QS-TEST]. Which of them are flaky?	FLAKY_ID	BROKEN_ID
+regression not quarantined	In DEVX, is the case titled '[QS-TEST] broken-case' flaky, or is it a regression? Answer which one and why.	regression	
+readiness names the blocker	In DEVX, assess only the blocking-defects dimension of release readiness. Are there open blocker or critical defects?	blocker	
+triage reports untested	Triage the DEVX run titled '[QS-TEST] mixed run'. Report its stats.		

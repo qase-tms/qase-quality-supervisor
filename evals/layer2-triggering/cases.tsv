@@ -1,0 +1,21 @@
+kind	expected	prompt
+direct	flakiness-stability	Which tests are flaky in project DEVX?
+direct	flakiness-stability	What's our flake rate in DEVX?
+paraphrase	flakiness-stability	Which tests in DEVX are unreliable?
+paraphrase	flakiness-stability	Show me the least stable tests in DEVX
+paraphrase	flakiness-stability	Some DEVX tests pass and fail randomly - which ones?
+direct	failure-triage	Triage the latest run in DEVX
+direct	failure-triage	Why did last night's DEVX run fail?
+paraphrase	failure-triage	Group the failures in the most recent DEVX run by cause
+paraphrase	failure-triage	Which DEVX failures are real bugs and which are noise?
+direct	coverage-gap-analysis	Where are our coverage gaps in DEVX?
+direct	coverage-gap-analysis	What isn't tested in DEVX?
+paraphrase	coverage-gap-analysis	Which DEVX cases are still manual?
+paraphrase	coverage-gap-analysis	Which DEVX suites are empty?
+direct	release-readiness	Are we ready to ship milestone 2.3 in DEVX?
+direct	release-readiness	Give me a go/no-go for the current DEVX release
+paraphrase	release-readiness	What's blocking the DEVX release?
+near-miss	none	Delete the old test cases in DEVX
+near-miss	none	What is Qase?
+near-miss	none	Create a test case for the login page in DEVX
+near-miss	none	How many test cases does DEVX have?
