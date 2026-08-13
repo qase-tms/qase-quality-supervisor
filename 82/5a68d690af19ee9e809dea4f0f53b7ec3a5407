@@ -1,0 +1,33 @@
+references/qql.md
+  s_12aaa6e0f40c67::t_1dc8eab1810e0d 28-32,38-45
+  s_12aaa6e0f40c67::t_ae17c45a3c43b8 182-184
+  s_12aaa6e0f40c67::t_49a313148f73d3 12-15
+  s_12aaa6e0f40c67::t_aaedf7b53423c5 174
+CHANGELOG.md
+  s_12aaa6e0f40c67::t_dc5faf2275e835 38-53
+skills/flakiness-stability/SKILL.md
+  s_12aaa6e0f40c67::t_ab01257b07c327 96-97
+.mcp.json
+  s_12aaa6e0f40c67::t_0145bedb0c7756 4-5
+README.md
+  s_12aaa6e0f40c67::t_89437247a5cab9 40-44,46-73
+skills/failure-triage/SKILL.md
+  s_12aaa6e0f40c67::t_0f4896343428bb 201
+  s_12aaa6e0f40c67::t_8c054093bcf3cf 152-161,163-164,166-167
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "825a68d690af19ee9e809dea4f0f53b7ec3a5407",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
