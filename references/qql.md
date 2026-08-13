@@ -104,9 +104,25 @@ query runs with `plan = "…"`.
 
 **`requirement`** — `id`, `title`, `description`, `parent`, `status`, `type`,
 `project`, `author`, `createdBy`, `created`, `updated`, `deleted`, `isDeleted`.
-**There is no field linking a requirement to its test cases**, so
-requirement→case coverage cannot be computed in QQL at all; it needs the REST
-API via `qase_api`.
+Queryable and groupable like any other entity, and the response carries
+`parent_id`, so the epic → user story → feature hierarchy is available.
+
+**But there is no field linking a requirement to its test cases**, in either
+direction — not on `requirement`, not on `case`, and not in either response
+shape (`RequirementQuery` returns only the fields above; `TestCaseQuery` has no
+requirement field). `qase_get` does not support requirements and the REST API
+has no requirements endpoint, so there is no fallback: **requirement→case
+coverage cannot be obtained at all.** Report it as unavailable rather than
+substituting another measure.
+
+Requirement `status` and `type` are the only genuinely case-sensitive enum values
+in QQL, and they are also the one place where filter values and response values
+differ: filter with the label (`type = "User story"`), but the response returns a
+slug (`user-story`). Unlike everything else in this file, the case-sensitivity
+part comes from the official field reference rather than a live check — the
+workspace used for verification had no requirements, and on an empty set a
+rejected value and a value that simply matches nothing look identical. Use the
+documented casing.
 
 ## Field quirks that produce hard errors
 
