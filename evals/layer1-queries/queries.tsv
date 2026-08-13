@@ -1,0 +1,32 @@
+kind	expect	label	query_or_path
+qql	ok_nonzero	all cases	entity = "case" and project = "DEVX"
+qql	ok_nonzero	cases per automation	SELECT (automation, COUNT(*)) entity = "case" and project = "DEVX" GROUP BY automation
+qql	ok_nonzero	cases per priority	SELECT (priority, COUNT(*)) entity = "case" and project = "DEVX" GROUP BY priority
+qql	ok_nonzero	distinct executed caseIds	SELECT (COUNT(id)) entity = "result" and project = "DEVX" GROUP BY caseId
+qql	ok_nonzero	unfiled cases	entity = "case" and project = "DEVX" and suite is empty
+qql	ok	suiteTree scoping	entity = "case" and project = "DEVX" and suiteTree = "tests/api/pipelines"
+qql	ok_nonzero	staleness	entity = "case" and project = "DEVX" and updated <= now("-6m")
+qql	ok_nonzero	status distribution in window	SELECT (status, COUNT(*)) entity = "result" and project = "DEVX" and ended >= now("-12m") GROUP BY status
+qql	ok_nonzero	flake candidates	SELECT (caseId, COUNT(*)) entity = "result" and project = "DEVX" and status = "failed" and ended >= now("-12m") GROUP BY caseId HAVING COUNT(*) >= 2
+qql	ok_nonzero	pass/fail split by caseId	SELECT (caseId, status, COUNT(*)) entity = "result" and project = "DEVX" and caseId in (16713, 16677) and ended >= now("-12m") GROUP BY caseId, status
+qql	ok_nonzero	duration aggregates	SELECT (caseId, AVG(timeSpent), MIN(timeSpent), MAX(timeSpent), COUNT(*)) entity = "result" and project = "DEVX" and caseId in (16713, 16677) and ended >= now("-12m") GROUP BY caseId
+qql	ok_nonzero	isFlaky flag	entity = "case" and project = "DEVX" and isFlaky = true
+qql	ok_nonzero	latest failed run	entity = "run" and project = "DEVX" and status = "failed" ORDER BY started DESC
+qql	ok_nonzero	run by id	entity = "run" and project = "DEVX" and id = 895
+qql	ok_nonzero	case history by caseId	entity = "result" and project = "DEVX" and caseId = 234 ORDER BY ended DESC
+qql	ok	open defects	entity = "defect" and project = "DEVX" and status = "Open"
+qql	ok	any defects at all	entity = "defect" and project = "DEVX"
+qql	ok	requirements by status	SELECT (status, COUNT(*)) entity = "requirement" and project = "DEVX" GROUP BY status
+qql	error	priority critical is invalid	entity = "case" and project = "DEVX" and priority = "critical"
+qql	error	case.suite takes a title not an id	entity = "case" and project = "DEVX" and suite = 1
+qql	error	run has no created field	entity = "run" and project = "DEVX" ORDER BY created DESC
+qql	error	result has no created field	entity = "result" and project = "DEVX" and created >= now("-30d")
+qql	error	result has no run-id field	entity = "result" and project = "DEVX" and runId = 253
+qql	error	run status active is invalid	entity = "run" and project = "DEVX" and status = "active"
+qql	error	SELECT after conditions is rejected	entity = "result" and project = "DEVX" SELECT (COUNT(id)) GROUP BY status
+rest	ok_nonzero	suite listing with cases_count	suite/DEVX?limit=100
+rest	ok_nonzero	run listing with stats	run/DEVX?limit=100
+rest	ok_nonzero	results scoped to a run	result/DEVX?run=895&status=failed&limit=100
+rest	ok	defects	defect/DEVX?limit=100
+rest	ok	open defects	defect/DEVX?limit=100&status=open
+rest	ok_nonzero	system field enum options	system_field
