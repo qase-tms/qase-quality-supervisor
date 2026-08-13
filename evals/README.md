@@ -55,12 +55,24 @@ runs, so a single failure is not proof of a regression — re-run it with
 description problem; one that flips is instability, and the two need different
 fixes.
 
-Two failure modes to read differently:
+Three outcomes to read differently:
 
-- **fired the wrong skill** — a description is too broad, or two overlap. This is
-  the dangerous one: `failure-triage` and `flakiness-stability` prescribe
-  opposite actions, so confusing them inverts the advice.
-- **fired nothing** — a description is too narrow for that phrasing.
+- **FAIL, fired the wrong skill of ours** — a description is too broad, or two
+  overlap. This is the dangerous one: `failure-triage` and `flakiness-stability`
+  prescribe opposite actions, so confusing them inverts the advice.
+- **FAIL, fired nothing** — a description is too narrow for that phrasing.
+- **WARN, another plugin fired** — a skill from a different installed plugin won
+  the routing. That is a property of the developer's environment, not of these
+  descriptions, so it is reported separately and does not count as a failure.
+  Observed in practice: an aggressive `using-superpowers` description claiming
+  "use when starting any conversation" takes prompts that carry no
+  test-management vocabulary.
+
+That last point has a corollary worth knowing: **a plugin cannot reasonably claim
+domain-neutral phrasing.** "What's blocking the release?" could be about a pull
+request, a deployment, or a ticket; a Qase plugin that hijacked it in a non-Qase
+project would be over-triggering. Prompts that route reliably are the ones
+carrying test-management vocabulary — flaky, coverage, triage, suites, go/no-go.
 
 `MCP tools were not blocked` means the tool names in `--disallowedTools` no
 longer match the server's; fix them before running a full pass, or every case

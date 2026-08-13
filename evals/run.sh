@@ -114,7 +114,9 @@ for line in open(sys.argv[1]):
         if nm=='Skill':
             i=b.get('input')
             if isinstance(i,dict): skills.append(str(i.get('skill') or ''))
-print('LEAK' if mcp else 'CLEAN', (skills[0].split(':')[-1] if skills else 'none'))
+first = skills[0] if skills else ''
+own = 'OURS' if first.startswith('quality-supervisor:') else ('FOREIGN' if first else 'NONE')
+print('LEAK' if mcp else 'CLEAN', own, (first.split(':')[-1] if first else 'none'))
 PY
   rm -f "$trace"
 }
@@ -130,13 +132,22 @@ layer2() {
     if [ -n "$filter" ] && [[ "$prompt" != *"$filter"* ]]; then continue; fi
     local i=1
     while [ "$i" -le "$runs" ]; do
-      local out leak got
+      local out leak foreign got
       out="$(trigger_once "$prompt")"
-      leak="${out%% *}"; got="${out#* }"
+      leak="$(printf '%s' "$out" | cut -d' ' -f1)"
+      foreign="$(printf '%s' "$out" | cut -d' ' -f2)"
+      got="$(printf '%s' "$out" | cut -d' ' -f3)"
       if [ "$leak" = "LEAK" ]; then
         printf '  FAIL  %-52s MCP tools were not blocked - check the tool names\n' "${prompt:0:52}"
       elif [ "$got" = "$expected" ]; then
         printf '  PASS  %-52s %s\n' "${prompt:0:52}" "$got"
+      elif [ "$got" != "none" ] && [ "$foreign" = "FOREIGN" ]; then
+        # A skill from another installed plugin won the routing. That is
+        # environmental, not a defect in these descriptions — the environment
+        # this runs in has whatever else the developer installed. Reported
+        # separately so it cannot be mistaken for one of our skills misfiring,
+        # which is the failure that would actually invert a user's advice.
+        printf '  WARN  %-52s another plugin fired: %s\n' "${prompt:0:52}" "$got"
       else
         printf '  FAIL  %-52s expected %s, fired %s\n' "${prompt:0:52}" "$expected" "$got"
       fi

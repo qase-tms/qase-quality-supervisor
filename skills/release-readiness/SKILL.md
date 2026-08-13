@@ -2,11 +2,11 @@
 name: release-readiness
 description: >-
   Produce an evidence-backed go / no-go assessment for a Qase release scope — a
-  milestone, a test plan, or a set of runs — covering execution progress, pass
-  rate, blocking defects, untested scope, and flaky-test risk. Use when the user
-  asks "are we ready to ship", release readiness, go/no-go, release sign-off,
-  quality gate, or milestone status. Part of the Quality Supervisor plugin;
-  powered by the Qase MCP server.
+  milestone, a test plan, or a set of runs. Use when the user asks whether they
+  are ready to ship, release, or cut a version; for a go/no-go, a release
+  sign-off, or a quality gate; what is blocking the release or holding it up;
+  whether a milestone or sprint is done; how a release is tracking; or whether it
+  is safe to deploy.
 ---
 
 # Quality Supervisor — Release-Readiness Assessment
