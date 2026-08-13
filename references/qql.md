@@ -9,9 +9,13 @@ Read this before composing any query. Field names are **not** uniform across
 entities, and the wrong name returns `Qase Query error: unavailable attribute`
 rather than an empty result — a hard failure, not a silent one.
 
-MCP server 2.1.0 documents much of this in `qql_help` too. Where they differ,
-this file is the one that was executed against a live workspace; the known
-divergence is flagged under Aggregating below.
+MCP server 2.1.1 documents much of this in `qql_help` too — field names per
+entity, the aggregation syntax, and the enum-to-integer mapping. Consult either;
+where they differ, this file is the one that was executed against a live
+workspace.
+
+What `qql_help` cannot tell you is where QQL disagrees with the REST API about
+the data itself. That is the last section here, and it still applies.
 
 **QQL requires a Business or Enterprise subscription.** On lower plans
 `qql_search` fails for every query. If it fails with a permission error, say so
@@ -34,11 +38,6 @@ with `Query is invalid`, which tells you nothing about which one is wrong:
 ```
 SELECT (status, COUNT(*)) entity = "result" and project = "DEMO" GROUP BY status
 ```
-
-> **`qql_help`'s aggregation examples are wrong on point 2** (as of MCP server
-> 2.1.0): they put `SELECT (…)` after the conditions, and every one of them is
-> rejected. If you copied a shape from `qql_help` and got `Query is invalid`,
-> move `SELECT (…)` to the front — that is almost certainly the reason.
 
 Then conditions, then `GROUP BY`, then `HAVING`. One line only, no newlines. No
 `WHERE`/`LIMIT`/`OFFSET` keywords. One `ORDER BY` field maximum. Every

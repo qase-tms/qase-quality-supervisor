@@ -68,9 +68,9 @@ Then set `QASE_API_TOKEN` in your environment (create one at `app.qase.io` →
 API tokens). Keep the server name `qase` — the bundled guard hooks match tool
 names by that prefix, and renaming it silently disables them.
 
-The skills expect **MCP server 2.1.0 or newer**. Earlier versions ship a broken
-QQL example in the tool schema and a `qase_triage_defect` that reports linking
-it never performed.
+The skills expect **MCP server 2.1.1 or newer**. Earlier versions ship broken QQL
+examples in the tool schema — which the model copies and the API rejects — and,
+before 2.1.0, a `qase_triage_defect` that reported linking it never performed.
 
 > The skills are written against the consolidated Qase MCP tool surface
 > (`qase_project_context`, `qql_search`, `qase_get`, `qase_case_upsert`,

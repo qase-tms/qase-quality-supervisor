@@ -78,16 +78,18 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   installing the plugin no longer involves creating or storing an API token. The
   local token-based configuration is documented in the README for Business plans
   and development, since the hosted endpoint requires Enterprise.
-- Skills now assume MCP server **2.1.0**, which fixed the invalid QQL example in
+- Skills now assume MCP server **2.1.1**, which fixed the invalid QQL example in
   the tool schema, the silent truncation in `qase_project_context`, and
   `qase_triage_defect`'s dead link parameters. The guidance those defects
   required has been removed; the remaining constraint — that Qase has no
   defect-side way to attach results — is a property of the API, not the server,
   and stays documented.
 - `references/qql.md`: query limit updated to 2,000 characters (2.1.0 raised it
-  from 1,000), ID batches sized accordingly, and a warning added that
-  `qql_help`'s aggregation examples place `SELECT` after the conditions, where
-  the API rejects it.
+  from 1,000) and ID batches sized accordingly. Server 2.1.1 corrected
+  `qql_help`'s aggregation examples, which had placed `SELECT` after the
+  conditions where the API rejects it, so the warning about that is gone; the
+  QQL-versus-REST data divergence is unaffected by either release and stays
+  documented.
 
 ### Fixed
 - Every QQL query in `flakiness-stability` and `failure-triage` — the previous
