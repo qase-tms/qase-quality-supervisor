@@ -6,7 +6,28 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- `references/qql.md`: a QQL field/enum/limit reference, verified query by query
+  against a live Qase workspace. Shared by the skills so query knowledge lives
+  in one place instead of being restated (and drifting) in each one.
 - `LICENSE` (MIT).
+
+### Changed
+- `flakiness-stability` rewritten around what QQL can actually do. It now
+  distinguishes genuinely flaky cases (both passes and failures in the window)
+  from consistently failing ones (a regression, needing the opposite response) —
+  on a real project, most high-failure cases turn out to be the latter, so the
+  previous failure-count approach misreported them. Detection uses server-side
+  `GROUP BY` aggregation instead of paging through result rows, checks that the
+  time window contains data before concluding anything, treats Qase's `isFlaky`
+  flag as a cross-check rather than a shortcut, and writes findings back via the
+  native `is_flaky` field. Claims the data cannot support (result ordering,
+  per-environment breakdowns, confirming flakiness by re-running) are now stated
+  as limits instead of promised.
+
+### Fixed
+- Every QQL query in `flakiness-stability` — the previous ones failed outright:
+  `result` has no `created`/`time_created` field (only `ended`), so the skill's
+  central history query errored on every call.
 - `hooks/hooks.json` + `hooks/deny-destructive.sh` +
   `hooks/deny-destructive-api.sh`: `PreToolUse` hooks that block any
   `mcp__qase__*delete*` tool call and any `qase_api` call whose method is

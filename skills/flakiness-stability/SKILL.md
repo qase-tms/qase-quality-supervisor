@@ -1,119 +1,218 @@
 ---
 name: flakiness-stability
 description: >-
-  Detect and quantify flaky and unstable tests in a Qase project by analyzing
-  result history, then recommend actions (quarantine, re-run to confirm, fix).
-  Use when the user asks about flaky tests, test stability, intermittent
-  failures, "which tests are unreliable," flake rate, or wants to quarantine or
-  confirm flakiness. Part of the Quality Supervisor plugin; powered by the Qase
-  MCP server.
+  Find genuinely flaky tests in a Qase project by comparing each case's pass and
+  fail history, separate them from tests that are simply broken, and recommend
+  what to do. Use when the user asks about flaky tests, test stability,
+  intermittent or non-deterministic failures, "which tests are unreliable",
+  flake rate, or wants to flag or quarantine flaky tests. Part of the Quality
+  Supervisor plugin; powered by the Qase MCP server.
 ---
 
 # Quality Supervisor — Flakiness / Stability Analysis
 
-Find tests that pass and fail without code changing, quantify how unstable they
-are, and recommend what to do — confirm via re-run, quarantine, or fix. Flaky
-tests erode trust in the suite; this skill separates real signal from noise.
+Find tests that pass and fail without the code changing, quantify how unstable
+they are, and recommend what to do about each one.
+
+**Read the plugin's `references/qql.md` before writing any query** — it sits two
+levels up from this skill's directory (`../../references/qql.md`). Field names
+differ per entity and a wrong name is a hard error, not an empty result. The
+queries below are verified; if you deviate from them, check the reference first.
 
 ## When to use
+
 - "Which tests are flaky?" / "Show me our least stable tests."
-- "What's our flake rate this month?"
-- "Confirm whether case 123 is flaky." / "Quarantine the flaky tests."
+- "What's our flake rate?" / "Which tests should we quarantine?"
+- "Is case 123 flaky, or actually broken?"
+
+## The distinction that matters
+
+A test that fails repeatedly is not necessarily flaky. There are two very
+different populations, and they need opposite responses:
+
+| | Evidence | What it is | Response |
+|---|---|---|---|
+| **Flaky** | both passes **and** failures in the window | non-deterministic | quarantine / fix the test |
+| **Consistently failing** | failures only, never passed | a real regression, or a permanently broken test | fix the product, or hand to `failure-triage` |
+
+Counting failures alone cannot tell these apart, and in practice most
+high-failure cases are in the second group. **Never report a case as flaky
+without having seen it pass in the same window.** If you only have failure
+counts, you have candidates, not findings.
 
 ## Prerequisites
-- Qase MCP server connected and authenticated.
-- A **project code**. A time window helps (default to last 30 days).
 
-## Tools this skill uses
-- `qase_project_context` — project metadata + custom fields. Call first.
-- `qql_search` — history of results per case; Qase's `isFlaky` signal if present.
-- `qase_get` — detail on a case or result.
-- `qql_help` — confirm field names (e.g. `isFlaky`, `automation`, `status`).
-- `qase_regression_run` — **confirm flakiness by re-running** suspect cases
-  (set up a run from case IDs / suite / plan in one call).
-- `qase_result_record` — record results of confirmation re-runs if executed
-  outside CI; or `qase_ci_report` for a full CI-style run+results+complete.
-- `qase_case_upsert` — tag/quarantine a case (label or custom field) on approval.
-- `qase_api` — escape hatch for result-history endpoints if QQL is insufficient.
+- A **project code**. If the user didn't give one, ask — never guess.
+- QQL access (Business/Enterprise). If `qql_search` returns a permission error,
+  say so and stop; there is no fallback path for this analysis.
 
-## What "flaky" means here
-A test is flaky when it produces **different results (pass/fail) for the same
-code and environment** over time. Quantify with a **flake rate** = transitions
-between pass and fail ÷ total runs, over the window. High transition count with
-no correlated code/env change ⇒ flaky, not a genuine regression.
+## Tools
+
+- `qase_project_context` — project metadata. Call first.
+- `qql_search` — every step below. Use aggregation, not row fetching.
+- `qase_get` — detail on a specific case once you have IDs worth explaining.
+- `qase_case_upsert` — set `is_flaky: true` on confirmed flakes (write step,
+  needs approval).
+- `qase_api` — for anything QQL can't reach (see Limits below).
 
 ## Workflow
 
-### 1. Seed context
-Call `qase_project_context`. Note whether the workspace tracks an `isFlaky`
-attribute and any relevant custom fields.
+### 1. Seed context and settle the window
 
-### 2. Get the candidate set (fast path)
-If Qase already flags flakiness, start there:
-```
-entity = "case" and project = "DEMO" and isFlaky = true
-```
-(If the field name errors, call `qql_help` topic `syntax`/`entities` to confirm.)
+Call `qase_project_context` for the project.
 
-### 3. Build history-based evidence (robust path)
-Pull recent results and compute stability per case:
-```
-entity = "result" and project = "DEMO" and time_created >= now("-30d") order by created desc
-```
-For each case_id, order results by time and count pass↔fail transitions.
-Compute per case:
-- runs in window, pass count, fail count
-- transition count and flake rate
-- environments/configs involved (flaky in only one env ⇒ likely env, not test)
-Rank by flake rate × execution frequency (a flaky test that runs often hurts most).
+Default window: last 30 days. Before analysing, confirm the window actually
+contains data:
 
-### 4. Confirm suspected flakes (optional, on request)
-To move from "suspected" to "confirmed," re-run the candidates several times
-with no code change:
-1. `qase_regression_run` — create a run from the suspect case IDs.
-2. Execute (in CI, or record outcomes via `qase_result_record` /
-   `qase_ci_report`) N times.
-3. Mixed results across identical runs = confirmed flaky.
+```
+SELECT (status, COUNT(*)) entity = "result" and project = "CODE" and ended >= now("-30d") GROUP BY status
+```
 
-### 5. Recommend actions
-For each unstable case, recommend one:
-- **Quarantine** — move out of the gating suite / tag so it doesn't block
-  releases, while keeping it visible. Apply via `qase_case_upsert` (label or
-  custom field) after user approval.
-- **Fix** — point at the likely cause (timing/waits, order dependence, shared
-  state, network, non-deterministic data).
-- **Confirm** — if evidence is thin, propose a re-run batch (step 4).
-- **Retire** — if a case is chronically flaky and low value.
+If this returns no groups, the window is empty — **do not report "no flaky
+tests"**. Widen it (`-3m`, then `-12m`), and state in the report which window
+you ended up using and why. A project whose CI stopped a month ago has plenty
+of flakiness history; it is just older than your default.
+
+This query also gives you the project's overall status distribution, which is
+the denominator for the flake rate later. Map the integer status codes back to
+labels using `references/qql.md`.
+
+### 2. Find candidates — cases that failed more than once
+
+```
+SELECT (caseId, COUNT(*)) entity = "result" and project = "CODE" and status = "failed" and ended >= now("-30d") GROUP BY caseId HAVING COUNT(*) >= 2
+```
+
+One failure is noise; two or more is worth examining. This is one call instead
+of paging through every result row, and `caseId` is a stable key — group by
+`caseId`, not `case`, because `case` is the title and titles are neither unique
+nor stable.
+
+Note the `total`: it is the number of candidate cases. If it exceeds the rows
+you received, paginate with `offset` until you have them all.
+
+### 3. Get the pass/fail split for those candidates
+
+Batch the candidate IDs — at most **80 per query**, since the MCP query limit is
+1,000 characters:
+
+```
+SELECT (caseId, status, COUNT(*)) entity = "result" and project = "CODE" and caseId in (101, 102, …) and ended >= now("-30d") GROUP BY caseId, status
+```
+
+Repeat for every batch until all candidates are covered. Then classify each:
+
+- passes **and** failures → **flaky**
+- failures only → **consistently failing**; exclude from the flaky list and
+  report separately, recommending `failure-triage` rather than quarantine
+- also note blocked/skipped/invalid counts: a case that is mostly skipped isn't
+  stable evidence of anything, so say so instead of ranking it
+
+### 4. Quantify
+
+For each flaky case compute, over the window:
+
+- **runs** = total results
+- **fail rate** = failures ÷ (passes + failures)
+- **project flake rate** = flaky cases ÷ cases that ran at least once
+
+Rank by **fail rate × runs**: a test that runs every hour and fails a third of
+the time costs far more than one that runs twice a month.
+
+State plainly what this measurement is and is not. It shows that a case both
+passed and failed in the window — coexistence, not alternation. QQL aggregation
+cannot see the *order* of results, so **do not report a "transition count" or
+claim to have detected a pass→fail→pass pattern.** You did not measure that.
+
+Optional secondary signal, useful for timing-related flakiness:
+
+```
+SELECT (caseId, AVG(timeSpent), MIN(timeSpent), MAX(timeSpent), COUNT(*)) entity = "result" and project = "CODE" and caseId in (…) and ended >= now("-30d") GROUP BY caseId
+```
+
+A case whose duration swings by orders of magnitude is likely waiting on
+something non-deterministic. Note it as a hypothesis, not a diagnosis.
+
+### 5. Cross-check Qase's own flag
+
+```
+entity = "case" and project = "CODE" and isFlaky = true
+```
+
+Use this to reconcile, **not** as a shortcut — the flag is only as good as
+whoever last set it, and a project can have many real flakes with the flag
+unset. Two useful comparisons:
+
+- flagged but stable in your window → propose clearing the flag
+- flaky in your window but unflagged → propose setting it (step 7)
+
+Report the disagreement; it tells the team how much to trust the flag.
 
 ### 6. Report
-Give a ranked table plus a project-level flake rate and trend.
 
-## Output format
 ```
-## Flakiness & Stability Report — <PROJECT> (window: last 30d)
-Project flake rate: <X%>  |  Unstable cases: <N> of <total run>
+## Flakiness & Stability — <PROJECT>
+Window: <the window you used, and why if it isn't the default 30d>
+Sample: <N> results across <M> cases that ran  |  candidates examined: <C>
 
-### Least stable (ranked)
-| Case | Runs | Pass | Fail | Transitions | Flake rate | Envs | Recommend |
-|------|------|------|------|-------------|-----------|------|-----------|
-| C-123 Login retry | 40 | 31 | 9 | 12 | 30% | staging | Quarantine + fix waits |
-| ...  |
+### Confirmed flaky (ranked by fail rate × runs)
+| Case | ID | Runs | Passed | Failed | Fail rate | Recommend |
+|------|----|------|--------|--------|-----------|-----------|
+| ... | 123 | 40 | 28 | 12 | 30% | quarantine + fix waits |
 
-### Notes
-- Env-specific instability: <cases only flaky on X>
-- Confirmed via re-run: <cases>  |  Suspected only: <cases>
+### Not flaky — consistently failing (<N>)
+These never passed in the window. They are regressions or permanently broken
+tests, not flakiness: <case IDs>. → run `failure-triage` on these.
 
-### Recommended actions
-- Quarantine: <cases> (say the word to tag them)
-- Fix: <cases> — <cause>
-- Re-run to confirm: <cases>
+### Qase isFlaky flag
+Flagged: <n> · agreeing with this analysis: <n> · flagged but stable: <n> ·
+flaky but unflagged: <n>
+
+### Project flake rate
+<X>% of cases that ran in the window were flaky.
+
+### Recommended actions (each needs your approval)
+- Set is_flaky on: <cases>
+- Investigate as regressions: <cases>
+
+### Evidence
+<the QQL queries used, verbatim>
 ```
+
+Always report the window and the sample size. If anything was truncated — a
+`total` larger than what you fetched, candidates you didn't get to — say which
+and how many. A number presented without its denominator will be read as
+project-wide truth.
+
+### 7. Write back (only after explicit approval)
+
+`qase_case_upsert` with `is_flaky: true` marks a case flaky in Qase natively.
+Prefer this over adding a tag: it feeds Qase's own reporting and makes the
+`isFlaky` query useful for everyone afterwards.
+
+Show the list and get a yes first. Report the case IDs you changed.
+
+## Limits — be honest about these
+
+- **No environment data on results.** The `result` entity has no `environment`
+  field, so "flaky only on staging" cannot be answered from result rows. If the
+  user asks, go through `run.environment` to find that environment's runs and
+  analyse those, or say the breakdown isn't available. Don't guess.
+- **You cannot execute tests.** `qase_regression_run` creates a run from case
+  IDs; it does not run anything. Re-running N times to confirm flakiness is a
+  CI or Playwright MCP job. You may create the run and hand it off — but never
+  imply you confirmed flakiness by executing it.
+- **Muting is not exposed.** QQL can read `isMuted`, but `qase_case_upsert`
+  cannot set it. True quarantine needs `qase_api`, or the user does it in the
+  UI. Recommend quarantine, and be clear about which of the two you mean.
+- **Aggregation sees counts, not sequence.** See step 4.
 
 ## Guardrails
-- Analysis is read-only; quarantining/tagging via `qase_case_upsert` and any
-  re-run recording happen only after the user approves.
-- Distinguish **flaky** (non-deterministic) from a **genuine regression**
-  (consistent fail after a change) — don't quarantine a real bug.
-- Never call `*_delete` tools here.
+
+- Analysis is read-only. Writes only after the user approves.
+- Never call a `*_delete` tool. (A hook blocks them anyway.)
+- Never label a case flaky without an observed pass in the window.
+- Distinguish flaky from a genuine regression before recommending quarantine —
+  quarantining a real bug hides it.
 - State the window and the flake-rate definition in every report.
-- If `isFlaky` isn't available, fall back to history-based computation.
+- An empty result set is not evidence of stability; check the window has data.
