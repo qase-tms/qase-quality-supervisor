@@ -199,6 +199,35 @@ A list of IDs in a query is bounded by the character limit — roughly 170 integ
 IDs plus surrounding clauses at 2,000. Batch larger sets, and keep a margin:
 case IDs grow as a workspace ages.
 
+## QQL and REST disagree — and not in one direction
+
+They are different views of the same data. Across 34 projects, 20 of 52 entity
+counts differed, and **which source is higher depends on the entity**:
+
+| Entity | Direction | Observed |
+|---|---|---|
+| `case` | QQL ≥ REST, slightly | 1.00–1.31× (17907 vs 17901; 4262 vs 3262) |
+| `run` | QQL ≥ REST | often exactly 2.00×, up to 16×; QQL also returns runs REST answers `Run not found` for, with `isDeleted = false` |
+| `result` | QQL ≫ REST | 1.5× to 164× (11141 vs 68) |
+| `defect` | **QQL ≤ REST** | 0.33–0.41×, and **0 vs 3** on projects that do have defects |
+
+Small or recent projects agree exactly; the gap grows with history.
+
+The defect direction is the dangerous one, because under-reporting a blocker is
+what clears a release that should be held. Verified: where 17 open
+blocker+critical defects existed, QQL returned 9; on two projects with 1 and 3
+real blockers, QQL returned zero.
+
+**So don't treat either source as canonical.** Take defects from REST
+(`GET /v1/defect/{code}`, paging and tallying `severity` from the rows, since
+the severity filter is ignored there). Take execution counts from run `stats`.
+Use QQL for what it is uniquely good at — filtering and aggregating by field.
+When a conclusion rests on a number, check it the other way and report any
+disagreement instead of resolving it silently.
+
+Representations differ too: REST returns enums as **strings** (`"blocker"`),
+QQL aggregates return them as **integers**.
+
 ## Aggregates available outside QQL
 
 Some numbers are cheaper or only available through REST (`qase_api`):

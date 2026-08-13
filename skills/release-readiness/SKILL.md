@@ -108,28 +108,42 @@ Weight by priority or severity **only after checking they're populated** — see
 `coverage-gap-analysis` step 5. If most cases are "Not set", say the project has
 no usable risk metadata instead of ranking on a handful of tagged cases.
 
-### 4. Blocking defects — and whether defects exist at all
+### 4. Blocking defects — use REST, not QQL
 
-Two queries, in this order. The first is the one that prevents a false GO:
+**Do not source this dimension from QQL.** QQL under-reports defects, and it does
+so in the one direction that produces a false GO. Measured across several real
+projects: where 17 open blocker+critical defects existed, QQL returned 9; where 4
+existed, it returned 1; and on two projects with 1 and 3 real blockers, QQL
+returned **zero**. A gate built on it will clear a release that has blockers.
+
+Get the truth from REST via `qase_api`:
 
 ```
-entity = "defect" and project = "CODE"
-entity = "defect" and project = "CODE" and status = "Open" and severity in ("blocker","critical")
+GET /v1/defect/{code}                 → total defects (is tracking used at all?)
+GET /v1/defect/{code}?status=open     → read `filtered` for the open count
 ```
 
-- first query returns **0** → the project does not track defects in Qase. Report
-  this dimension as **Unknown**, never as Pass, and say the team's blockers live
-  somewhere this assessment cannot see.
-- first > 0, second = 0 → genuinely no blocking defects. That is a Pass.
+Page the open list (`limit=100`, `offset`) and tally `severity` from the rows.
+REST does **not** filter by severity — the parameter is ignored — but every row
+carries it, so tally client-side. Note the representations differ: REST returns
+severity as a **string** (`"blocker"`, `"critical"`, `"undefined"`), while QQL
+aggregates return it as an integer.
 
-Defect status values are `Open`, `In progress`, `Resolved`, `Invalid`. Severity
-integers in aggregates: 0 = Not set, 1 = Blocker, 2 = Critical, 3 = Major,
-4 = Normal, 5 = Minor, 6 = Trivial. Note that severity is frequently left unset —
-a "Not set" defect may well be a blocker nobody triaged, so count it separately
-rather than assuming it's minor.
+Then interpret:
 
-Scope defects to the release with `and milestone = "Release 2.3"` when defects
-carry milestones; if they don't, assess project-wide and say that's what you did.
+- **total = 0** → the project doesn't track defects in Qase. This dimension is
+  **Unknown**, never Pass. The team's blockers live somewhere this assessment
+  cannot see; say so.
+- **any open `blocker` or `critical`** → NO-GO by default.
+- **open defects with severity `undefined`** → report as their own line. These are
+  untriaged, and they are usually the largest group (40 of 70 open on one
+  project, 5 of 5 on another). An unclassified defect may well be a blocker
+  nobody has looked at, so it cannot be counted as safe.
+
+Defect status values are `Open`, `In progress`, `Resolved`, `Invalid`.
+
+Scope defects to the release with the milestone when they carry one; if they
+don't, assess project-wide and say that's what you did.
 
 ### 5. Untested scope and stability risk
 
@@ -147,12 +161,15 @@ separated from real reds before you conclude anything about the pass rate.
 
 ### 6. Cross-check the numbers before deciding
 
-QQL and the REST API do not always agree — they are different views of the data,
-and the gap can be large. Observed on real projects: a run that QQL returns as
-live (and not deleted) which REST reports as "Run not found"; run and defect
-totals differing by a factor of two or three between the two.
+QQL and REST are different views of the same data and they frequently disagree.
+Measured across 34 projects, 20 of 52 entity counts differed, and **the direction
+depends on the entity**: QQL reports *more* cases, runs, and results than REST
+(runs often exactly 2×, results up to 164×; it also returns runs REST answers
+"Run not found" for), but *fewer* defects — sometimes none at all.
 
-For a go/no-go, verify the decisive numbers a second way:
+So neither source is simply "the fresher one". Pick per dimension: run stats and
+execution from the runs (step 2), defects from REST (step 4), and verify anything
+a decision rests on:
 
 ```
 GET /v1/run/{code}?limit=100          → runs and their stats
@@ -194,7 +211,7 @@ Bar applied: <the thresholds used, and whose policy they are>
 |---|---|---|
 | Execution progress | P/AR/F | <executed>/<total> (<x>%) · untested: <n> |
 | Pass rate | P/AR/F | <passed>/<executed> (<x>%) · failed: <n> |
-| Blocking defects | P/AR/F/Unknown | <n> open blocker+critical <or "project tracks no defects"> |
+| Blocking defects | P/AR/F/Unknown | <n> open blocker+critical · <n> untriaged <or "project tracks no defects"> |
 | Untested scope | P/AR/F | <n> tests never executed in scope |
 | Stability risk | P/AR/F | <n> flaky in scope <or "not assessed"> |
 
