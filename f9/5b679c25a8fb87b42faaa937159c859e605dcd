@@ -1,0 +1,21 @@
+skills/release-readiness/SKILL.md
+  s_12aaa6e0f40c67::t_b38b97d3abbd37 4-7,14-18,21-22,25-40,42-54,58-99,101,104-114,116-117,120-139,141,144-156,158-159,161-183,186,188-190,193-199,202,207-212,216-223,225-226
+CHANGELOG.md
+  s_12aaa6e0f40c67::t_4c1168203e9ce3 38-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "f95b679c25a8fb87b42faaa937159c859e605dcd",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
