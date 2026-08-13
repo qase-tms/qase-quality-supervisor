@@ -1,12 +1,12 @@
 ---
 name: coverage-gap-analysis
 description: >-
-  Find where a Qase project's test coverage is thin: cases that have never been
-  executed, manual cases that should be automated, empty or unfiled suites, and
-  stale cases. Use when the user asks about test coverage, coverage gaps, what
-  isn't tested, which tests aren't automated, untested areas, or wants cases
-  drafted to close a gap. Part of the Quality Supervisor plugin; powered by the
-  Qase MCP server.
+  Find where a Qase project's test coverage is thin. Use when the user asks about
+  test coverage or coverage gaps; what isn't tested, untested areas, or what is
+  missing tests; which cases are still manual, not automated, or yet to be
+  automated; which cases have never been run or executed; which suites are empty,
+  thin, or hold no cases; how much of the project is automated; which cases are
+  stale or outdated; or wants test cases drafted to close a gap.
 ---
 
 # Quality Supervisor — Coverage / Gap Analysis

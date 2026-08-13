@@ -2,11 +2,11 @@
 name: failure-triage
 description: >-
   Triage the failures in a Qase test run: cluster them by error signature,
-  separate real product bugs from automation, environment, and flaky noise,
-  identify the probable cause, and file defects. Use when the user asks to
-  triage a run, investigate or classify failures, asks "why did these tests
-  fail", or wants defects filed for a failed run. Part of the Quality
-  Supervisor plugin; powered by the Qase MCP server.
+  separate real product bugs from automation, environment, and flaky noise, and
+  file defects. Use when the user asks to triage a run; why a run, a build, or
+  the tests in it failed; why last night's or the latest run failed or is red;
+  what broke; to investigate, group, cluster, or classify failures; which
+  failures are real bugs versus noise; or to file defects for a failed run.
 ---
 
 # Quality Supervisor — Failure Triage / Root-Cause Analysis

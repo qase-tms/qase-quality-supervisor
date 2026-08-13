@@ -1,12 +1,12 @@
 ---
 name: flakiness-stability
 description: >-
-  Find genuinely flaky tests in a Qase project by comparing each case's pass and
-  fail history, separate them from tests that are simply broken, and recommend
-  what to do. Use when the user asks about flaky tests, test stability,
-  intermittent or non-deterministic failures, "which tests are unreliable",
-  flake rate, or wants to flag or quarantine flaky tests. Part of the Quality
-  Supervisor plugin; powered by the Qase MCP server.
+  Find genuinely flaky tests in a Qase project — cases that both pass and fail —
+  and separate them from tests that are simply broken. Use when the user asks
+  which tests are flaky, unreliable, unstable, intermittent, or non-deterministic;
+  about test stability, flakiness, or the flake rate; which tests pass sometimes
+  and fail other times, or fail randomly; which tests to quarantine, mute, or
+  flag as flaky; or whether a specific test is flaky or a real regression.
 ---
 
 # Quality Supervisor — Flakiness / Stability Analysis
