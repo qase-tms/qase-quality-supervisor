@@ -9,6 +9,10 @@ Read this before composing any query. Field names are **not** uniform across
 entities, and the wrong name returns `Qase Query error: unavailable attribute`
 rather than an empty result — a hard failure, not a silent one.
 
+MCP server 2.1.0 documents much of this in `qql_help` too. Where they differ,
+this file is the one that was executed against a live workspace; the known
+divergence is flagged under Aggregating below.
+
 **QQL requires a Business or Enterprise subscription.** On lower plans
 `qql_search` fails for every query. If it fails with a permission error, say so
 plainly and stop rather than retrying variations.
@@ -21,17 +25,24 @@ plainly and stop rather than retrying variations.
 entity = "case" and project = "DEMO" and priority = "High" ORDER BY created DESC
 ```
 
-**Aggregating** — note the parentheses around the SELECT list. Without them the
-query is rejected with `Query is invalid`:
+**Aggregating** — two things have to be right or the query is rejected outright
+with `Query is invalid`, which tells you nothing about which one is wrong:
+
+1. the SELECT list is wrapped in **parentheses**
+2. `SELECT (...)` comes **first**, before the conditions
 
 ```
 SELECT (status, COUNT(*)) entity = "result" and project = "DEMO" GROUP BY status
 ```
 
-Rules: `SELECT (...)` first, then conditions, then `GROUP BY`, then `HAVING`.
-One line only, no newlines. No `WHERE`/`LIMIT`/`OFFSET` keywords. One `ORDER BY`
-field maximum. Every non-aggregated field in `SELECT` must also appear in
-`GROUP BY`.
+> **`qql_help`'s aggregation examples are wrong on point 2** (as of MCP server
+> 2.1.0): they put `SELECT (…)` after the conditions, and every one of them is
+> rejected. If you copied a shape from `qql_help` and got `Query is invalid`,
+> move `SELECT (…)` to the front — that is almost certainly the reason.
+
+Then conditions, then `GROUP BY`, then `HAVING`. One line only, no newlines. No
+`WHERE`/`LIMIT`/`OFFSET` keywords. One `ORDER BY` field maximum. Every
+non-aggregated field in `SELECT` must also appear in `GROUP BY`.
 
 Aggregates: `COUNT(*)`, `COUNT(field)`, `MIN`, `MAX`, `AVG`, `SUM`, `FIRST`,
 `LAST`. `tags` cannot be grouped or aggregated on `case`, `run`, or `defect`
@@ -160,7 +171,7 @@ you inferred rather than presenting an unverified mapping as fact.
 | default rows | 10 — via `qql_search`, if you omit `limit` you get 10 |
 | total matchable rows | 10,000 |
 | maximum offset | 100,000 |
-| query length | 1,000 characters through MCP (2,000 via REST) |
+| query length | 2,000 characters (raised from 1,000 in MCP server 2.1.0) |
 | rate limit | 1,000 requests/minute per token |
 
 `qql_search` returns `total` next to `entities`. **Always compare the two.**
@@ -168,8 +179,9 @@ If `total` exceeds the rows you received, you are looking at a page, not the
 answer: either paginate deliberately, narrow the query, or state the sample
 size in the report. Never present a page as a project-wide figure.
 
-A list of IDs in a query is bounded by the 1,000-character limit — roughly 80
-integer IDs plus surrounding clauses. Batch larger sets.
+A list of IDs in a query is bounded by the character limit — roughly 170 integer
+IDs plus surrounding clauses at 2,000. Batch larger sets, and keep a margin:
+case IDs grow as a workspace ages.
 
 ## Aggregates available outside QQL
 

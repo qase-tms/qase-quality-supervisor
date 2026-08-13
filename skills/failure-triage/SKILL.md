@@ -149,29 +149,22 @@ it instead of creating a duplicate.
 Then, per confirmed product-bug cluster, one defect per cause — not one per
 failing test.
 
-`qase_triage_defect` needs `title`, `actual_result`, and `severity`. The tool's
-schema marks the last two optional, but the API requires all three, so a call
-without them fails. Severity is one of: `blocker`, `critical`, `major`,
-`normal`, `minor`, `trivial`, `undefined`.
+`qase_triage_defect` requires `title`, `actual_result`, and `severity` — all
+three, since the API rejects a defect without them. Severity is one of
+`blocker`, `critical`, `major`, `normal`, `minor`, `trivial`, `undefined`.
 
-**Two things this tool does not do, despite appearances:**
+**The defect cannot be linked to the failing results.** Qase's API has no
+defect-side way to attach them: the `results` and `runs` fields on a defect are
+populated from the runner side, when a result is submitted already marked as a
+defect. Nothing this plugin can call will create that link after the fact.
 
-1. It does **not** link results or runs to the defect. It accepts
-   `failed_result_ids` and `run_id`, discards them, and then prints
-   `Linked results: N` and returns `linked_results: N`. That number is the
-   length of the list you passed, not work performed. **Never repeat it to the
-   user as if the linkage exists.**
-2. Qase's API has no defect-side way to attach results. The `results` and `runs`
-   fields on a defect are populated from the runner side, when a result is
-   submitted marked as a defect — not by anything this plugin can call.
-
-So make the defect self-sufficient: put the run ID, the affected case IDs, the
+So make the defect self-sufficient. Put the run ID, the affected case IDs, the
 normalised error signature, and the environment into `actual_result` and
-`description`. That text is the only durable connection between the defect and
-the evidence, so it has to carry it.
+`description` — that text is the only durable connection between the defect and
+its evidence, so it has to carry all of it.
 
-Report the defect IDs you created and state plainly that results were not
-linked automatically.
+Report the defect IDs you created, and don't imply the failing results were
+attached to them.
 
 ## Output format
 
@@ -205,5 +198,5 @@ Examined: <N> failing results (of <filtered>)  |  Clusters: <K>
 - Don't over-claim causation — give a confidence level and cite the evidence.
 - Take counts from run `stats`, not from the rows you happened to fetch; if you
   examined a subset, say so.
-- Never claim results were linked to a defect — the tooling cannot do it.
+- Never claim results were linked to a defect — the API cannot do it.
 - Suspected flaky goes to `flakiness-stability`, not into a product bug.

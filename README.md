@@ -37,12 +37,40 @@ marketplace if your build supports it.
 
 ## Requirements
 
-- **Qase MCP server** connected in your AI client. This repo ships `.mcp.json`
-  that launches `@qase/mcp-server` via `npx`, authenticated with your own
-  **`QASE_API_TOKEN`** environment variable (create a token at `app.qase.io` →
-  API tokens). Credentials are never bundled — each user authenticates
-  individually.
+- **Qase MCP server.** This repo ships `.mcp.json` pointing at the hosted,
+  OAuth-authenticated endpoint (`https://mcp.qase.io/mcp`), so there is no API
+  token to create or store — your client runs the OAuth flow on first use and
+  you authorise with your normal Qase login. Credentials are never bundled and
+  never enter the repo.
 - A Qase **project code** to target.
+- **Plan:** the hosted endpoint requires an **Enterprise** subscription, and the
+  skills' analysis relies on QQL, which requires **Business or Enterprise**. On
+  a Business plan, use the local server instead (below).
+
+### Running the MCP server locally instead
+
+Useful on Business plans, for development, or where the hosted endpoint isn't
+reachable. Replace `.mcp.json` with:
+
+```json
+{
+  "mcpServers": {
+    "qase": {
+      "command": "npx",
+      "args": ["-y", "@qase/mcp-server"],
+      "env": { "QASE_API_TOKEN": "${QASE_API_TOKEN}" }
+    }
+  }
+}
+```
+
+Then set `QASE_API_TOKEN` in your environment (create one at `app.qase.io` →
+API tokens). Keep the server name `qase` — the bundled guard hooks match tool
+names by that prefix, and renaming it silently disables them.
+
+The skills expect **MCP server 2.1.0 or newer**. Earlier versions ship a broken
+QQL example in the tool schema and a `qase_triage_defect` that reports linking
+it never performed.
 
 > The skills are written against the consolidated Qase MCP tool surface
 > (`qase_project_context`, `qql_search`, `qase_get`, `qase_case_upsert`,
@@ -50,14 +78,6 @@ marketplace if your build supports it.
 > `qase_defect_upsert`, `qase_result_record`, `qase_discover_tools`,
 > `qase_api`, plus `qql_help`). Non-core tools are activated on demand via
 > `qase_discover_tools`.
-
-### OAuth / remote deployment (Rovo & hosted clients)
-
-For Atlassian Rovo and other hosted clients, point `.mcp.json` at the remote,
-OAuth-authenticated Qase MCP endpoint instead of the local `npx` command once
-it is available in your environment (the `feat/oauth` build of the Qase MCP
-server adds remote OAuth transport). No API token is stored in that mode — the
-client performs the OAuth flow.
 
 ## Design principles
 
