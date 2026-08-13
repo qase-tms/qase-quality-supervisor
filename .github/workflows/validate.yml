@@ -4,9 +4,45 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
+# A new push to the same ref supersedes any run still in flight.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  verify:
+  # Manifest validation, the secrets scan, and the hook unit tests. These need
+  # no authenticated Claude Code session, so this job is the blocking gate.
+  static:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Pinned: the install job's inventory assertions grep this CLI's
+      # human-readable `plugin details` output, which is not a stable API.
+      # Bump deliberately, re-checking those assertions.
+      - name: Install claude CLI
+        run: npm install -g @anthropic-ai/claude-code@2.1.221
+
+      - name: Static checks
+        run: bash scripts/verify-plugin.sh --static-only
+
+  # The marketplace-add -> install -> `plugin details` inventory assertions.
+  # Whether these CLI subcommands work in a headless runner without an
+  # authenticated session is unverified, so this job is non-blocking until it
+  # has been observed green on real runners. Once it is, drop
+  # continue-on-error so inventory regressions block merges too.
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
@@ -15,7 +51,7 @@ jobs:
           node-version: '20'
 
       - name: Install claude CLI
-        run: npm install -g @anthropic-ai/claude-code
+        run: npm install -g @anthropic-ai/claude-code@2.1.221
 
-      - name: Run plugin verification
+      - name: Full verification (install + component inventory)
         run: bash scripts/verify-plugin.sh

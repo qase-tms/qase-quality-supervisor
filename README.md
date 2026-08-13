@@ -64,7 +64,10 @@ client performs the OAuth flow.
 - **Qase is the system of record.** Skills read to analyze; they write (cases,
   defects, tags, runs) only after you confirm.
 - **Evidence-backed.** Every finding shows the QQL behind it.
-- **Non-destructive.** No skill calls a `*_delete` tool.
+- **Non-destructive, enforced.** No skill calls a `*_delete` tool — and a
+  bundled `PreToolUse` hook blocks such calls outright, including a `DELETE`
+  issued through the `qase_api` escape hatch. This is a technical guard, not
+  just a prompt-text promise.
 - **Human-in-the-loop.** Bulk writes require a sample and a yes first.
 
 ## Usage examples
@@ -81,16 +84,28 @@ client performs the OAuth flow.
 ├── .claude-plugin/
 │   ├── marketplace.json   # marketplace manifest (lists this plugin, source ".")
 │   └── plugin.json        # plugin manifest
+├── .github/workflows/
+│   └── validate.yml       # CI: manifest validation, secrets scan, hook tests
 ├── .mcp.json               # Qase MCP server wiring
 ├── agents/
 │   └── quality-supervisor.md
 ├── commands/
 │   └── quality-report.md
+├── hooks/
+│   ├── hooks.json          # PreToolUse guards against destructive calls
+│   ├── deny-destructive.sh
+│   └── deny-destructive-api.sh
+├── scripts/
+│   └── verify-plugin.sh    # local verification (also run by CI)
 ├── skills/
 │   ├── coverage-gap-analysis/
 │   ├── failure-triage/
 │   ├── flakiness-stability/
 │   └── release-readiness/
+├── tests/
+│   └── test-deny-destructive.sh
+├── CHANGELOG.md
+├── LICENSE
 └── README.md
 ```
 
