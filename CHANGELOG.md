@@ -24,10 +24,22 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   per-environment breakdowns, confirming flakiness by re-running) are now stated
   as limits instead of promised.
 
+- `failure-triage` rewritten. It takes a run's failure counts from the run's own
+  `stats` block instead of counting fetched rows, and fetches the failing
+  results through the REST API because QQL cannot scope results to a run ID —
+  its `run` field matches the run title, and autotest titles repeat, so the old
+  approach could silently mix in other runs. It reads `filtered` rather than
+  `total` when filtering (the latter ignores filters), cross-checks the two
+  sources, distinguishes never-executed tests from failures, and no longer
+  claims defects are linked to results — `qase_triage_defect` reports a link
+  count it does not act on, and the API has no defect-side way to attach
+  results, so the evidence goes into the defect body instead.
+
 ### Fixed
-- Every QQL query in `flakiness-stability` — the previous ones failed outright:
-  `result` has no `created`/`time_created` field (only `ended`), so the skill's
-  central history query errored on every call.
+- Every QQL query in `flakiness-stability` and `failure-triage` — the previous
+  ones failed outright. `result` and `run` have no `created` field, so both
+  skills' opening queries errored on every call; `run = <id>` and `case = <id>`
+  were rejected too, since those fields match titles, not IDs.
 - `hooks/hooks.json` + `hooks/deny-destructive.sh` +
   `hooks/deny-destructive-api.sh`: `PreToolUse` hooks that block any
   `mcp__qase__*delete*` tool call and any `qase_api` call whose method is
