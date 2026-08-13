@@ -1,0 +1,33 @@
+references/qql.md
+  s_12aaa6e0f40c67::t_9a44166a9f911d 1-182
+skills/flakiness-stability/SKILL.md
+  s_12aaa6e0f40c67::t_8537621797f064 4-9,14-15,23,25-41,44-56,60-65,68,71-81,83,85-149,154-179,182-209,211-216,218
+  s_12aaa6e0f40c67::t_21862036222e05 17-20
+  s_febb7d893f86f5::t_7359491ba4c5af 16
+CHANGELOG.md
+  s_12aaa6e0f40c67::t_5008a12365ae13 9-11,13-30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "d29cd7c4eabeb0123e5130f897c546534c49625e",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    },
+    "s_febb7d893f86f5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1224a5a6-6d47-4860-83a4-72b0f7bcba6d",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
