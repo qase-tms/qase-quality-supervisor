@@ -115,22 +115,60 @@ if [ -n "$get_output" ]; then
 fi
 echo "PASS: deny-destructive-api.sh allows method=GET with no stdout"
 
-# --- deny-destructive-api.sh: fail-closed, genuine internal failure ---------
+# --- deny-destructive-api.sh: a decoy method must not mask a real DELETE ----
 #
-# tr is entirely missing: the hook cannot safely case-normalize the method
-# (so a disguised "delete" could slip an exact-case check) and must block.
+# Regression test. The guard cannot resolve tool_input.method precisely without
+# a JSON parser, so it denies on ANY "method":"delete" in the payload. An
+# earlier version matched the LAST occurrence instead, so appending
+# '"method":"GET"' let a genuine DELETE through with no broken environment at
+# all — the worst of the fail-open cases, because nothing looked wrong.
+
+decoy_output="$(echo '{"tool_name":"mcp__qase__qase_api","tool_input":{"method":"DELETE","endpoint":"/case/PRJ/1","meta":{"method":"GET"}}}' | "$API_HOOK")"
+decoy_decision="$(echo "$decoy_output" | jq -r '.hookSpecificOutput.permissionDecision')"
+
+if [ "$decoy_decision" != "deny" ]; then
+  fail "deny-destructive-api.sh: a trailing decoy \"method\":\"GET\" masked a real DELETE (decision='$decoy_decision')"
+fi
+echo "PASS: deny-destructive-api.sh still denies when a decoy method follows a real DELETE"
+
+# --- deny-destructive-api.sh: no external binaries required ------------------
+#
+# Regression test. The DELETE check uses only bash builtins, so an empty PATH
+# must not change the verdict. An earlier version shelled out to sed without
+# checking its exit status, and a missing sed silently allowed DELETEs.
+# NOTE: invoke bash by absolute path — `PATH=... bash` would resolve `bash`
+# itself against the empty PATH and exit 127 before the hook ever ran, which
+# looks like a hook failure but isn't.
+
+empty_bin="$(mktemp -d)"
+trap 'rm -rf "$minimal_bin" "$broken_bin" "$empty_bin"' EXIT
 
 set +e
-api_broken_bin="$broken_bin"
-ln -sf "$(command -v sed)" "$api_broken_bin/sed" 2>/dev/null
-ln -sf "$(command -v head)" "$api_broken_bin/head" 2>/dev/null
-api_broken_output="$(echo '{"tool_name":"mcp__qase__qase_api","tool_input":{"method":"delete"}}' | PATH="$api_broken_bin" "$API_HOOK" 2>/dev/null)"
-api_broken_exit=$?
+nopath_output="$(echo '{"tool_name":"mcp__qase__qase_api","tool_input":{"method":"DELETE"}}' | PATH="$empty_bin" /bin/bash "$API_HOOK" 2>/dev/null)"
+nopath_exit=$?
 set -e
 
-if [ "$api_broken_exit" -ne 2 ]; then
-  fail "deny-destructive-api.sh did not fail closed with tr missing: exit=$api_broken_exit output=$api_broken_output"
+if [ "$nopath_exit" -eq 2 ]; then
+  echo "PASS: deny-destructive-api.sh fails closed (exit 2) with an empty PATH"
+elif [ "$nopath_exit" -eq 0 ] && printf '%s' "$nopath_output" | grep -q '"permissionDecision"[[:space:]]*:[[:space:]]*"deny"'; then
+  echo "PASS: deny-destructive-api.sh still denies DELETE with an empty PATH"
+else
+  fail "deny-destructive-api.sh did not block DELETE with an empty PATH: exit=$nopath_exit output=$nopath_output"
 fi
-echo "PASS: deny-destructive-api.sh fails closed (exit 2) when tr is missing"
+
+# --- deny-destructive-api.sh: GET stays allowed with an empty PATH -----------
+#
+# The over-broad denial must not become "deny everything" when the environment
+# is stripped — a guard that blocks every qase_api call would break the skills.
+
+set +e
+nopath_get_output="$(echo '{"tool_name":"mcp__qase__qase_api","tool_input":{"method":"GET"}}' | PATH="$empty_bin" /bin/bash "$API_HOOK" 2>/dev/null)"
+nopath_get_exit=$?
+set -e
+
+if [ "$nopath_get_exit" -ne 0 ] || [ -n "$nopath_get_output" ]; then
+  fail "deny-destructive-api.sh should allow GET with an empty PATH: exit=$nopath_get_exit output=$nopath_get_output"
+fi
+echo "PASS: deny-destructive-api.sh allows method=GET with an empty PATH"
 
 echo "All deny-destructive tests passed."

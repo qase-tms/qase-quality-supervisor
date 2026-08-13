@@ -11,8 +11,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `hooks/deny-destructive-api.sh`: `PreToolUse` hooks that block any
   `mcp__qase__*delete*` tool call and any `qase_api` call whose method is
   `DELETE`, so "skills never delete Qase data" is enforced technically, not
-  only in skill prompt text. Both hooks are fail-closed (they block on
-  internal error) and depend on no external JSON tooling.
+  only in skill prompt text. Both hooks are fail-closed — they block rather
+  than allow when anything unexpected happens — and need no JSON tooling. The
+  `qase_api` guard errs deliberately toward denial: it blocks on any
+  `"method": "delete"` in the payload rather than trying to resolve
+  `tool_input.method` without a parser, so a nested or decoy field can only
+  cause a needless denial, never a missed deletion.
 - `tests/test-deny-destructive.sh`: covers both hooks, including that they
   fail closed rather than fail open when their environment is broken.
 - `scripts/verify-plugin.sh`: validates the marketplace and plugin manifests

@@ -3,49 +3,48 @@
 # PreToolUse hook for mcp__qase__qase_api. That tool is a raw API passthrough
 # accepting method: GET|POST|PUT|PATCH|DELETE, so it doesn't match the
 # "mcp__qase__.*delete.*" name pattern used by deny-destructive.sh even though
-# it can issue a DELETE. This hook closes that gap: it denies the call only
-# when tool_input.method is DELETE, and otherwise allows the normal
-# permission flow to continue untouched (exit 0, no stdout).
+# it can issue a DELETE. This hook closes that gap: it denies the call when the
+# payload requests a DELETE, and otherwise lets the normal permission flow
+# continue untouched (exit 0, no stdout).
 #
-# Fail-closed by design: no jq dependency, and any unexpected internal
-# failure blocks the call (exit 2) rather than letting it through.
+# Fail-closed by design, two ways:
+#
+#  1. The DELETE check uses only bash builtins — no cat/sed/tr/jq — so there is
+#     no "required binary missing" path that could silently allow a DELETE.
+#     (An earlier version shelled out to sed without checking its status, and a
+#     missing sed let DELETEs through.)
+#  2. Detection is deliberately over-broad: ANY "method": "delete" anywhere in
+#     the payload denies, rather than trying to resolve tool_input.method
+#     precisely without a JSON parser. A decoy or nested method field can only
+#     cause an unnecessary denial, never an unnoticed deletion. (An earlier
+#     version matched the LAST "method" in the payload, so a trailing
+#     '"method":"GET"' let a genuine DELETE through.)
+#
+# Per the Claude Code PreToolUse contract, only "exit 0 + deny JSON on stdout"
+# and "exit 2" are blocking outcomes — any other non-zero exit is a
+# non-blocking error and the tool call proceeds. This script must never take
+# that path, so anything unexpected exits 2.
 
 set -u
+trap 'echo "deny-destructive-api.sh: unexpected internal error — blocking call as a precaution." >&2; exit 2' ERR
 
-fail_closed() {
-  echo "deny-destructive-api.sh: ${1:-unexpected internal error} — blocking call as a precaution." >&2
-  exit 2
-}
+# Read stdin using the `read` builtin so a broken PATH cannot affect this.
+input=""
+while IFS= read -r line || [ -n "$line" ]; do
+  input="${input}${line}"
+done
 
-input="$(cat 2>/dev/null)"
-if [ "$?" -ne 0 ]; then
-  fail_closed "could not read stdin"
-fi
+shopt -s nocasematch
 
-# Best-effort extraction of tool_input.method — no jq dependency. Failing to
-# find a method is treated as "not DELETE" (allow): this guard exists only to
-# catch DELETE, not to gate every other qase_api call.
-method="$(printf '%s' "$input" 2>/dev/null | sed -n 's/.*"method"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' 2>/dev/null | head -n1 2>/dev/null)"
-
-# Case-insensitive comparison IS safety-relevant: if the method can't be
-# reliably normalized, a disguised DELETE (e.g. "delete") could slip through
-# an exact-case check, so a failure here blocks rather than defaulting to
-# allow.
-method_upper="$(printf '%s' "$method" | tr '[:lower:]' '[:upper:]')"
-if [ "$?" -ne 0 ]; then
-  fail_closed "could not normalize the method for comparison"
-fi
-
-if [ "$method_upper" = "DELETE" ]; then
-  cat <<JSON
-{
-  "hookSpecificOutput": {
-    "hookEventName": "PreToolUse",
-    "permissionDecision": "deny",
-    "permissionDecisionReason": "DELETE via the qase_api escape hatch is disabled in Quality Supervisor — skills never delete Qase data, including through the raw API passthrough."
-  }
-}
-JSON
+if [[ "$input" =~ \"method\"[[:space:]]*:[[:space:]]*\"delete\" ]]; then
+  # Heredoc-free so this path needs no external binary either.
+  printf '%s\n' '{'
+  printf '%s\n' '  "hookSpecificOutput": {'
+  printf '%s\n' '    "hookEventName": "PreToolUse",'
+  printf '%s\n' '    "permissionDecision": "deny",'
+  printf '%s\n' '    "permissionDecisionReason": "DELETE via the qase_api escape hatch is disabled in Quality Supervisor — skills never delete Qase data, including through the raw API passthrough."'
+  printf '%s\n' '  }'
+  printf '%s\n' '}'
 fi
 
 exit 0
