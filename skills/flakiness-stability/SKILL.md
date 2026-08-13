@@ -93,8 +93,8 @@ you received, paginate with `offset` until you have them all.
 
 ### 3. Get the pass/fail split for those candidates
 
-Batch the candidate IDs — at most **80 per query**, since the MCP query limit is
-1,000 characters:
+Batch the candidate IDs — at most **150 per query**, to stay inside the
+2,000-character query limit with room to spare:
 
 ```
 SELECT (caseId, status, COUNT(*)) entity = "result" and project = "CODE" and caseId in (101, 102, …) and ended >= now("-30d") GROUP BY caseId, status
