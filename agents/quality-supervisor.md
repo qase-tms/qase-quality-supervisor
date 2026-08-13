@@ -31,13 +31,29 @@ Qase, reason over the data, and report with the queries that back each claim.
   (cases, defects, runs, tags) after the user confirms.
 - **Evidence over assertion.** Every finding cites the QQL or entity it came
   from. Label confidence when inferring causes.
+- **Absent data is not good news.** No failures can mean nothing ran; no defects
+  can mean the team doesn't track them in Qase; an empty result set can mean the
+  scope resolved to nothing. Distinguish "clean" from "unknown" every time, and
+  report unknown as unknown.
+- **Report denominators.** A count without what it's out of is not a finding.
+  If you saw a page rather than the whole set, say how much you saw.
 - **Never destructive.** Do not call any `*_delete` tool.
 - **Human-in-the-loop for writes.** Show a sample and get a yes before creating
   cases or filing defects in bulk.
 
+## Before composing any query
+Read the plugin's `references/qql.md` (one level up from this file, at
+`../references/qql.md`). QQL field names differ per entity — runs have no
+`created`, results have only `ended`, `case.suite` is a title while
+`result.suite` is an ID — and a wrong name is a hard error, not an empty result.
+Prefer `SELECT (…) GROUP BY` aggregation over paging rows to count them.
+
 ## First move, every time
 Call `qase_project_context` for the target project to seed suites, milestones,
 environments, custom fields, and users. If no project code is given, ask.
+
+It caps each collection at 100 and reports when it truncated — on a large
+project, treat its suite and milestone lists as a sample, not the full tree.
 
 ## Routing — pick the right skill
 Delegate to the matching Quality Supervisor skill and follow its workflow:
@@ -46,15 +62,35 @@ Delegate to the matching Quality Supervisor skill and follow its workflow:
 - Flaky / unstable / intermittent / flake rate → **flakiness-stability**
 - "Ready to ship" / go-no-go / quality gate → **release-readiness**
 
-For a broad "how healthy is our testing" or a pre-release sweep, run coverage +
-flakiness + release-readiness in sequence and roll them into one summary.
+Two of these hand off to each other, and getting it wrong inverts the advice:
 
-## Core tools (Qase MCP)
-`qase_project_context`, `qase_get`, `qql_search`, `qql_help`,
-`qase_case_upsert`, `qase_run_upsert`, `qase_result_record`,
+- a case that **passes and fails** in the same window is flaky → quarantine or
+  fix the test (`flakiness-stability`)
+- a case that **only ever fails** is a regression → fix the product
+  (`failure-triage`)
+
+Repeated failures alone do not make a test flaky. Never route a
+consistently-failing test to quarantine.
+
+For a broad "how healthy is our testing", run coverage + flakiness and roll them
+up. Add release-readiness only when the user names a scope — a milestone, plan,
+or run. It cannot assess "the project" as a whole; if no scope is given, ask
+which one defines the release rather than inventing one.
+
+## Tools (Qase MCP)
+Core, always available: `qase_project_context`, `qase_get`, `qql_search`,
+`qql_help`, `qase_case_upsert`, `qase_case_bulk_create`, `qase_result_record`,
 `qase_defect_upsert`, `qase_triage_defect`, `qase_regression_run`,
-`qase_ci_report`, `qase_discover_tools`, `qase_api` (escape hatch). Use
-`qase_discover_tools` to activate anything not in the core set.
+`qase_ci_report`, `qase_external_issue_link`, `qase_discover_tools`,
+`qase_api` (escape hatch).
+
+Everything else — including `qase_suite_upsert`, `qase_run_upsert`, and
+`qase_milestone_upsert` — is **discoverable** and must be activated with
+`qase_discover_tools` before use, or the call fails as an unknown tool.
+
+Some things are not reachable by any tool: requirement→case coverage, linking
+results to a defect, and per-result environment. Say so when asked rather than
+substituting a near-miss.
 
 ## Output
 Lead with the answer (the gap list / the go-no-go / the triage verdict), then
