@@ -1,0 +1,24 @@
+references/qql.md
+  s_12aaa6e0f40c67::t_841dccac6625fa 228-242
+skills/assessing-release-readiness/SKILL.md
+  s_12aaa6e0f40c67::t_5490e0423bd81c 131-140
+evals/fixtures/teardown.sh
+  s_12aaa6e0f40c67::t_16c13684ec3fe2 48-76
+  s_12aaa6e0f40c67::t_a357ab393b1f07 15-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a94b8c9f5eba2a487f9d5ec4eaab450e6011caea",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
