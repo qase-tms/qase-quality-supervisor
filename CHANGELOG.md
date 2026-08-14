@@ -5,6 +5,17 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+- `SECURITY.md` — the data-flow review the publish checklist requires for
+  sign-off. States what the plugin can reach, that nothing authenticates as the
+  plugin itself, how each write path is gated, and which claims are backed by a
+  re-runnable test versus merely asserted. The gaps are listed rather than
+  glossed: low-permission token boundaries and GUI clients remain unverified.
+- `QUICKSTART.md` — install to first report, and how to read one. Leads with the
+  Data confidence section, since a gap named there is a gap in the evidence
+  rather than a clean result, and with the flaky-versus-regression distinction,
+  since acting on the wrong one wastes the work.
+
 ### Changed
 - Skills renamed to the gerund form the authoring guide prefers:
   `analyzing-test-flakiness`, `triaging-test-failures`, `finding-coverage-gaps`,
