@@ -1,0 +1,25 @@
+evals/layer3-scenarios/cases.tsv
+  s_12aaa6e0f40c67::t_179040fe9b670a 8
+evals/run.sh
+  s_12aaa6e0f40c67::t_17df667cc95d53 206-221
+README.md
+  s_12aaa6e0f40c67::t_37cc01119d90dd 142-144
+  s_12aaa6e0f40c67::t_c0eca204cc6acb 121-133
+  s_12aaa6e0f40c67::t_fd7b31aaa4b546 24,110-113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "6b63041be9941172b663e23766105490d7d8fac9",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
