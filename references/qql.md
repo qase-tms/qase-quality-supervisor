@@ -17,6 +17,21 @@ workspace.
 What `qql_help` cannot tell you is where QQL disagrees with the REST API about
 the data itself. That is the last section here, and it still applies.
 
+## Contents
+
+- **Query forms** — filtering and aggregating; the two rules that make `SELECT` work
+- **Timestamp fields** — the names differ per entity, and guessing wrong is a hard error
+- **Fields per entity** — case, run, result, defect, plan, requirement
+- **Field quirks that produce hard errors** — suite titles vs IDs, no run-ID on results
+- **Enum values** — the real options, and the ones that don't exist
+- **Enum integers in aggregated responses** — aggregates return codes, not labels
+- **Limits** — 100 rows per call, 10,000 matchable, 2,000-character queries
+- **QQL and REST disagree — and not in one direction** — which source to trust per
+  entity; **read this before reporting a defect count**
+- **Aggregates available outside QQL** — cheaper numbers from REST
+
+Read the section you need; the whole file is not required for a single query.
+
 **QQL requires a Business or Enterprise subscription.** On lower plans
 `qql_search` fails for every query. If it fails with a permission error, say so
 plainly and stop rather than retrying variations.

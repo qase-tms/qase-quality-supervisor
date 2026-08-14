@@ -5,7 +5,7 @@ argument-hint: <project-code> [milestone|plan|run]
 
 Run a consolidated Quality Supervisor report for the Qase project given in
 `$ARGUMENTS` (first token = project code; optional second token = the milestone,
-plan, or run that scopes release-readiness).
+plan, or run that scopes assessing-release-readiness).
 
 Steps:
 
@@ -15,16 +15,16 @@ Steps:
 
 2. Run these analyses in order, each using its Quality Supervisor skill:
 
-   a. **coverage-gap-analysis** — top risk-ranked gaps, against the case total as
+   a. **finding-coverage-gaps** — top risk-ranked gaps, against the case total as
       the denominator.
-   b. **flakiness-stability** — flake rate and least-stable cases. Confirm the
+   b. **analyzing-test-flakiness** — flake rate and least-stable cases. Confirm the
       time window holds results before reporting; an empty window is not a clean
       bill of health. Report genuinely flaky cases separately from
       consistently-failing ones.
-   c. **failure-triage** — triage the most recent finished run
+   c. **triaging-test-failures** — triage the most recent finished run
       (`isEnded = true`, ordered by `started` — runs have no `created` field).
       Cluster and classify; do NOT file defects unless the user asks.
-   d. **release-readiness** — only if a milestone, plan, or run was supplied.
+   d. **assessing-release-readiness** — only if a milestone, plan, or run was supplied.
       If it wasn't, say the gate was skipped for lack of a scope rather than
       assessing the whole project.
 

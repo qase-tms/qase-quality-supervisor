@@ -1,5 +1,5 @@
 ---
-name: flakiness-stability
+name: analyzing-test-flakiness
 description: >-
   Find genuinely flaky tests in a Qase project — cases that both pass and fail —
   and separate them from tests that are simply broken. Use when the user asks
@@ -33,7 +33,7 @@ different populations, and they need opposite responses:
 | | Evidence | What it is | Response |
 |---|---|---|---|
 | **Flaky** | both passes **and** failures in the window | non-deterministic | quarantine / fix the test |
-| **Consistently failing** | failures only, never passed | a real regression, or a permanently broken test | fix the product, or hand to `failure-triage` |
+| **Consistently failing** | failures only, never passed | a real regression, or a permanently broken test | fix the product, or hand to `triaging-test-failures` |
 
 Counting failures alone cannot tell these apart, and in practice most
 high-failure cases are in the second group. **Never report a case as flaky
@@ -104,7 +104,7 @@ Repeat for every batch until all candidates are covered. Then classify each:
 
 - passes **and** failures → **flaky**
 - failures only → **consistently failing**; exclude from the flaky list and
-  report separately, recommending `failure-triage` rather than quarantine
+  report separately, recommending `triaging-test-failures` rather than quarantine
 - also note blocked/skipped/invalid counts: a case that is mostly skipped isn't
   stable evidence of anything, so say so instead of ranking it
 
@@ -162,7 +162,7 @@ Sample: <N> results across <M> cases that ran  |  candidates examined: <C>
 
 ### Not flaky — consistently failing (<N>)
 These never passed in the window. They are regressions or permanently broken
-tests, not flakiness: <case IDs>. → run `failure-triage` on these.
+tests, not flakiness: <case IDs>. → run `triaging-test-failures` on these.
 
 ### Qase isFlaky flag
 Flagged: <n> · agreeing with this analysis: <n> · flagged but stable: <n> ·

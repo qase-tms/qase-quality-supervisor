@@ -1,5 +1,5 @@
 ---
-name: failure-triage
+name: triaging-test-failures
 description: >-
   Triage the failures in a Qase test run: cluster them by error signature,
   separate real product bugs from automation, environment, and flaky noise, and
@@ -122,7 +122,7 @@ One label per cluster, with the evidence that supports it:
 - **Environment/infra** — auth, network, service unavailable, whole-run failure
   → fix the environment.
 - **Flaky** — the same case has passed and failed recently → hand to
-  `flakiness-stability`; do **not** file a product bug.
+  `analyzing-test-flakiness`; do **not** file a product bug.
 
 Check history per case before calling anything flaky:
 
@@ -177,7 +177,7 @@ Examined: <N> failing results (of <filtered>)  |  Clusters: <K>
 - Cases: <ids>  ·  Occurrences: <n>  ·  Environment: <run environment, if any>
 - Classification: <Product bug | Automation | Environment | Flaky> (confidence: H/M/L)
 - Probable cause: <one or two lines, tied to the evidence>
-- Action: <file defect | fix test | fix env | route to flakiness-stability>
+- Action: <file defect | fix test | fix env | route to analyzing-test-flakiness>
 
 ### Summary
 - Product bugs: <n>  ·  Automation: <n>  ·  Environment: <n>  ·  Flaky: <n>
@@ -199,4 +199,4 @@ Examined: <N> failing results (of <filtered>)  |  Clusters: <K>
 - Take counts from run `stats`, not from the rows you happened to fetch; if you
   examined a subset, say so.
 - Never claim results were linked to a defect — the API cannot do it.
-- Suspected flaky goes to `flakiness-stability`, not into a product bug.
+- Suspected flaky goes to `analyzing-test-flakiness`, not into a product bug.

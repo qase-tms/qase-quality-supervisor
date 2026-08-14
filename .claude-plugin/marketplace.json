@@ -12,7 +12,7 @@
     {
       "name": "quality-supervisor",
       "source": ".",
-      "description": "Coverage-gap analysis, failure triage, flakiness/stability, and release-readiness skills for Qase, driven through the Qase MCP server."
+      "description": "Coverage-gap analysis, failure triage, flakiness/stability, and assessing-release-readiness skills for Qase, driven through the Qase MCP server."
     }
   ]
 }

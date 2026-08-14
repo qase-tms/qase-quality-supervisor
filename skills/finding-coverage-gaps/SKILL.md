@@ -1,5 +1,5 @@
 ---
-name: coverage-gap-analysis
+name: finding-coverage-gaps
 description: >-
   Find where a Qase project's test coverage is thin. Use when the user asks about
   test coverage or coverage gaps; what isn't tested, untested areas, or what is

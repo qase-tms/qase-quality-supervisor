@@ -63,13 +63,23 @@ layer1() {
   echo "== Layer 1: query correctness (project $PROJECT) =="
   tail -n +2 evals/layer1-queries/queries.tsv | while IFS=$'\t' read -r kind expect label q; do
     [ -z "${kind:-}" ] && continue
-    local body enc
+    local body enc url attempt
     if [ "$kind" = "qql" ]; then
       enc="$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))' "$q")"
-      body="$(curl -s -H "Token: $QASE_API_TOKEN" "https://api.qase.io/v1/search?query=$enc&limit=1")"
+      url="https://api.qase.io/v1/search?query=$enc&limit=1"
     else
-      body="$(curl -s -H "Token: $QASE_API_TOKEN" "https://api.qase.io/v1/$q")"
+      url="https://api.qase.io/v1/$q"
     fi
+    # Retry a non-JSON body once. The API occasionally returns an empty or
+    # truncated response under load, and that is an infrastructure hiccup rather
+    # than a broken query — without the retry it reads as a query regression and
+    # sends you looking in the wrong place. A real query error still comes back
+    # as well-formed JSON with status:false, so it is not masked by this.
+    for attempt in 1 2; do
+      body="$(curl -s --max-time 30 -H "Token: $QASE_API_TOKEN" "$url")"
+      printf '%s' "$body" | python3 -c 'import json,sys; json.load(sys.stdin)' 2>/dev/null && break
+      [ "$attempt" = 1 ] && sleep 2
+    done
     check "$expect" "$label" "$body"
   done
 }
@@ -111,11 +121,15 @@ for line in open(sys.argv[1]):
         if not isinstance(b,dict) or b.get('type')!='tool_use': continue
         nm=b.get('name') or ''
         if nm.startswith('mcp__qase__'): mcp.append(nm)
-        if nm=='Skill':
+        # Task counts too: the plugin ships a quality-supervisor orchestrator
+        # agent, and routing to it is a legitimate outcome. Scoring only Skill
+        # invocations reports an agent hand-off as "none" — a false negative.
+        if nm in ('Skill','Task'):
             i=b.get('input')
-            if isinstance(i,dict): skills.append(str(i.get('skill') or ''))
-first = skills[0] if skills else ''
-own = 'OURS' if first.startswith('quality-supervisor:') else ('FOREIGN' if first else 'NONE')
+            if isinstance(i,dict):
+                skills.append(str(i.get('skill') or i.get('subagent_type') or ''))
+first = next((s for s in skills if s), '')
+own = 'OURS' if (first.startswith('quality-supervisor') or first=='quality-supervisor') else ('FOREIGN' if first else 'NONE')
 print('LEAK' if mcp else 'CLEAN', own, (first.split(':')[-1] if first else 'none'))
 PY
   rm -f "$trace"
