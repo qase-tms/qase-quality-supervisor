@@ -128,11 +128,16 @@ no usable risk metadata instead of ranking on a handful of tagged cases.
 
 ### 4. Blocking defects — use REST, not QQL
 
-**Do not source this dimension from QQL.** QQL under-reports defects, and it does
-so in the one direction that produces a false GO. Measured across several real
-projects: where 17 open blocker+critical defects existed, QQL returned 9; where 4
-existed, it returned 1; and on two projects with 1 and 3 real blockers, QQL
-returned **zero**. A gate built on it will clear a release that has blockers.
+**Do not source this dimension from QQL.** Its index is incomplete over
+historical defects, and the gap runs in the one direction that produces a false
+GO. Measured across several real projects: where 17 open blocker+critical defects
+existed, QQL returned 9; where 4 existed, it returned 1; and on two projects with
+1 and 3 real blockers, it returned **zero**. A gate built on it will clear a
+release that has blockers.
+
+QQL is accurate on defects it has indexed — verified with freshly created ones,
+where every count and severity filter matched REST exactly. The problem is that a
+real project's blockers are usually not fresh.
 
 Get the truth from REST via `qase_api`:
 
