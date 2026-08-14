@@ -1,0 +1,21 @@
+docs/gui-smoke-check.md
+  s_12aaa6e0f40c67::t_ec1f33ae8f0a4c 1-139
+CHANGELOG.md
+  s_12aaa6e0f40c67::t_56e1c3c306f727 9-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "2c9210927e917f3c76465ed473cf0b3a04ebf5ad",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
