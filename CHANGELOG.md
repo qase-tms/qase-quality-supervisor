@@ -6,6 +6,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- `docs/gui-smoke-check.md` — a ten-minute manual check per GUI client, covering
+  the three things that behave differently there (install, the OAuth flow,
+  command syntax) plus a by-hand confirmation that the delete guard loads.
+  Everything else about this plugin is verified through the CLI and CI; the
+  hosted OAuth flow in a GUI client is genuinely unverified rather than merely
+  untested, since the CLI cannot complete that flow headlessly at all.
 - `.github/ISSUE_TEMPLATE/misfire.yml` — a structured report form for internal
   dogfooding. It asks for the prompt **verbatim**, since routing is decided from
   exact wording and a paraphrase usually cannot reproduce a miss, and for the
