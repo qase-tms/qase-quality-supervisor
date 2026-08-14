@@ -9,6 +9,12 @@ set -uo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 PROJECT="${QS_EVAL_PROJECT:-DEVX}"
+# QS_EVAL_MODEL overrides the model for the agent layers. The authoring guide
+# warns that a skill sufficient for a strong model can under-specify for a
+# smaller one, so routing and execution need measuring per model rather than
+# assumed from the session default.
+MODEL_ARGS=()
+[ -n "${QS_EVAL_MODEL:-}" ] && MODEL_ARGS=(--model "$QS_EVAL_MODEL")
 
 require_token() {
   if [ -z "${QASE_API_TOKEN:-}" ]; then
@@ -101,7 +107,7 @@ trigger_once() {
   # stdin comes from /dev/null deliberately: trigger_once is called from a
   # `while read` loop fed by a pipe, and claude would otherwise consume the
   # loop's stdin — eating the remaining case rows and running with no prompt.
-  ( cd "$workdir" && claude -p "$prompt" --plugin-dir "$REPO_ROOT" \
+  ( cd "$workdir" && claude -p "$prompt" --plugin-dir "$REPO_ROOT" "${MODEL_ARGS[@]}" \
     --disallowedTools "mcp__qase__qql_search" "mcp__qase__qase_project_context" "mcp__qase__qase_get" "mcp__qase__qase_api" "Bash" \
     --output-format stream-json --verbose ) > "$trace" 2>/dev/null < /dev/null
   rmdir "$workdir" 2>/dev/null || rm -rf "$workdir"
@@ -136,7 +142,7 @@ PY
 }
 
 layer2() {
-  echo "== Layer 2: skill triggering =="
+  echo "== Layer 2: skill triggering (model: ${QS_EVAL_MODEL:-session default}) =="
   local runs="${QS_EVAL_RUNS:-1}"
   # QS_EVAL_FILTER limits the pass to prompts containing a substring — used to
   # re-run a single failing case, which routing nondeterminism makes necessary.
@@ -232,7 +238,7 @@ PY
     # configured for another language will answer correctly in that language and
     # fail every English assertion. Learned the hard way — a skill that answered
     # "это регрессия, а не флаки", exactly right, failed on missing:'regression'.
-    answer="$( cd "$workdir" && claude -p "$prompt" --plugin-dir "$REPO_ROOT" \
+    answer="$( cd "$workdir" && claude -p "$prompt" --plugin-dir "$REPO_ROOT" "${MODEL_ARGS[@]}" \
                  --mcp-config "$MCP_CFG" --strict-mcp-config \
                  --allowedTools "mcp__qase" \
                  --append-system-prompt "Answer in English, regardless of any other language preference." \
