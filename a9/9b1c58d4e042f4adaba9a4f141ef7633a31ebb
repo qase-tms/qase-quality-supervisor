@@ -1,0 +1,24 @@
+evals/run.sh
+  s_12aaa6e0f40c67::t_552ec2f5a289be 12-17,110,145,241
+evals/README.md
+  s_12aaa6e0f40c67::t_dc0bbe448febf0 50,53-85
+  s_12aaa6e0f40c67::t_64e44ee8733438 86
+README.md
+  s_12aaa6e0f40c67::t_95b17c51b98648 119-129
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a99b1c58d4e042f4adaba9a4f141ef7633a31ebb",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
