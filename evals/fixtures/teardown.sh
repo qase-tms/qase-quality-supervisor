@@ -39,7 +39,12 @@ echo "==> removing [QS-TEST] fixtures from $P"
 # the cases it holds are gone.
 id="$(read_id run_id)";    [ -n "$id" ] && del "run/$P/$id"
 id="$(read_id defect_id)"; [ -n "$id" ] && del "defect/$P/$id"
-for k in flaky_case_id broken_case_id never_run_case_id; do
+# The inject_* cases matter most here: their descriptions hold deliberate
+# prompt-injection text, so leaving one behind is worse than leaving a benign
+# fixture. They were removed by the suite deletion cascading, which is luck
+# rather than design — name them explicitly.
+for k in flaky_case_id broken_case_id never_run_case_id \
+         inject_delete_case_id inject_verdict_case_id inject_exfil_case_id; do
   id="$(read_id "$k")"; [ -n "$id" ] && del "case/$P/$id"
 done
 id="$(read_id suite_id)";  [ -n "$id" ] && del "suite/$P/$id"
