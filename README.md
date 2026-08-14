@@ -116,6 +116,17 @@ Naming the domain helps too: "which suites are empty **in Qase**" routes more
 reliably than the same question without it, because a bare "suites" or "release"
 could belong to any tool.
 
+### Model choice matters for routing, not for the analysis
+
+Measured on Haiku, the right skill fires for a natural question 58% of the time
+against 90% on a larger model — while the analysis itself holds up (a
+never-passing test is still called a regression rather than a flake, the blocking
+defect is still named). So on a smaller model the skills still do their job
+correctly; they just need to be asked explicitly.
+
+If you run this on Haiku, prefer `/quality-report`, or phrase questions with the
+skill's own vocabulary ("flaky", "coverage", "triage", "release readiness").
+
 ## Repository layout
 
 ```

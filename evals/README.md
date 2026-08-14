@@ -47,7 +47,42 @@ keeps a case to ~40 seconds: only the routing decision matters here.
 ```bash
 QS_EVAL_FILTER="flake rate" ./evals/run.sh layer2   # one case, by substring
 QS_EVAL_RUNS=3 ./evals/run.sh layer2                # repeat each case
+QS_EVAL_MODEL=haiku ./evals/run.sh layer2           # measure another model
 ```
+
+### Measured per model
+
+`QS_EVAL_MODEL` applies to both agent layers, and the model is printed in the
+pass header so results can't be mixed up afterwards.
+
+| | routing (layer 2) | execution (layer 3) |
+|---|---|---|
+| session default | 90% of 60 runs | 6/6 |
+| `haiku` | **58%** of 60 runs | 5/6 |
+
+The split matters more than either number. On Haiku the *methodology* survives —
+it still calls the never-passing case a regression rather than a flake, still
+names the blocking defect, still takes counts from run stats. What degrades is
+**routing**: 35/60 against 54/60, concentrated in three of the four skills.
+
+`analyzing-test-flakiness` was unaffected (15/15, better than the default
+model's 14/15). The pattern that fits the data: Haiku routes when the prompt
+shares vocabulary with the skill **name** — "flaky" is in that skill's name, and
+"coverage gaps" routes while "what isn't tested", "still manual", and "suites are
+empty" score 0/3 each, *even though all three phrases appear verbatim in the
+description*. The smaller model doesn't make the semantic jump from description
+text that the larger one does.
+
+The safety properties are model-independent: zero mis-routing and zero
+near-miss triggers on both models. Only recall degrades.
+
+**So on a smaller model, tell users to invoke explicitly** — `/quality-report`
+always runs, and a prompt containing the skill's own vocabulary routes. Widening
+descriptions is not the fix here; the words are already in them.
+
+The single Haiku layer-3 failure was tool-orchestration fumbling ("Let me
+directly invoke the loaded Qase API tools… Since I have the tools loaded…") that
+never produced a clean answer, not a wrong conclusion.
 
 **Routing is not deterministic, and the variance is larger than it looks.** The
 same prompt routes differently across runs, so a single failure is not proof of a
