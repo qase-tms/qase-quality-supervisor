@@ -1,0 +1,55 @@
+.claude-plugin/plugin.json
+  s_12aaa6e0f40c67::t_f2778e283ca482 4,19
+skills/triaging-test-failures/SKILL.md
+  s_12aaa6e0f40c67::t_f2778e283ca482 1-202
+skills/assessing-release-readiness/SKILL.md
+  s_12aaa6e0f40c67::t_ff48d8de9cec74 58-75
+  s_12aaa6e0f40c67::t_f2778e283ca482 1-57,76-261
+skills/analyzing-test-flakiness/SKILL.md
+  s_12aaa6e0f40c67::t_f2778e283ca482 1-218
+skills/finding-coverage-gaps/SKILL.md
+  s_12aaa6e0f40c67::t_f2778e283ca482 1-258
+.claude-plugin/marketplace.json
+  s_12aaa6e0f40c67::t_f2778e283ca482 15
+commands/quality-report.md
+  s_12aaa6e0f40c67::t_f2778e283ca482 8,18,20,24,27
+references/qql.md
+  s_12aaa6e0f40c67::t_6f282dda50932d 20-34
+evals/layer2-triggering/cases.tsv
+  s_12aaa6e0f40c67::t_25ed05b3da5363 17
+  s_12aaa6e0f40c67::t_f2778e283ca482 2-16
+CHANGELOG.md
+  s_12aaa6e0f40c67::t_f2778e283ca482 36,48,66,69,72,85,116,149-150
+  s_12aaa6e0f40c67::t_74493646a56162 8-28
+evals/run.sh
+  s_12aaa6e0f40c67::t_30050beaad9f97 66,69,71,73-82
+  s_12aaa6e0f40c67::t_075262436f22e7 124-127,129-132
+README.md
+  s_12aaa6e0f40c67::t_dd28592dc5ac09 95-96,100-117
+  s_12aaa6e0f40c67::t_f2778e283ca482 19-22,140-143
+evals/README.md
+  s_12aaa6e0f40c67::t_87b032eea082f5 52-65
+  s_12aaa6e0f40c67::t_050d441362008c 86-92
+  s_12aaa6e0f40c67::t_84b88b7a59eca5 166
+  s_12aaa6e0f40c67::t_f2778e283ca482 70
+agents/quality-supervisor.md
+  s_12aaa6e0f40c67::t_f2778e283ca482 14,60-63,68,70,76
+scripts/verify-plugin.sh
+  s_12aaa6e0f40c67::t_f2778e283ca482 129,135-138
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "26db4ce0d0e4f38386934b7cb2553848765c2444",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
