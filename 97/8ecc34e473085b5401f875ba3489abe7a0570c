@@ -1,0 +1,34 @@
+evals/README.md
+  s_12aaa6e0f40c67::t_6aed6ddc5bd3d8 3,9,14
+  s_12aaa6e0f40c67::t_2cf7bf0dbefb5a 194-226
+  s_12aaa6e0f40c67::t_2418fef43e250c 237-243
+evals/layer3-scenarios/cases.tsv
+  s_12aaa6e0f40c67::t_270dac70bb98c5 2,4-6,8
+evals/fixtures/teardown.sh
+  s_12aaa6e0f40c67::t_9bc0b24fbf2372 42-47
+evals/fixtures/seed.sh
+  s_12aaa6e0f40c67::t_382c9f8db7be55 64-102
+  s_12aaa6e0f40c67::t_0d958e8affcd5c 142-146,148-150
+evals/layer5-security/cases.tsv
+  s_12aaa6e0f40c67::t_270dac70bb98c5 2,4-5
+  s_12aaa6e0f40c67::t_bc872177a72917 1,3
+evals/run.sh
+  s_12aaa6e0f40c67::t_270dac70bb98c5 258-261,316-319
+  s_12aaa6e0f40c67::t_d79192ae79c2bc 283-315,320-358,377,383,386
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "978ecc34e473085b5401f875ba3489abe7a0570c",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
