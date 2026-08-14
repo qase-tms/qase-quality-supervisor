@@ -225,12 +225,21 @@ counts differed, and **which source is higher depends on the entity**:
 | `result` | QQL ≫ REST | 1.5× to 164× (11141 vs 68) |
 | `defect` | **QQL ≤ REST** | 0.33–0.41×, and **0 vs 3** on projects that do have defects |
 
-Small or recent projects agree exactly; the gap grows with history.
+**The cause is an incomplete index over historical records, not a systematic
+under-count.** A controlled experiment settled this: five defects created in a
+project with none, one at each severity, then queried both ways once indexed —
+every count matched exactly, including each per-severity filter and the
+`open blocker+critical` total. Indexing the new writes took about three minutes.
 
-The defect direction is the dangerous one, because under-reporting a blocker is
-what clears a release that should be held. Verified: where 17 open
-blocker+critical defects existed, QQL returned 9; on two projects with 1 and 3
-real blockers, QQL returned zero.
+So QQL is accurate on data it has indexed. What it misses is history: on projects
+with older records the gap is large and persistent — 26 of 78 defects on one, 9 of
+22 on another, and **zero of three** on two more. Small or recent projects agree
+exactly, which fits the same explanation.
+
+The defect direction is still the dangerous one in practice, because a real
+project has history and a missed blocker is what clears a release that should be
+held. Where 17 open blocker+critical defects existed, QQL returned 9; where three
+existed, it returned none.
 
 **So don't treat either source as canonical.** Take defects from REST
 (`GET /v1/defect/{code}`, paging and tallying `severity` from the rows, since

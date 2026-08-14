@@ -12,14 +12,16 @@ set -uo pipefail
 API="https://api.qase.io/v1"
 STATE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/state.json"
 
-if [ ! -f "$STATE" ]; then
-  echo "no state.json — nothing was recorded, so nothing to remove." >&2
-  echo "If fixtures exist anyway, find them by title prefix: [QS-TEST]" >&2
-  exit 1
+# A missing state.json is not a reason to stop: orphaned fixtures are exactly
+# the case the prefix sweep at the end exists for, and it needs no state.
+if [ -f "$STATE" ]; then
+  P="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get("project") or "DEVX")' "$STATE")"
+  read_id() { python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get(sys.argv[2]) or "")' "$STATE" "$1"; }
+else
+  echo "no state.json — skipping the recorded IDs, sweeping by title prefix only" >&2
+  P="${QS_EVAL_PROJECT:-DEVX}"
+  read_id() { echo ""; }
 fi
-
-P="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get("project") or "DEVX")' "$STATE")"
-read_id() { python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get(sys.argv[2]) or "")' "$STATE" "$1"; }
 
 del() {
   local path="$1" code
@@ -43,7 +45,32 @@ done
 id="$(read_id suite_id)";  [ -n "$id" ] && del "suite/$P/$id"
 
 rm -f "$STATE"
-echo "done — state.json removed"
-echo
-echo "Verify nothing remains:"
-echo '  entity = "case" and project = "'"$P"'" and title ~ "QS-TEST"   -> expect total 0'
+
+# Sweep by title prefix as well as by state.json. state.json only knows what the
+# last seed recorded, so a fixture created by a run whose state file was replaced
+# or lost is invisible to the loop above — that happened once, leaving a
+# `[QS-TEST] blocker` defect sitting in a real project. Orphans are what this
+# catches.
+echo "==> sweeping for orphaned [QS-TEST] fixtures"
+sweep() {
+  local kind="$1" url="$2" ids
+  ids="$(curl -s --max-time 30 -H "Token: $QASE_API_TOKEN" "$url" | python3 -c '
+import json,sys
+try: d=json.load(sys.stdin)
+except Exception: sys.exit()
+if not d.get("status"): sys.exit()
+for e in (d.get("result") or {}).get("entities",[]):
+    if str(e.get("title","")).startswith("[QS-TEST]"): print(e["id"])
+' 2>/dev/null)"
+  for id in $ids; do
+    echo "    orphan $kind/$id"
+    del "$kind/$P/$id"
+  done
+  [ -z "$ids" ] && echo "    no orphaned ${kind}s"
+}
+sweep defect "$API/defect/$P?limit=100"
+sweep run    "$API/run/$P?limit=100"
+sweep case   "$API/case/$P?limit=100&search=QS-TEST"
+sweep suite  "$API/suite/$P?limit=100&search=QS-TEST"
+
+echo "done"
