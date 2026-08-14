@@ -203,11 +203,22 @@ layer3() {
   broken="$(python3 -c 'import json;print(json.load(open("evals/fixtures/state.json"))["broken_case_id"])')"
   defect="$(python3 -c 'import json;print(json.load(open("evals/fixtures/state.json"))["defect_id"])')"
 
-  if ! fixtures_indexed "$flaky" "$broken"; then
-    echo "  FAIL  fixtures are not visible to QQL yet (the search index lags the REST"
-    echo "        write that created them). Wait and re-run — this is not a skill defect."
-    return 0
-  fi
+  # Wait for the index rather than failing on it. The lag after seeding has been
+  # anywhere from 10 seconds to several minutes, so a fixed sleep in the caller
+  # either wastes time or fails the run; polling handles both.
+  local waited=0 limit="${QS_EVAL_INDEX_WAIT:-240}"
+  until fixtures_indexed "$flaky" "$broken"; do
+    if [ "$waited" -ge "$limit" ]; then
+      echo "  FAIL  fixtures still not visible to QQL after ${limit}s (the search index"
+      echo "        lags the REST write that created them). Not a skill defect — raise"
+      echo "        QS_EVAL_INDEX_WAIT or re-run later."
+      return 0
+    fi
+    [ "$waited" = 0 ] && echo "  (waiting for the search index to catch up with the seeded fixtures…)"
+    sleep 15
+    waited=$((waited + 15))
+  done
+  [ "$waited" -gt 0 ] && echo "  (index caught up after ${waited}s)"
 
   echo "  (fixtures indexed: flaky=$flaky broken=$broken defect=$defect)"
 

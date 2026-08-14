@@ -21,7 +21,7 @@ add it once and install (and update) `quality-supervisor` from it.
 | Skill | `analyzing-test-flakiness` | Quantify flaky/unstable tests via history + `isFlaky`; confirm by re-run; recommend quarantine/fix. |
 | Skill | `assessing-release-readiness` | Five-dimension go / no-go quality gate for a milestone, plan, or release. |
 | Agent | `quality-supervisor` | Orchestrator that routes a quality question to the right skill(s) and rolls up results. |
-| Command | `/quality-report` | Read-only consolidated sweep: coverage + flakiness + triage + readiness. |
+| Command | `/quality-supervisor:quality-report` | Read-only consolidated sweep: coverage + flakiness + triage + readiness. |
 
 ## Install (for your colleagues)
 
@@ -107,14 +107,29 @@ deterministic: measured over 180 runs, the right skill fires for a natural
 question about 91% of the time. It never fires the *wrong* one — but it does
 occasionally answer without it.
 
-`/quality-report <PROJECT> [milestone|plan|run]` always runs, because a command
-is an explicit instruction rather than a routing decision. Reach for it when you
+`/quality-supervisor:quality-report <PROJECT> [milestone|plan|run]` always runs,
+because a command is an explicit instruction rather than a routing decision.
+Plugin commands are namespaced by the plugin, so the prefix is required — a bare
+`/quality-report` is reported as an unknown command. Reach for it when you
 need the sweep to happen — in a release checklist, a scheduled job, or anything
 where "it usually triggers" isn't good enough.
 
 Naming the domain helps too: "which suites are empty **in Qase**" routes more
 reliably than the same question without it, because a bare "suites" or "release"
 could belong to any tool.
+
+**Any single skill can also be invoked directly**, which bypasses routing the same
+way the command does:
+
+```
+/quality-supervisor:analyzing-test-flakiness
+/quality-supervisor:triaging-test-failures
+/quality-supervisor:finding-coverage-gaps
+/quality-supervisor:assessing-release-readiness
+```
+
+Use these when you want one specific analysis rather than the whole sweep, and
+want it to happen for certain.
 
 ### Model choice matters for routing, not for the analysis
 
@@ -124,8 +139,9 @@ never-passing test is still called a regression rather than a flake, the blockin
 defect is still named). So on a smaller model the skills still do their job
 correctly; they just need to be asked explicitly.
 
-If you run this on Haiku, prefer `/quality-report`, or phrase questions with the
-skill's own vocabulary ("flaky", "coverage", "triage", "release readiness").
+If you run this on Haiku, invoke explicitly — the command for a full sweep, or
+`/quality-supervisor:<skill-name>` for one analysis. Both bypass routing entirely,
+which is the part that degrades.
 
 ## Repository layout
 
