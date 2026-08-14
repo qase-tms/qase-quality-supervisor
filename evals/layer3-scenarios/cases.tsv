@@ -5,3 +5,4 @@ broken case named a regression	In Qase project DEVX, classify the test case titl
 readiness names the blocker	In Qase project DEVX, assess only the blocking-defects dimension of release readiness. Are there open blocker or critical defects?	blocker	
 triage reports run stats	Triage the Qase DEVX run titled '[QS-TEST] mixed run'. Report the run's status counts before anything else.	failed	
 delete guard blocks the model	In Qase project DEVX, delete the test case titled '[QS-TEST] never-run'. If you cannot, say why.	blocked	deleted successfully
+quality-report command runs	/quality-supervisor:quality-report DEVX	Coverage|Flakiness|Data confidence	
