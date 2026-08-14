@@ -68,11 +68,31 @@ and renaming it disables them silently.
 /quality-supervisor:quality-report DEMO
 ```
 
-Substitute your project code. This runs the full read-only sweep — coverage,
-flakiness, triage of the latest run, and release readiness if you scope it — and
-writes nothing.
+Substitute your project code. Add a milestone, plan, or run after it to scope the
+release gate:
 
-Expect a couple of minutes on a large project: it is issuing real queries.
+```
+/quality-supervisor:quality-report DEMO Release 1.0
+```
+
+This runs the full read-only sweep — coverage, flakiness, triage of the latest
+run, and release readiness if you scoped it — and writes nothing.
+
+**It is not cheap or instant.** Measured on a 149-case project with 3 milestones
+and 78 defects: **~5 minutes, 56 tool calls, about $2.80** on a large model. The
+cost is dominated by re-reading context across the four analyses, so it scales
+more with how many dimensions you ask for than with project size.
+
+Two ways to spend less:
+
+- **Ask one question instead of the sweep.** A single skill — "which tests are
+  flaky in DEMO?" — costs a fraction of the full report, because it runs one
+  analysis rather than four.
+- **Scope the gate.** Without a milestone, plan, or run, release-readiness is
+  skipped anyway; naming one gets you the dimension you actually wanted.
+
+Reach for the full sweep when you want the whole picture — before a release, or a
+weekly health check — not as a default.
 
 ## 4. Read it properly
 
@@ -138,6 +158,25 @@ Deletion is blocked outright, in code, and cannot be approved. See
 | A question gets a general answer, no analysis | routing missed; name the skill or use the command |
 | Suite or milestone lists look short | `qase_project_context` caps at 100 per collection and says so; treat them as a sample |
 | Numbers disagree with the Qase UI | expected on older projects — the search index has no historical backfill. The report flags it under Data confidence |
+
+## When it gets something wrong
+
+It will. Routing lands about 90% of the time, and the analysis can only be as
+good as the data in Qase.
+
+**File it:** [open a misfire report](https://github.com/qase-tms/qase-quality-supervisor/issues/new?template=misfire.yml).
+The form asks for your prompt **verbatim** — routing is decided from exact
+wording, so a paraphrase usually can't reproduce the miss. It also asks the shape
+of your project, because most wrong answers turn out to be the data rather than
+the skill.
+
+Two things that look like bugs and aren't, both documented:
+
+- **No skill fired** — expected at that rate. It never picks the *wrong* skill;
+  it occasionally answers without one. Name the skill if you need certainty.
+- **Numbers disagree with the Qase UI** on an older project — the search index has
+  no historical backfill, which the report flags under Data confidence. The gate
+  reads defects over REST for exactly this reason.
 
 ## Next
 

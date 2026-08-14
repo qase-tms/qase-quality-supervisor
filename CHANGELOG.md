@@ -6,12 +6,23 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- `.github/ISSUE_TEMPLATE/misfire.yml` — a structured report form for internal
+  dogfooding. It asks for the prompt **verbatim**, since routing is decided from
+  exact wording and a paraphrase usually cannot reproduce a miss, and for the
+  shape of the project, since most wrong answers turn out to be the data rather
+  than the skill. It also lists the two documented behaviours that look like bugs
+  (a skill not firing, numbers disagreeing with the UI on older projects) so they
+  don't consume triage time.
 - `SECURITY.md` — the data-flow review the publish checklist requires for
   sign-off. States what the plugin can reach, that nothing authenticates as the
   plugin itself, how each write path is gated, and which claims are backed by a
   re-runnable test versus merely asserted. The gaps are listed rather than
   glossed: low-permission token boundaries and GUI clients remain unverified.
-- `QUICKSTART.md` — install to first report, and how to read one. Leads with the
+- `QUICKSTART.md` — install to first report, and how to read one. Documents what
+  a full sweep actually costs — measured at roughly 5 minutes, 56 tool calls and
+  $2.80 on a 149-case project with milestones and defects — with the two ways to
+  spend less, because a "routine sweep" that quietly costs that much is a
+  surprise a dogfooder should not discover from a bill. Leads with the
   Data confidence section, since a gap named there is a gap in the evidence
   rather than a clean result, and with the flaky-versus-regression distinction,
   since acting on the wrong one wastes the work.
