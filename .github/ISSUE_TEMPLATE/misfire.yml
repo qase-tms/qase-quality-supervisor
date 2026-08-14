@@ -1,0 +1,106 @@
+name: Misfire report
+description: A skill did the wrong thing, the wrong analysis, or nothing at all
+labels: ["misfire"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for anything the plugin got wrong — a skill that didn't fire, one
+        that fired instead of another, a number that looks wrong, or a report that
+        claimed something it couldn't know.
+
+        **The most useful thing you can include is your prompt, verbatim.** Routing
+        is decided from the exact wording, so a paraphrase often can't reproduce it.
+
+  - type: textarea
+    id: prompt
+    attributes:
+      label: What you asked, word for word
+      description: Copy and paste, don't retype from memory — spacing and phrasing matter.
+      placeholder: "Which suites are empty in WEB?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: fired
+    attributes:
+      label: What happened
+      options:
+        - No skill fired — I got a general answer
+        - The wrong skill fired
+        - The right skill fired but the analysis was wrong
+        - The right skill fired but the report claimed something it couldn't know
+        - A write happened without me approving it
+        - Something else
+    validations:
+      required: true
+
+  - type: input
+    id: skill
+    attributes:
+      label: Which skill fired, if you can tell
+      placeholder: "analyzing-test-flakiness, or 'none'"
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: excerpt
+    attributes:
+      label: Report excerpt
+      description: >
+        The relevant part, not the whole thing. If the report has a Data
+        confidence section, include it — it usually explains what the analysis
+        could and couldn't see.
+      render: markdown
+
+  - type: input
+    id: project
+    attributes:
+      label: Project code, and roughly what shape it's in
+      description: >
+        Data shape drives most of these. Milestones? Defects tracked? Priorities
+        filled in? Rough case count?
+      placeholder: "WEB — ~3k cases, milestones in use, defects tracked, priority mostly unset"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: client
+    attributes:
+      label: Client
+      options:
+        - Claude Code (CLI)
+        - Claude Desktop
+        - Cowork
+        - Cursor
+        - VS Code
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: >
+        Routing accuracy varies by model — about 90% on larger ones, 58% measured
+        on Haiku. Worth knowing before we treat a miss as a bug.
+      placeholder: "whatever /model shows"
+
+  - type: checkboxes
+    id: known
+    attributes:
+      label: Before filing
+      description: These are measured and documented, not bugs — tick if you've checked.
+      options:
+        - label: >
+            If no skill fired: I know routing is ~90% and never picks the wrong
+            skill, and that naming it (`/quality-supervisor:<skill>`) always works.
+        - label: >
+            If numbers disagree with the Qase UI: I read Data confidence — on older
+            projects the search index has no historical backfill.

@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How to read a report
+    url: https://github.com/qase-tms/qase-quality-supervisor/blob/main/QUICKSTART.md
+    about: Data confidence, denominators, and flaky versus regression — read this before filing a wrong-number report.
