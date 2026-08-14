@@ -23,6 +23,9 @@ add it once and install (and update) `quality-supervisor` from it.
 | Agent | `quality-supervisor` | Orchestrator that routes a quality question to the right skill(s) and rolls up results. |
 | Command | `/quality-supervisor:quality-report` | Read-only consolidated sweep: coverage + flakiness + triage + readiness. |
 
+**New here? [QUICKSTART.md](QUICKSTART.md)** takes you from install to a first
+report, and explains how to read one.
+
 ## Install (for your colleagues)
 
 In Claude Code:
@@ -87,7 +90,8 @@ before 2.1.0, a `qase_triage_defect` that reported linking it never performed.
 - **Non-destructive, enforced.** No skill calls a `*_delete` tool — and a
   bundled `PreToolUse` hook blocks such calls outright, including a `DELETE`
   issued through the `qase_api` escape hatch. This is a technical guard, not
-  just a prompt-text promise.
+  just a prompt-text promise, and it is tested end to end against a live server.
+  See [SECURITY.md](SECURITY.md).
 - **Human-in-the-loop.** Bulk writes require a sample and a yes first.
 
 ## Usage examples
@@ -172,7 +176,9 @@ which is the part that degrades.
 │   └── test-deny-destructive.sh
 ├── CHANGELOG.md
 ├── LICENSE
-└── README.md
+├── QUICKSTART.md           # install -> first report
+├── README.md
+└── SECURITY.md             # data flow, boundaries, what is verified
 ```
 
 ## Notes
