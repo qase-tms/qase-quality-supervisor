@@ -1,0 +1,25 @@
+SECURITY.md
+  s_12aaa6e0f40c67::t_b87bceec9aa81b 1-176
+README.md
+  s_12aaa6e0f40c67::t_6936c989f00fe6 26-28,93-94,179-181
+CHANGELOG.md
+  s_12aaa6e0f40c67::t_4ec18f4ab6f7e4 8-18
+QUICKSTART.md
+  s_12aaa6e0f40c67::t_9e2559f6287aa7 1-147
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "df9a7573f473517642efbe669d027e4de12924a6",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
