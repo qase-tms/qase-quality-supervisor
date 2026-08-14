@@ -1,5 +1,5 @@
 ---
-name: release-readiness
+name: assessing-release-readiness
 description: >-
   Produce an evidence-backed go / no-go assessment for a Qase release scope — a
   milestone, a test plan, or a set of runs. Use when the user asks whether they
@@ -50,10 +50,28 @@ GO.
 - `qase_project_context` — project, milestones, environments. Call first.
 - `qql_search` — scope resolution, defects, flaky cases.
 - `qase_api` — run listings and stats, and the REST cross-check in step 6.
-- Delegate depth: `coverage-gap-analysis` for untested scope,
-  `flakiness-stability` for stability risk.
+- Delegate depth: `finding-coverage-gaps` for untested scope,
+  `analyzing-test-flakiness` for stability risk.
 
 ## Workflow
+
+Copy this checklist into your reply and tick items off as you go. A dimension
+skipped silently produces a verdict that looks complete and isn't — which is the
+specific failure this skill exists to prevent.
+
+```
+Readiness assessment:
+- [ ] Scope resolved and non-empty (step 1)
+- [ ] Execution progress, with untested counted (step 2)
+- [ ] Pass rate, denominator stated (step 3)
+- [ ] Blocking defects — from REST, and defect tracking confirmed in use (step 4)
+- [ ] Untested scope and stability risk (step 5)
+- [ ] Decisive numbers cross-checked against the other source (step 6)
+- [ ] Verdict with the bar stated (step 7)
+```
+
+If you cannot complete an item, say so in the report under Data confidence rather
+than dropping it — an unassessed dimension is Unknown, not Pass.
 
 ### 1. Resolve the scope — by title, never by ID
 
@@ -105,7 +123,7 @@ Aggregated responses return status as an integer: 1 = Passed, 2 = Failed,
 3 = Blocked, 4 = Retest, 5 = Skipped, 8 = Invalid.
 
 Weight by priority or severity **only after checking they're populated** — see
-`coverage-gap-analysis` step 5. If most cases are "Not set", say the project has
+`finding-coverage-gaps` step 5. If most cases are "Not set", say the project has
 no usable risk metadata instead of ranking on a handful of tagged cases.
 
 ### 4. Blocking defects — use REST, not QQL
@@ -148,7 +166,7 @@ don't, assess project-wide and say that's what you did.
 ### 5. Untested scope and stability risk
 
 - **Untested scope**: the `untested` count from step 2 is the direct answer. For
-  which areas are uncovered, invoke `coverage-gap-analysis`.
+  which areas are uncovered, invoke `finding-coverage-gaps`.
 - **Stability risk**: flaky tests inside the scope inflate or mask failures.
 
 ```
@@ -156,7 +174,7 @@ entity = "case" and project = "CODE" and isFlaky = true
 ```
 
 For a real assessment rather than the flag's word, invoke
-`flakiness-stability` — the flag is often stale or unset. Flaky reds must be
+`analyzing-test-flakiness` — the flag is often stale or unset. Flaky reds must be
 separated from real reds before you conclude anything about the pass rate.
 
 ### 6. Cross-check the numbers before deciding

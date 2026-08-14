@@ -16,10 +16,10 @@ add it once and install (and update) `quality-supervisor` from it.
 
 | Component | Name | Purpose |
 |-----------|------|---------|
-| Skill | `coverage-gap-analysis` | Find untested requirements/suites/critical paths; draft missing cases on approval. |
-| Skill | `failure-triage` | Cluster a run's failures, classify bug vs. automation vs. env vs. flaky, create + link defects. |
-| Skill | `flakiness-stability` | Quantify flaky/unstable tests via history + `isFlaky`; confirm by re-run; recommend quarantine/fix. |
-| Skill | `release-readiness` | Five-dimension go / no-go quality gate for a milestone, plan, or release. |
+| Skill | `finding-coverage-gaps` | Find untested requirements/suites/critical paths; draft missing cases on approval. |
+| Skill | `triaging-test-failures` | Cluster a run's failures, classify bug vs. automation vs. env vs. flaky, create + link defects. |
+| Skill | `analyzing-test-flakiness` | Quantify flaky/unstable tests via history + `isFlaky`; confirm by re-run; recommend quarantine/fix. |
+| Skill | `assessing-release-readiness` | Five-dimension go / no-go quality gate for a milestone, plan, or release. |
 | Agent | `quality-supervisor` | Orchestrator that routes a quality question to the right skill(s) and rolls up results. |
 | Command | `/quality-report` | Read-only consolidated sweep: coverage + flakiness + triage + readiness. |
 
@@ -92,10 +92,29 @@ before 2.1.0, a `qase_triage_defect` that reported linking it never performed.
 
 ## Usage examples
 
+Ask in your own words — the skills pick themselves up from the question:
+
 - "Where are our coverage gaps in project WEB?"
 - "Triage the latest run in WEB and tell me what's a real bug."
 - "What's our flake rate this month and which tests should we quarantine?"
-- "Are we ready to ship milestone 2.3?" or `/quality-report WEB 2.3`
+- "Which suites are empty?" · "Which cases are still manual?"
+- "Are we ready to ship milestone 2.3?" · "What's blocking the release?"
+
+### When you want a guarantee, use the command
+
+Phrasing picks a skill through the model's judgement, and that judgement is not
+deterministic: measured over 180 runs, the right skill fires for a natural
+question about 91% of the time. It never fires the *wrong* one — but it does
+occasionally answer without it.
+
+`/quality-report <PROJECT> [milestone|plan|run]` always runs, because a command
+is an explicit instruction rather than a routing decision. Reach for it when you
+need the sweep to happen — in a release checklist, a scheduled job, or anything
+where "it usually triggers" isn't good enough.
+
+Naming the domain helps too: "which suites are empty **in Qase**" routes more
+reliably than the same question without it, because a bare "suites" or "release"
+could belong to any tool.
 
 ## Repository layout
 
@@ -118,10 +137,10 @@ before 2.1.0, a `qase_triage_defect` that reported linking it never performed.
 ├── scripts/
 │   └── verify-plugin.sh    # local verification (also run by CI)
 ├── skills/
-│   ├── coverage-gap-analysis/
-│   ├── failure-triage/
-│   ├── flakiness-stability/
-│   └── release-readiness/
+│   ├── finding-coverage-gaps/
+│   ├── triaging-test-failures/
+│   ├── analyzing-test-flakiness/
+│   └── assessing-release-readiness/
 ├── tests/
 │   └── test-deny-destructive.sh
 ├── CHANGELOG.md

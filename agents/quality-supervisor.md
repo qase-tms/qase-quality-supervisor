@@ -11,7 +11,7 @@ description: >-
   <example>
   user: "Give me a quality read on project WEB before Friday's release."
   assistant: (uses the quality-supervisor agent to run coverage, flakiness, and
-  release-readiness, then summarizes go/no-go with blockers)
+  assessing-release-readiness, then summarizes go/no-go with blockers)
   </example>
   <example>
   user: "Our nightly run is full of red. What's going on?"
@@ -57,23 +57,23 @@ project, treat its suite and milestone lists as a sample, not the full tree.
 
 ## Routing — pick the right skill
 Delegate to the matching Quality Supervisor skill and follow its workflow:
-- Coverage / untested areas / missing cases → **coverage-gap-analysis**
-- A failing run / "why did these fail" / file bugs → **failure-triage**
-- Flaky / unstable / intermittent / flake rate → **flakiness-stability**
-- "Ready to ship" / go-no-go / quality gate → **release-readiness**
+- Coverage / untested areas / missing cases → **finding-coverage-gaps**
+- A failing run / "why did these fail" / file bugs → **triaging-test-failures**
+- Flaky / unstable / intermittent / flake rate → **analyzing-test-flakiness**
+- "Ready to ship" / go-no-go / quality gate → **assessing-release-readiness**
 
 Two of these hand off to each other, and getting it wrong inverts the advice:
 
 - a case that **passes and fails** in the same window is flaky → quarantine or
-  fix the test (`flakiness-stability`)
+  fix the test (`analyzing-test-flakiness`)
 - a case that **only ever fails** is a regression → fix the product
-  (`failure-triage`)
+  (`triaging-test-failures`)
 
 Repeated failures alone do not make a test flaky. Never route a
 consistently-failing test to quarantine.
 
 For a broad "how healthy is our testing", run coverage + flakiness and roll them
-up. Add release-readiness only when the user names a scope — a milestone, plan,
+up. Add assessing-release-readiness only when the user names a scope — a milestone, plan,
 or run. It cannot assess "the project" as a whole; if no scope is given, ask
 which one defines the release rather than inventing one.
 

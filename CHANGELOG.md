@@ -5,6 +5,27 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+- Skills renamed to the gerund form the authoring guide prefers:
+  `analyzing-test-flakiness`, `triaging-test-failures`, `finding-coverage-gaps`,
+  `assessing-release-readiness`. The names keep their trigger vocabulary, since
+  `name` is loaded alongside `description` and participates in routing —
+  measured at 90.0% after the rename against 92.2% before, a difference inside
+  the 88–95% band a single pass produces, so routing is unaffected.
+- `references/qql.md` opens with a table of contents. It is 238 lines, and a
+  reference that long can be previewed with a partial read — without contents,
+  the second half was invisible, including the section on QQL and REST
+  disagreeing about defect counts, which is what keeps the release gate from
+  producing a false GO.
+- `assessing-release-readiness` carries a progress checklist for its seven
+  steps. A silently skipped dimension produces a verdict that looks complete
+  and isn't, which is the failure that skill exists to prevent.
+- The eval suite gained a `domain-neutral` case kind. "What's blocking the
+  release?" routes about 40% of the time and cannot be claimed reliably — the
+  phrase belongs equally to a pull request or a deployment, so widening a
+  description to catch it would hijack unrelated questions. It stays visible in
+  the suite without counting against recall.
+
 ### Added
 - `references/qql.md`: a QQL field/enum/limit reference, verified query by query
   against a live Qase workspace. Shared by the skills so query knowledge lives
@@ -12,7 +33,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `LICENSE` (MIT).
 
 ### Changed
-- `flakiness-stability` rewritten around what QQL can actually do. It now
+- `analyzing-test-flakiness` rewritten around what QQL can actually do. It now
   distinguishes genuinely flaky cases (both passes and failures in the window)
   from consistently failing ones (a regression, needing the opposite response) —
   on a real project, most high-failure cases turn out to be the latter, so the
@@ -24,7 +45,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   per-environment breakdowns, confirming flakiness by re-running) are now stated
   as limits instead of promised.
 
-- `failure-triage` rewritten. It takes a run's failure counts from the run's own
+- `triaging-test-failures` rewritten. It takes a run's failure counts from the run's own
   `stats` block instead of counting fetched rows, and fetches the failing
   results through the REST API because QQL cannot scope results to a run ID —
   its `run` field matches the run title, and autotest titles repeat, so the old
@@ -42,13 +63,13 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   activating at all. It now also carries the cross-cutting rules the skills
   depend on — absent data is not good news, report denominators, route
   consistently-failing tests to triage rather than quarantine — and points at
-  `references/qql.md`. The command no longer implies release-readiness can assess
+  `references/qql.md`. The command no longer implies assessing-release-readiness can assess
   a whole project without a scope, and gained a Data confidence section so limits
   travel with the report instead of being dropped from it.
-- `coverage-gap-analysis`: `qase_suite_upsert` is a discoverable tool, so the
+- `finding-coverage-gaps`: `qase_suite_upsert` is a discoverable tool, so the
   skill now says to activate it via `qase_discover_tools` first, and offers
   `qase_case_bulk_create` for drafting cases in batches.
-- `release-readiness` rewritten. Scope is resolved by milestone, plan, or run
+- `assessing-release-readiness` rewritten. Scope is resolved by milestone, plan, or run
   title rather than ID — the old `milestone = <id>` and `run in (<ids>)` forms
   were rejected outright — and results are no longer scoped by milestone, since
   `result.milestone` is inherited from the case, not the run, and returns nothing
@@ -61,7 +82,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   instead of guessing. Decisive numbers are cross-checked against REST, because
   the two sources disagree — on one project QQL returned a run as live that REST
   reported as not found, and their run totals differed twofold.
-- `coverage-gap-analysis` rewritten. Its requirements lens was unimplementable —
+- `finding-coverage-gaps` rewritten. Its requirements lens was unimplementable —
   Qase exposes no link between a requirement and its cases in either direction,
   and the REST endpoint the skill fell back to does not exist — so the skill now
   reports requirement coverage as unavailable, while still counting requirements
@@ -92,7 +113,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   documented.
 
 ### Fixed
-- Every QQL query in `flakiness-stability` and `failure-triage` — the previous
+- Every QQL query in `analyzing-test-flakiness` and `triaging-test-failures` — the previous
   ones failed outright. `result` and `run` have no `created` field, so both
   skills' opening queries errored on every call; `run = <id>` and `case = <id>`
   were rejected too, since those fields match titles, not IDs.
@@ -125,8 +146,8 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 - Initial Quality Supervisor plugin draft: the `quality-supervisor`
   orchestrator agent, the `/quality-report` command, and four skills —
-  `coverage-gap-analysis`, `failure-triage`, `flakiness-stability`,
-  `release-readiness`.
+  `finding-coverage-gaps`, `triaging-test-failures`, `analyzing-test-flakiness`,
+  `assessing-release-readiness`.
 - Marketplace manifest (`.claude-plugin/marketplace.json`) so the plugin can
   be installed via `/plugin marketplace add` + `/plugin install`.
 - Flattened the repo to a single-plugin layout: `plugin.json` sits in

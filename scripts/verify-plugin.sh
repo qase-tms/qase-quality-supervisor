@@ -126,16 +126,16 @@ details="$(claude plugin details quality-supervisor)"
 echo "$details"
 
 if ! echo "$details" | grep -qE 'Skills \(5\)'; then
-  echo "FAIL: expected 5 skills (coverage-gap-analysis, failure-triage, flakiness-stability, release-readiness, quality-report), got:" >&2
+  echo "FAIL: expected 5 skills (finding-coverage-gaps, triaging-test-failures, analyzing-test-flakiness, assessing-release-readiness, quality-report), got:" >&2
   echo "$details" | grep 'Skills' >&2 || true
   exit 1
 fi
 
 expected_skills=(
-  coverage-gap-analysis
-  failure-triage
-  flakiness-stability
-  release-readiness
+  finding-coverage-gaps
+  triaging-test-failures
+  analyzing-test-flakiness
+  assessing-release-readiness
   quality-report
 )
 for skill in "${expected_skills[@]}"; do
