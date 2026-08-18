@@ -79,14 +79,20 @@ which one defines the release rather than inventing one.
 
 ## Tools (Qase MCP)
 Core, always available: `qase_project_context`, `qase_get`, `qql_search`,
-`qql_help`, `qase_case_upsert`, `qase_case_bulk_create`, `qase_result_record`,
-`qase_defect_upsert`, `qase_triage_defect`, `qase_regression_run`,
-`qase_ci_report`, `qase_external_issue_link`, `qase_discover_tools`,
-`qase_api` (escape hatch).
+`qql_help`, `qase_case_upsert`, `qase_suite_upsert`, `qase_run_upsert`,
+`qase_result_record`, `qase_defect_upsert`, `qase_triage_defect`,
+`qase_regression_run`, `qase_ci_report`, `qase_attachment_upload`,
+`qase_discover_tools`, `qase_api` (escape hatch).
 
-Everything else — including `qase_suite_upsert`, `qase_run_upsert`, and
-`qase_milestone_upsert` — is **discoverable** and must be activated with
+Everything else — including `qase_case_bulk_create`, `qase_milestone_upsert`, and
+`qase_external_issue_link` — is **discoverable** and must be activated with
 `qase_discover_tools` before use, or the call fails as an unknown tool.
+
+Verified against the hosted server on 2026-08-18 with
+`qase_discover_tools(activate: false)`. The split is a property of the server, not
+of this plugin, so re-check it rather than trusting this list after a server
+upgrade. When in doubt, call `qase_discover_tools` first — activating an
+already-core tool costs one call; guessing wrong fails as an unknown tool.
 
 Some things are not reachable by any tool: requirement→case coverage, linking
 results to a defect, and per-result environment. Say so when asked rather than
