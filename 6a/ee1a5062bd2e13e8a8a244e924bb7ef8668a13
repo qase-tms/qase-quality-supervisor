@@ -1,0 +1,32 @@
+QUICKSTART.md
+  s_a48f0a363dd90c::t_2dff0f5d48308f 191-192
+.gitignore
+  s_a48f0a363dd90c::t_43d27d67d0c57c 6-10
+docs/gui-smoke-check.md
+  s_a48f0a363dd90c::t_00ed42209fef7d 57-59
+CHANGELOG.md
+  s_a48f0a363dd90c::t_fef0a315e2980d 70-73
+  s_a48f0a363dd90c::t_61d42b19e36aa9 51-53
+SECURITY.md
+  s_a48f0a363dd90c::t_2576662885d872 169-170,172
+  s_a48f0a363dd90c::t_3dc3d23ad28c52 106-109
+  s_a48f0a363dd90c::t_79a1db9d4a3b40 7-11
+  s_a48f0a363dd90c::t_4a824c5930aeae 175-184
+  s_a48f0a363dd90c::t_333b1651c26a1b 117
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "6aee1a5062bd2e13e8a8a244e924bb7ef8668a13",
+  "prompts": {},
+  "sessions": {
+    "s_a48f0a363dd90c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d7767b89-aadb-404f-8ff3-4b680c10ea43",
+        "model": "claude-opus-5"
+      },
+      "human_author": null
+    }
+  }
+}
