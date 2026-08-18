@@ -35,6 +35,10 @@ In Claude Code:
 /plugin install quality-supervisor@quality-supervisor
 ```
 
+After a restart, `/plugin` reports the inventory as **5 skills, 1 agent, 1
+PreToolUse hook**. Five because the CLI counts the `quality-report` command under
+`Skills`; four skills plus one command is what actually ships.
+
 In Cowork, install the packaged `.plugin` file directly, or add this repo as a
 marketplace if your build supports it.
 
@@ -79,8 +83,12 @@ before 2.1.0, a `qase_triage_defect` that reported linking it never performed.
 > (`qase_project_context`, `qql_search`, `qase_get`, `qase_case_upsert`,
 > `qase_triage_defect`, `qase_regression_run`, `qase_ci_report`,
 > `qase_defect_upsert`, `qase_result_record`, `qase_discover_tools`,
-> `qase_api`, plus `qql_help`). Non-core tools are activated on demand via
-> `qase_discover_tools`.
+> `qase_suite_upsert`, `qase_run_upsert`, `qase_api`, plus `qql_help`). Non-core
+> tools — among them `qase_case_bulk_create`, `qase_milestone_upsert`, and
+> `qase_external_issue_link` — must be activated on demand via
+> `qase_discover_tools`, or the call fails as an unknown tool. That split belongs
+> to the server and can move with a server release; it was last verified on
+> 2026-08-18.
 
 ## Design principles
 
@@ -161,10 +169,20 @@ which is the part that degrades.
 │   └── quality-supervisor.md
 ├── commands/
 │   └── quality-report.md
+├── docs/
+│   ├── gui-smoke-check.md  # 10-minute manual check per GUI client
+│   └── superpowers/        # design specs and plans behind each iteration
+├── evals/                  # local-only test harness, layers 1/2/3/5
+│   ├── README.md           # what each layer means, how to read a failure
+│   ├── run.sh
+│   ├── fixtures/           # seed.sh / teardown.sh for the layer 3+5 fixtures
+│   └── layer*/             # one case per row, TSV
 ├── hooks/
 │   ├── hooks.json          # PreToolUse guards against destructive calls
 │   ├── deny-destructive.sh
 │   └── deny-destructive-api.sh
+├── references/
+│   └── qql.md              # verified QQL field/enum reference the skills read
 ├── scripts/
 │   └── verify-plugin.sh    # local verification (also run by CI)
 ├── skills/
@@ -180,6 +198,10 @@ which is the part that degrades.
 ├── README.md
 └── SECURITY.md             # data flow, boundaries, what is verified
 ```
+
+`references/qql.md` is not optional reading material: every skill is instructed to
+read it before composing a query, because QQL field names differ per entity and a
+wrong name is a hard error rather than an empty result.
 
 ## Notes
 

@@ -28,8 +28,14 @@ Check it took:
 /plugin
 ```
 
-You should see `quality-supervisor` enabled, with four skills, one agent and one
-command.
+You should see `quality-supervisor` enabled, with **5 skills, 1 agent and 1
+PreToolUse hook**.
+
+Five, not four: the CLI counts the `quality-report` command under `Skills` — there
+is no separate Commands row in its output. So the expected inventory is
+`analyzing-test-flakiness`, `assessing-release-readiness`, `finding-coverage-gaps`,
+`quality-report`, `triaging-test-failures`. Four skills plus a command is what
+ships; five is what the inventory prints.
 
 ## 2. Connect to Qase
 
@@ -152,6 +158,7 @@ Deletion is blocked outright, in code, and cannot be approved. See
 
 | Symptom | Cause |
 |---|---|
+| `/plugin` lists 5 skills, not 4 | expected: the CLI counts the `quality-report` command under Skills |
 | `Unknown command: /quality-report` | the prefix is required: `/quality-supervisor:quality-report` |
 | A skill answers "no access to Qase data" | the MCP server isn't connected or authorised — step 2 |
 | "QQL is only available in Business and Enterprise" | plan limitation; there is no workaround in the plugin |

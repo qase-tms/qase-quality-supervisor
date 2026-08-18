@@ -26,11 +26,17 @@ Restart the client so the skills load, then:
 /plugin
 ```
 
-**Expect:** `quality-supervisor` listed and enabled, with 4 skills, 1 agent, 1
-command.
+**Expect:** `quality-supervisor` listed and enabled, with **5 skills, 1 agent, 1
+PreToolUse hook** — the CLI counts the `quality-report` command under `Skills`, so
+four skills plus a command prints as five. The five names are
+`analyzing-test-flakiness`, `assessing-release-readiness`, `finding-coverage-gaps`,
+`quality-report`, `triaging-test-failures`.
 
 **Note if:** the marketplace add fails, the install needs different syntax in this
-client, or the component counts differ from 4/1/1.
+client, or the component counts differ from 5/1/1. A GUI client may well group
+them differently from the CLI — if it shows 4 skills and 1 command separately,
+that is the same inventory presented another way, not a finding. Record which
+shape you saw.
 
 > In Cowork, installing the packaged `.plugin` file directly may be the only route.
 > If so, record which path worked — the README currently offers both without
