@@ -1,0 +1,30 @@
+CHANGELOG.md
+  s_a48f0a363dd90c::t_ba9c080a06be7c 36-54
+QUICKSTART.md
+  s_a48f0a363dd90c::t_34bdb74ccb52b3 31-38
+  s_a48f0a363dd90c::t_b87a6c75517af8 161
+docs/gui-smoke-check.md
+  s_a48f0a363dd90c::t_c122181e7563e2 29-33,36-39
+README.md
+  s_a48f0a363dd90c::t_a9429a90949f45 38-40
+  s_a48f0a363dd90c::t_f222f0dbbc1884 172-179,184-185,202-204
+  s_a48f0a363dd90c::t_3b5687d0fff879 86-91
+  s_a48f0a363dd90c::t_247b28fd821f73 41
+  s_a48f0a363dd90c::t_4af22828fd841d 205
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "d85415994ebd0e6cad48ee2824d46afedefe59c3",
+  "prompts": {},
+  "sessions": {
+    "s_a48f0a363dd90c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d7767b89-aadb-404f-8ff3-4b680c10ea43",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
