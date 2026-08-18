@@ -1,0 +1,29 @@
+.github/ISSUE_TEMPLATE/config.yml
+  s_12aaa6e0f40c67::t_b7f1d8f4fa8ad6 1-5
+.github/ISSUE_TEMPLATE/misfire.yml
+  s_12aaa6e0f40c67::t_25ed75e66b76ef 1-106
+CHANGELOG.md
+  s_12aaa6e0f40c67::t_5f6029a3a692b2 15-21,27-31
+  s_12aaa6e0f40c67::t_56e1c3c306f727 9-14
+QUICKSTART.md
+  s_12aaa6e0f40c67::t_da5e15d095e84f 162-180
+  s_12aaa6e0f40c67::t_dc93868d55ceda 71-72,74-95
+docs/gui-smoke-check.md
+  s_12aaa6e0f40c67::t_ec1f33ae8f0a4c 1-139
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "c061b3d772f67408b6e170379fc603085d8a7820",
+  "prompts": {},
+  "sessions": {
+    "s_12aaa6e0f40c67": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "494f1553-645e-411a-9dee-c376f4be7009",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
