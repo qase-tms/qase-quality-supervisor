@@ -26,7 +26,7 @@ add it once and install (and update) `quality-supervisor` from it.
 **New here? [QUICKSTART.md](QUICKSTART.md)** takes you from install to a first
 report, and explains how to read one.
 
-## Install (for your colleagues)
+## Install
 
 In Claude Code:
 
