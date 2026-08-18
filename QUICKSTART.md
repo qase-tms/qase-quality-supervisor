@@ -188,6 +188,5 @@ Two things that look like bugs and aren't, both documented:
 ## Next
 
 - [README.md](README.md) — what each skill does, and the design principles
-- [SECURITY.md](SECURITY.md) — data flow, boundaries, what is and isn't verified
-- [evals/README.md](evals/README.md) — the test harness, if you want to check any
-  of the above yourself
+- [SECURITY.md](SECURITY.md) — data flow, boundaries, what is and isn't verified,
+  and which of those claims you can re-check yourself

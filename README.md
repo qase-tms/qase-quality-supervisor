@@ -172,11 +172,6 @@ which is the part that degrades.
 ├── docs/
 │   ├── gui-smoke-check.md  # 10-minute manual check per GUI client
 │   └── superpowers/        # design specs and plans behind each iteration
-├── evals/                  # local-only test harness, layers 1/2/3/5
-│   ├── README.md           # what each layer means, how to read a failure
-│   ├── run.sh
-│   ├── fixtures/           # seed.sh / teardown.sh for the layer 3+5 fixtures
-│   └── layer*/             # one case per row, TSV
 ├── hooks/
 │   ├── hooks.json          # PreToolUse guards against destructive calls
 │   ├── deny-destructive.sh

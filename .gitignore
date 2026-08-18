@@ -3,4 +3,8 @@ node_modules/
 *.log
 .superpowers/
 docs/superpowers/
-evals/fixtures/state.json
+
+# The eval harness is kept locally, not in the repository: it targets an internal
+# Qase project and writes fixtures into it, so it would not run anywhere else
+# unchanged. Ignored rather than deleted — the working copy keeps it.
+evals/

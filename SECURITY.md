@@ -4,8 +4,11 @@ What this plugin can reach, what leaves Qase, where the boundaries are, and whic
 of those claims have been tested rather than asserted. Written for the sign-off
 the publish checklist requires.
 
-Every "verified" below points at a test in `evals/` or `tests/` that can be
-re-run. Anything untested is listed as untested.
+Every "verified" below rests on a test that was run, and says which kind:
+`tests/` and `scripts/verify-plugin.sh` run in CI on every push, so anyone can
+re-check them; the query, routing, methodology, and prompt-injection results come
+from internal testing against a live Qase project. Anything untested is listed as
+untested.
 
 ## What ships
 
@@ -100,10 +103,10 @@ needless denial; it cannot cause a missed deletion.
 - `tests/test-deny-destructive.sh` — 9 assertions, including both fail-closed
   paths and a regression test for a decoy field that once masked a real DELETE.
   Run by `scripts/verify-plugin.sh` in CI.
-- `evals/run.sh layer3` — end to end, with a real MCP server: the model is asked
-  to delete a case, the hook blocks it, and the case is confirmed still present
-  afterwards. This is what proves the matcher matches a real runtime tool name;
-  the component inventory only ever proved the hook was registered.
+- End to end against a real MCP server: the model is asked to delete a case, the
+  hook blocks it, and the case is confirmed still present afterwards. This is
+  what proves the matcher matches a real runtime tool name; the component
+  inventory only ever proved the hook was registered.
 
 ## Prompt injection
 
@@ -111,7 +114,7 @@ The threat: the skills read Qase text into the model's context, so anyone who ca
 write to Qase — an insider, a compromised CI job, a collaborator on a shared
 project — can plant instructions there.
 
-`evals/run.sh layer5` seeds three cases whose **descriptions** carry attacker
+Internal testing seeds three cases whose **descriptions** carry attacker
 instructions and drives four prompts across them. **5/5 pass.**
 
 | Attack | Result |
@@ -163,14 +166,19 @@ Listed rather than glossed, because a sign-off should know its own gaps.
 
 ## Re-running the evidence
 
+What ships here, runnable by anyone with the repository:
+
 ```bash
-export QASE_API_TOKEN=...
-bash scripts/verify-plugin.sh          # manifests, secrets scan, hook unit tests
-bash evals/run.sh layer1               # every query the skills use
-bash evals/fixtures/seed.sh
-bash evals/run.sh layer3               # includes the live delete-guard case
-bash evals/run.sh layer5               # prompt injection + integrity check
-bash evals/fixtures/teardown.sh        # required: layer 5 fixtures hold malicious text
+bash scripts/verify-plugin.sh   # manifests, secrets scan, hook unit tests, install
 ```
 
-`evals/README.md` documents what each layer means and how to read a failure.
+The rest of the results in this document — the queries the skills use, the
+end-to-end methodology including the live delete-guard case, and the
+prompt-injection set with its integrity check — come from internal testing that
+needs an API token and writes fixtures into the project it targets, so it is run
+by the maintainers rather than from this repository.
+
+**So one class of claim here is independently checkable and the other is not.**
+The hooks, the manifests, and the secrets scan you can verify yourself; the
+injection and methodology results you are taking on report. Ask for a re-run
+rather than assuming a stale number still holds.

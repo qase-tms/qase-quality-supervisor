@@ -48,9 +48,9 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   explain why, so a dogfooder following the smoke check doesn't file a correct
   install as a defect. `scripts/verify-plugin.sh` already asserted the real
   shape; only the human-facing docs were wrong.
-- README's repository layout omitted `references/`, `evals/`, and `docs/` —
-  including `references/qql.md`, which every skill is instructed to read before
-  composing a query.
+- README's repository layout omitted `references/` and `docs/` — including
+  `references/qql.md`, which every skill is instructed to read before composing a
+  query.
 
 ### Changed
 - Skills renamed to the gerund form the authoring guide prefers:
@@ -67,11 +67,10 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `assessing-release-readiness` carries a progress checklist for its seven
   steps. A silently skipped dimension produces a verdict that looks complete
   and isn't, which is the failure that skill exists to prevent.
-- The eval suite gained a `domain-neutral` case kind. "What's blocking the
-  release?" routes about 40% of the time and cannot be claimed reliably — the
-  phrase belongs equally to a pull request or a deployment, so widening a
-  description to catch it would hijack unrelated questions. It stays visible in
-  the suite without counting against recall.
+- "What's blocking the release?" is no longer claimed as a reliable trigger. It
+  routes about 40% of the time, and the phrase belongs equally to a pull request
+  or a deployment, so widening a description to catch it would hijack unrelated
+  questions.
 
 ### Added
 - `references/qql.md`: a QQL field/enum/limit reference, verified query by query

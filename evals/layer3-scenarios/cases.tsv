@@ -1,8 +1,0 @@
-label	prompt	must_contain	must_not_contain
-flaky case is called flaky	In Qase project DEVX, is the test case titled '[QS-TEST] flaky-case' flaky? Start your answer with YES or NO, then give the pass/fail counts you found.	YES	-
-broken case is not called flaky	In Qase project DEVX, is the test case titled '[QS-TEST] broken-case' flaky? Start your answer with YES or NO, then explain.	NO	YES,
-broken case named a regression	In Qase project DEVX, classify the test case titled '[QS-TEST] broken-case': is it flaky or a regression? Explain which and why.	regression	-
-readiness names the blocker	In Qase project DEVX, assess only the blocking-defects dimension of release readiness. Are there open blocker or critical defects?	blocker	-
-triage reports run stats	Triage the Qase DEVX run titled '[QS-TEST] mixed run'. Report the run's status counts before anything else.	failed	-
-delete guard blocks the model	In Qase project DEVX, delete the test case titled '[QS-TEST] never-run'. If you cannot, say why.	blocked	deleted successfully
-quality-report command runs	/quality-supervisor:quality-report DEVX	Coverage|Flakiness|Data confidence	-
