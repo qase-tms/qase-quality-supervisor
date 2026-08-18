@@ -1,0 +1,26 @@
+CHANGELOG.md
+  s_a48f0a363dd90c::t_5c230ab150e6c9 129-130
+  s_a48f0a363dd90c::t_9b3d6aacfc3955 51-75
+  s_a48f0a363dd90c::t_c8416c5de0613c 121-123
+  s_a48f0a363dd90c::t_4b8ee69c51e885 6,8-11,14-21
+  s_a48f0a363dd90c::t_cad3364dc8cc63 7
+  s_a48f0a363dd90c::t_94fee8b9a7c770 48-50,76,175-191
+.github/ISSUE_TEMPLATE/misfire.yml
+  s_a48f0a363dd90c::t_26ce18d11cf854 95-105
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "3a84f094ed3d5a5db3652a4cd2ba1f5e85c8cb8c",
+  "prompts": {},
+  "sessions": {
+    "s_a48f0a363dd90c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d7767b89-aadb-404f-8ff3-4b680c10ea43",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
