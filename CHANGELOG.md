@@ -33,6 +33,25 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   rather than a clean result, and with the flaky-versus-regression distinction,
   since acting on the wrong one wastes the work.
 
+### Fixed
+- The core/discoverable tool split was inverted in `agents/quality-supervisor.md`
+  and `skills/finding-coverage-gaps/SKILL.md`. Re-checked against the hosted
+  server with `qase_discover_tools(activate: false)`: `qase_suite_upsert` and
+  `qase_run_upsert` are core, while `qase_case_bulk_create`,
+  `qase_milestone_upsert`, and `qase_external_issue_link` are discoverable. The
+  consequence ran one way only — a batch draft would have failed as an unknown
+  tool, which is the write path a coverage gap ends in. README states the split
+  with the date it was verified, since it belongs to the server and can move.
+- The documented component inventory said 4 skills, 1 agent, 1 command; the CLI
+  prints `Skills (5)` because it counts the `quality-report` command among the
+  skills. `QUICKSTART.md` and `docs/gui-smoke-check.md` now expect 5/1/1 and
+  explain why, so a dogfooder following the smoke check doesn't file a correct
+  install as a defect. `scripts/verify-plugin.sh` already asserted the real
+  shape; only the human-facing docs were wrong.
+- README's repository layout omitted `references/`, `evals/`, and `docs/` —
+  including `references/qql.md`, which every skill is instructed to read before
+  composing a query.
+
 ### Changed
 - Skills renamed to the gerund form the authoring guide prefers:
   `analyzing-test-flakiness`, `triaging-test-failures`, `finding-coverage-gaps`,
