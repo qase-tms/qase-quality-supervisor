@@ -54,9 +54,9 @@ Which tests are flaky in WEB?
 authorise with your normal Qase login. No token anywhere.
 
 **This is the step to watch.** The CLI cannot complete this flow at all in
-headless mode, which is why the eval harness uses a local token server instead. So
-this path — hosted OAuth in a GUI client — is genuinely unverified rather than
-merely untested-in-this-client.
+headless mode, so every automated check to date has used a token-based server
+instead. That makes this path — hosted OAuth in a GUI client — genuinely
+unverified rather than merely untested-in-this-client.
 
 **Note if:**
 - no browser opens, or the flow starts but doesn't return;
