@@ -3,9 +3,22 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.1.0] - 2026-08-18
+
+First release. Nothing before this was tagged, so the sections below cover the
+whole path from the initial draft to what ships — including the corrections made
+to that draft, which are recorded rather than quietly folded in because most of
+them changed what the skills conclude, not just how they read.
 
 ### Added
+- The plugin itself: the `quality-supervisor` orchestrator agent, the
+  `/quality-supervisor:quality-report` command, and four skills —
+  `finding-coverage-gaps`, `triaging-test-failures`, `analyzing-test-flakiness`,
+  `assessing-release-readiness`.
+- Marketplace manifest (`.claude-plugin/marketplace.json`) so the plugin can be
+  installed via `/plugin marketplace add` + `/plugin install`, with the plugin
+  manifest beside it in `.claude-plugin/` and `.mcp.json`, `agents/`, `commands/`,
+  and `skills/` at the repository root.
 - `docs/gui-smoke-check.md` — a ten-minute manual check per GUI client, covering
   the three things that behave differently there (install, the OAuth flow,
   command syntax) plus a by-hand confirmation that the delete guard loads.
@@ -32,25 +45,35 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Data confidence section, since a gap named there is a gap in the evidence
   rather than a clean result, and with the flaky-versus-regression distinction,
   since acting on the wrong one wastes the work.
-
-### Fixed
-- The core/discoverable tool split was inverted in `agents/quality-supervisor.md`
-  and `skills/finding-coverage-gaps/SKILL.md`. Re-checked against the hosted
-  server with `qase_discover_tools(activate: false)`: `qase_suite_upsert` and
-  `qase_run_upsert` are core, while `qase_case_bulk_create`,
-  `qase_milestone_upsert`, and `qase_external_issue_link` are discoverable. The
-  consequence ran one way only — a batch draft would have failed as an unknown
-  tool, which is the write path a coverage gap ends in. README states the split
-  with the date it was verified, since it belongs to the server and can move.
-- The documented component inventory said 4 skills, 1 agent, 1 command; the CLI
-  prints `Skills (5)` because it counts the `quality-report` command among the
-  skills. `QUICKSTART.md` and `docs/gui-smoke-check.md` now expect 5/1/1 and
-  explain why, so a dogfooder following the smoke check doesn't file a correct
-  install as a defect. `scripts/verify-plugin.sh` already asserted the real
-  shape; only the human-facing docs were wrong.
-- README's repository layout omitted `references/` and `docs/` — including
-  `references/qql.md`, which every skill is instructed to read before composing a
-  query.
+- `references/qql.md`: a QQL field/enum/limit reference, verified query by query
+  against a live Qase workspace. Shared by the skills so query knowledge lives
+  in one place instead of being restated (and drifting) in each one.
+- `hooks/hooks.json` + `hooks/deny-destructive.sh` +
+  `hooks/deny-destructive-api.sh`: `PreToolUse` hooks that block any
+  `mcp__qase__*delete*` tool call and any `qase_api` call whose method is
+  `DELETE`, so "skills never delete Qase data" is enforced technically, not
+  only in skill prompt text. Both hooks are fail-closed — they block rather
+  than allow when anything unexpected happens — and need no JSON tooling. The
+  `qase_api` guard errs deliberately toward denial: it blocks on any
+  `"method": "delete"` in the payload rather than trying to resolve
+  `tool_input.method` without a parser, so a nested or decoy field can only
+  cause a needless denial, never a missed deletion.
+- `tests/test-deny-destructive.sh`: covers both hooks, including that they
+  fail closed rather than fail open when their environment is broken.
+- `scripts/verify-plugin.sh`: validates the marketplace and plugin manifests
+  (including hooks), checks the compliance files exist, scans for a literal
+  `QASE_API_TOKEN` value committed to a JSON file (reporting location only,
+  never the value), runs the hook tests, and confirms the plugin installs via
+  the `claude` CLI with the expected component inventory (5 skills — the command
+  counts as one — 1 agent, and a registered `PreToolUse` hook, whose two matchers
+  are asserted directly against `hooks.json`). `--static-only` skips the install
+  phase.
+- `.github/workflows/validate.yml`: runs the verification on every push and
+  pull request, so a manifest regression, a broken hook, or a leaked
+  credential fails CI instead of shipping. Split into a `static` job and an
+  `install` job; both block, the CLI's install flow having been confirmed to
+  work on GitHub's runners without an authenticated session.
+- `LICENSE` (MIT).
 
 ### Changed
 - Skills renamed to the gerund form the authoring guide prefers:
@@ -71,14 +94,6 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   routes about 40% of the time, and the phrase belongs equally to a pull request
   or a deployment, so widening a description to catch it would hijack unrelated
   questions.
-
-### Added
-- `references/qql.md`: a QQL field/enum/limit reference, verified query by query
-  against a live Qase workspace. Shared by the skills so query knowledge lives
-  in one place instead of being restated (and drifting) in each one.
-- `LICENSE` (MIT).
-
-### Changed
 - `analyzing-test-flakiness` rewritten around what QQL can actually do. It now
   distinguishes genuinely flaky cases (both passes and failures in the window)
   from consistently failing ones (a regression, needing the opposite response) —
@@ -103,18 +118,16 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   results, so the evidence goes into the defect body instead.
 
 - `quality-supervisor` agent and `/quality-report` command brought in line with
-  the rewritten skills. The agent's tool list claimed `qase_run_upsert` as core
-  when it is discoverable, and omitted `qase_case_bulk_create`,
-  `qase_external_issue_link`, and the fact that discoverable tools need
-  activating at all. It now also carries the cross-cutting rules the skills
+  the rewritten skills. The agent's tool list omitted the fact that some Qase
+  tools are discoverable and must be activated before use at all. It now also
+  carries the cross-cutting rules the skills
   depend on — absent data is not good news, report denominators, route
   consistently-failing tests to triage rather than quarantine — and points at
   `references/qql.md`. The command no longer implies assessing-release-readiness can assess
   a whole project without a scope, and gained a Data confidence section so limits
   travel with the report instead of being dropped from it.
-- `finding-coverage-gaps`: `qase_suite_upsert` is a discoverable tool, so the
-  skill now says to activate it via `qase_discover_tools` first, and offers
-  `qase_case_bulk_create` for drafting cases in batches.
+- `finding-coverage-gaps` offers `qase_case_bulk_create` for drafting cases in
+  batches, alongside single-case creation.
 - `assessing-release-readiness` rewritten. Scope is resolved by milestone, plan, or run
   title rather than ID — the old `milestone = <id>` and `run in (<ids>)` forms
   were rejected outright — and results are no longer scoped by milestone, since
@@ -159,44 +172,24 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   documented.
 
 ### Fixed
+- The core/discoverable tool split was inverted in `agents/quality-supervisor.md`
+  and `skills/finding-coverage-gaps/SKILL.md`. Re-checked against the hosted
+  server with `qase_discover_tools(activate: false)`: `qase_suite_upsert` and
+  `qase_run_upsert` are core, while `qase_case_bulk_create`,
+  `qase_milestone_upsert`, and `qase_external_issue_link` are discoverable. The
+  consequence ran one way only — a batch draft would have failed as an unknown
+  tool, which is the write path a coverage gap ends in. README states the split
+  with the date it was verified, since it belongs to the server and can move.
+- The documented component inventory said 4 skills, 1 agent, 1 command; the CLI
+  prints `Skills (5)` because it counts the `quality-report` command among the
+  skills. `QUICKSTART.md` and `docs/gui-smoke-check.md` now expect 5/1/1 and
+  explain why, so a dogfooder following the smoke check doesn't file a correct
+  install as a defect. `scripts/verify-plugin.sh` already asserted the real
+  shape; only the human-facing docs were wrong.
+- README's repository layout omitted `references/` and `docs/` — including
+  `references/qql.md`, which every skill is instructed to read before composing a
+  query.
 - Every QQL query in `analyzing-test-flakiness` and `triaging-test-failures` — the previous
   ones failed outright. `result` and `run` have no `created` field, so both
   skills' opening queries errored on every call; `run = <id>` and `case = <id>`
   were rejected too, since those fields match titles, not IDs.
-- `hooks/hooks.json` + `hooks/deny-destructive.sh` +
-  `hooks/deny-destructive-api.sh`: `PreToolUse` hooks that block any
-  `mcp__qase__*delete*` tool call and any `qase_api` call whose method is
-  `DELETE`, so "skills never delete Qase data" is enforced technically, not
-  only in skill prompt text. Both hooks are fail-closed — they block rather
-  than allow when anything unexpected happens — and need no JSON tooling. The
-  `qase_api` guard errs deliberately toward denial: it blocks on any
-  `"method": "delete"` in the payload rather than trying to resolve
-  `tool_input.method` without a parser, so a nested or decoy field can only
-  cause a needless denial, never a missed deletion.
-- `tests/test-deny-destructive.sh`: covers both hooks, including that they
-  fail closed rather than fail open when their environment is broken.
-- `scripts/verify-plugin.sh`: validates the marketplace and plugin manifests
-  (including hooks), checks the compliance files exist, scans for a literal
-  `QASE_API_TOKEN` value committed to a JSON file (reporting location only,
-  never the value), runs the hook tests, and confirms the plugin installs via
-  the `claude` CLI with the expected component inventory (5 skills, 1 agent,
-  2 hooks). `--static-only` skips the install phase.
-- `.github/workflows/validate.yml`: runs the verification on every push and
-  pull request, so a manifest regression, a broken hook, or a leaked
-  credential fails CI instead of shipping. Split into a `static` job and an
-  `install` job; both block, the CLI's install flow having been confirmed to
-  work on GitHub's runners without an authenticated session.
-
-## [0.1.0] - 2026-08-12
-
-### Added
-- Initial Quality Supervisor plugin draft: the `quality-supervisor`
-  orchestrator agent, the `/quality-report` command, and four skills —
-  `finding-coverage-gaps`, `triaging-test-failures`, `analyzing-test-flakiness`,
-  `assessing-release-readiness`.
-- Marketplace manifest (`.claude-plugin/marketplace.json`) so the plugin can
-  be installed via `/plugin marketplace add` + `/plugin install`.
-- Flattened the repo to a single-plugin layout: `plugin.json` sits in
-  `.claude-plugin/` alongside `marketplace.json`, while `.mcp.json`,
-  `agents/`, `commands/`, and `skills/` live at the repo root, with the
-  marketplace entry's `source` set to `"."`.
