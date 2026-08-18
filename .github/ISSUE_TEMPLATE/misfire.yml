@@ -92,6 +92,17 @@ body:
         on Haiku. Worth knowing before we treat a miss as a bug.
       placeholder: "whatever /model shows"
 
+  - type: input
+    id: version
+    attributes:
+      label: Plugin version
+      description: >
+        From `/plugin` — the version shown next to `quality-supervisor`. Without
+        it we cannot tell a fixed problem from a live one.
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
   - type: checkboxes
     id: known
     attributes:
