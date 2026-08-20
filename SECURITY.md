@@ -60,15 +60,34 @@ endpoints the typed tools don't cover.
 titles, and the ids on runs, defects, and cases) to name who was active in the
 period, and those names appear in the HTML card it writes.
 
-There is no other destination. The plugin contacts no service of its own.
+`analyzing-change-impact` is the only skill that reads something other than Qase: it
+reads the **local git repository** — the diff against the default branch, and the
+source files it has to trace through to decide which surfaces a change reaches. That
+stays on the machine. What it sends to Qase is the same read-only queries as every
+other skill; the code itself is never uploaded anywhere.
 
-**One skill writes a file.** `reporting-quality-pulse` renders its report card as a
-self-contained HTML file — `quality-pulse-<CODE>-<date>.html` — in the working
-directory, or wherever the user asks. That is the plugin's only write to disk, it
-stays local, and it goes nowhere on its own: the file contains the same Qase data
-the skill just read, and sending it anywhere is the user's action, not the
-plugin's. The skill is instructed not to write outside that directory and to ask
-before overwriting an existing file. Every other skill writes nothing.
+The plugin contacts no service of its own, and Qase is the only destination it
+reaches on its own initiative — the one exception is a tracker comment the user
+explicitly asks for, described below.
+
+**Two skills write a file.** `reporting-quality-pulse` and
+`analyzing-change-impact` render their reports as self-contained HTML —
+`quality-pulse-<CODE>-<date>.html` and `impact-analysis-<branch>-<date>.html` — in the
+working directory, or wherever the user asks. Those are the plugin's only writes to
+disk, they stay local, and they go nowhere on their own. Both skills are instructed
+not to write outside that directory and to ask before overwriting. Every other skill
+writes nothing.
+
+**One skill can reach outside Qase, and only when told to.**
+`analyzing-change-impact` will post its report as a comment on an issue tracker
+ticket — but only when the user explicitly asks for that, and only after confirming
+the target ticket. By default it posts nothing and the report is just the local file.
+The skill is instructed to add a comment and nothing else (never a status, assignee,
+or field change), to mark the comment as AI-generated, and to confirm first because a
+comment added through an MCP usually cannot be edited or deleted afterwards. This is a
+prompt-level constraint, like the other write gates: the plugin ships no tracker
+credentials and no tracker MCP, so the capability exists only if the user has already
+connected one.
 
 **It does name itself on those requests.** `.mcp.json` declares
 `X-Qase-Integration: quality-supervisor/<version>` (self-run: the same value in

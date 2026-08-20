@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Marketplace for the Quality Supervisor plugin — agentic QA quality-intelligence skills for Qase.",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "plugins": [
     {
