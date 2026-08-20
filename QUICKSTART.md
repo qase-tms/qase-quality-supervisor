@@ -34,8 +34,8 @@ PreToolUse hook**.
 Six, not five: the CLI counts the `quality-report` command under `Skills` — there
 is no separate Commands row in its output. So the expected inventory is
 `analyzing-test-flakiness`, `assessing-release-readiness`, `finding-coverage-gaps`,
-`quality-pulse`, `quality-report`, `triaging-test-failures`. Five skills plus a
-command is what ships; six is what the inventory prints.
+`quality-report`, `reporting-quality-pulse`, `triaging-test-failures`. Five skills
+plus a command is what ships; six is what the inventory prints.
 
 ## 2. Connect to Qase
 

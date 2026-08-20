@@ -6,11 +6,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [0.2.0] - 2026-08-20
 
 ### Added
-- **`quality-pulse`** — a fifth skill: a visual HTML report card for a Qase project
-  over any period the user names (daily through monthly, sprint, or an explicit
-  range), covering execution and pass rate, defect backlog with high-severity open
-  called out, new and updated cases, who was active, and a heuristic A–D grade. It
-  ships with `assets/pulse-template.html` as the reference look.
+- **`reporting-quality-pulse`** — a fifth skill: a visual HTML report card for a
+  Qase project over any period the user names (daily through monthly, sprint, or an
+  explicit range), covering execution and pass rate, defect backlog with
+  high-severity open called out, new and updated cases, who was active, and a
+  heuristic A–D grade. It ships with `assets/pulse-template.html` as the reference
+  look.
 
   It is a period overview, deliberately not a release decision: the pulse describes
   a window and grades it, `assessing-release-readiness` judges a named scope and
@@ -23,11 +24,11 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   wanted.
 
 ### Changed
-- `SECURITY.md` no longer claims the plugin writes nothing to disk — `quality-pulse`
-  writes its card to the working directory. The document now states what that file
-  is, that it stays local, and that the skill asks before overwriting; it also
-  records that this skill reads the project user list to name who was active, and
-  that those names land in the card.
+- `SECURITY.md` no longer claims the plugin writes nothing to disk —
+  `reporting-quality-pulse` writes its card to the working directory. The document
+  now states what that file is, that it stays local, and that the skill asks before
+  overwriting; it also records that this skill reads the project user list to name
+  who was active, and that those names land in the card.
 - Inventory counts in `README.md`, `QUICKSTART.md`, and `scripts/verify-plugin.sh`
   move from 5 to 6 (five skills plus the command the CLI counts under `Skills`).
 

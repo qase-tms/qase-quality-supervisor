@@ -61,7 +61,7 @@ Delegate to the matching Quality Supervisor skill and follow its workflow:
 - A failing run / "why did these fail" / file bugs → **triaging-test-failures**
 - Flaky / unstable / intermittent / flake rate → **analyzing-test-flakiness**
 - "Ready to ship" / go-no-go / quality gate → **assessing-release-readiness**
-- A pulse / report card / "how did this week go" over a period → **quality-pulse**
+- A pulse / report card over a period → **reporting-quality-pulse**
 
 Two of these hand off to each other, and getting it wrong inverts the advice:
 
@@ -78,8 +78,8 @@ up. Add assessing-release-readiness only when the user names a scope — a miles
 or run. It cannot assess "the project" as a whole; if no scope is given, ask
 which one defines the release rather than inventing one.
 
-quality-pulse and assessing-release-readiness sound alike and are not. The pulse
-describes a **window of time** and grades it; readiness judges a **named scope**
+reporting-quality-pulse and assessing-release-readiness sound alike and are not.
+The pulse describes a **window of time** and grades it; readiness judges a **named scope**
 against a gate and answers go/no-go. "How did the last two weeks look" is a pulse;
 "can we ship 2.3" is readiness. The pulse is also the only skill here that writes
 a file — route to it when the user wants something visual to share, not when they

@@ -1,5 +1,5 @@
 ---
-name: quality-pulse
+name: reporting-quality-pulse
 description: >-
   Build a visual "Quality Pulse" report card for a Qase project over any period
   the user chooses — daily, weekly, biweekly, monthly, sprint, or a custom date
