@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qase Weekly Pulse — DEMO</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#171a21; --card2:#1e222b; --line:#2a2f3a;
+    --txt:#e8ebf0; --mut:#9aa3b2; --acc:#7c5cff; --acc2:#22d3ee;
+    --green:#34d399; --amber:#fbbf24; --red:#f87171; --grey:#6b7280;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 600px at 20% -10%,#1b2030 0%,var(--bg) 55%);color:var(--txt);
+    line-height:1.5;padding:32px 20px 60px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto}
+  header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:8px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.02em}
+  .sub{color:var(--mut);font-size:14px;margin-top:6px}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .meta .tag{display:inline-flex;align-items:baseline;gap:8px;background:var(--card);
+    border:1px solid var(--line);border-left:3px solid var(--acc2);border-radius:10px;padding:8px 14px}
+  .meta .tag.win{border-left-color:var(--acc)}
+  .meta .tag .k{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);font-weight:700}
+  .meta .tag .v{font-size:15px;font-weight:800;color:var(--txt)}
+  .grade-pill{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);
+    border-radius:16px;padding:14px 20px}
+  .grade-pill .g{font-size:40px;font-weight:900;line-height:1}
+  .grade-pill .lbl{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0 8px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .kpi .n{font-size:28px;font-weight:800;letter-spacing:-.02em}
+  .kpi .k{font-size:12px;color:var(--mut);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+  .kpi .d{font-size:12px;margin-top:8px;color:var(--mut)}
+  .up{color:var(--green)} .down{color:var(--red)} .flat{color:var(--grey)}
+
+  .sec{margin-top:34px}
+  .sec h2{font-size:15px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);margin-bottom:14px;
+    border-bottom:1px solid var(--line);padding-bottom:8px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+
+  .bar{height:10px;border-radius:999px;background:#2a2f3a;overflow:hidden;margin:6px 0 4px;display:flex}
+  .bar>i{display:block;height:100%}
+  .barlabels{display:flex;justify-content:space-between;font-size:12px;color:var(--mut);margin-top:8px}
+
+  .actgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .act{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .act .v{font-size:26px;font-weight:800}
+  .act .l{font-size:12px;color:var(--mut);margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
+  .act .s{font-size:12px;color:var(--mut);margin-top:8px}
+
+  .users{display:flex;flex-direction:column;gap:12px}
+  .user{display:flex;align-items:center;gap:14px;background:var(--card2);border:1px solid var(--line);
+    border-radius:12px;padding:14px 16px}
+  .avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:15px;color:#0f1115;flex:0 0 auto}
+  .user .nm{font-weight:700;font-size:15px}
+  .user .role{font-size:12px;color:var(--mut);margin-left:8px;font-weight:600}
+  .user .did{font-size:13px;color:var(--mut);margin-top:2px}
+  .chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;margin-left:auto;white-space:nowrap}
+  .c-green{background:rgba(52,211,153,.14);color:var(--green)}
+  .c-cyan{background:rgba(34,211,238,.14);color:var(--acc2)}
+  .c-purple{background:rgba(124,92,255,.16);color:#b8a6ff}
+
+  .note{font-size:13px;color:var(--mut);margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+  .note b{color:var(--txt)}
+  footer{margin-top:34px;font-size:12px;color:var(--mut);border-top:1px solid var(--line);padding-top:16px}
+  @media(max-width:760px){.kpis,.actgrid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>QA Pulse</h1>
+      <div class="meta">
+        <span class="tag"><span class="k">Project</span><span class="v">Demo Project (DEMO)</span></span>
+        <span class="tag win"><span class="k">Window</span><span class="v">Jul 9 – Jul 23, 2026</span></span>
+      </div>
+      <div class="sub">Last 14 days · Generated Jul 23, 2026</div>
+    </div>
+    <div class="grade-pill">
+      <div class="g" style="color:var(--amber)">C+</div>
+      <div><div class="lbl">Health</div><div style="font-size:13px;color:var(--mut)">Active, backlog-heavy</div></div>
+    </div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi"><div class="n">9</div><div class="k">Test runs</div><div class="d">4 automated · 5 manual/express</div></div>
+    <div class="kpi"><div class="n up">80%</div><div class="k">Pass rate</div><div class="d">4 passed / 1 failed</div></div>
+    <div class="kpi"><div class="n">3</div><div class="k">Active users</div><div class="d">2 QA · 1 CSS</div></div>
+    <div class="kpi"><div class="n down">70</div><div class="k">Open defects</div><div class="d">17 blocker/critical</div></div>
+  </div>
+
+  <!-- EXECUTION -->
+  <div class="sec">
+    <h2>Execution</h2>
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:14px">
+        <span><b>5</b> results executed across 9 runs</span>
+        <span style="color:var(--mut)">80% pass · untested/in-progress excluded</span>
+      </div>
+      <div class="bar">
+        <i style="width:80%;background:var(--green)"></i>
+        <i style="width:20%;background:var(--red)"></i>
+      </div>
+      <div class="barlabels"><span style="color:var(--green)">● 4 Passed</span><span style="color:var(--red)">1 Failed ●</span></div>
+      <div class="note">Two automated cross-browser suites (Chromium + WebKit) ran green on <b>Jul 15</b> and <b>Jul 22</b>. The single failure came from Express run <b>#786</b> (Jul 15) and was immediately captured as defect <b>#82</b>. Several runs remain <b>untested / in-progress</b>, so pass rate reflects only executed results.</div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY STATS -->
+  <div class="sec">
+    <h2>Activity Stats</h2>
+    <div class="actgrid">
+      <div class="act"><div class="v">1</div><div class="l">New cases</div><div class="s">“WEbhook CSS-1431” (automated)</div></div>
+      <div class="act"><div class="v">1</div><div class="l">Updated cases</div><div class="s">same case, authored Jul 14</div></div>
+      <div class="act"><div class="v">9</div><div class="l">New runs</div><div class="s">created in window</div></div>
+      <div class="act"><div class="v down">1</div><div class="l">New defects</div><div class="s">#82, filed Jul 15</div></div>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <div class="note" style="border:0;padding:0;margin:0;color:var(--mut)">
+        Repository is nearly static this week: <b style="color:var(--txt)">149 total cases</b>, only 1 touched. Growth is coming from <b style="color:var(--txt)">run execution</b>, not authoring — coverage of new features would depend on new cases landing.
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVE USERS -->
+  <div class="sec">
+    <h2>Active Users</h2>
+    <div class="panel">
+      <div class="users">
+        <div class="user">
+          <div class="avatar" style="background:linear-gradient(135deg,#34d399,#22d3ee)">AL</div>
+          <div>
+            <div><span class="nm">Alena Lutsik</span><span class="role">QA</span></div>
+            <div class="did">Drove execution — automated Chromium &amp; WebKit suites plus manual runs (Jul 15 &amp; Jul 22)</div>
+          </div>
+          <span class="chip c-green">6 runs</span>
+        </div>
+        <div class="user">
+          <div class="avatar" style="background:linear-gradient(135deg,#fbbf24,#f87171)">AK</div>
+          <div>
+            <div><span class="nm">Anastasiia Khabarova</span><span class="role">QA</span></div>
+            <div class="did">Ran Express run #786, logged the failing result and filed defect #82</div>
+          </div>
+          <span class="chip c-cyan">1 run · 1 defect</span>
+        </div>
+        <div class="user">
+          <div class="avatar" style="background:linear-gradient(135deg,#7c5cff,#22d3ee)">KP</div>
+          <div>
+            <div><span class="nm">Karan P</span><span class="role">CSS</span></div>
+            <div class="did">Authored the week’s only new test case, “WEbhook CSS-1431” (automated)</div>
+          </div>
+          <span class="chip c-purple">1 case</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEFECTS / TAKEAWAYS -->
+  <div class="sec">
+    <h2>Watch-outs &amp; Takeaways</h2>
+    <div class="panel">
+      <div class="note" style="border:0;padding:0;margin:0;color:var(--txt)">
+        <p style="margin-bottom:10px">🟢 <b>Execution loop is healthy</b> — automated suites are green and the one failure was triaged into a defect the same day.</p>
+        <p style="margin-bottom:10px">🟡 <b>Defect backlog is the drag</b> — 70 open defects, incl. <b>4 blocker + 13 critical</b>, and only 1 new this week means the queue is aging rather than clearing. A triage session moves the grade fastest.</p>
+        <p style="margin-bottom:10px">🟡 <b>Authoring is flat</b> — just 1 new/updated case in 14 days against 149 total. Fine if the product is stable; worth a check if features are shipping without matching coverage.</p>
+        <p>👥 <b>Bus-factor watch</b> — one QA (Alena) accounts for most execution. Spreading run ownership reduces single-person risk.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Source: Qase MCP (live) — project DEMO. Counts reflect runs, results, cases and defects with activity between Jul 9–23, 2026. Pass rate is over executed results (untested/in-progress excluded). Health grade is heuristic across execution, pass rate, defect backlog, authoring and cadence.
+  </footer>
+
+</div>
+</body>
+</html>

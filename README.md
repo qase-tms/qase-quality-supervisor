@@ -20,6 +20,7 @@ add it once and install (and update) `quality-supervisor` from it.
 | Skill | `triaging-test-failures` | Cluster a run's failures, classify bug vs. automation vs. env vs. flaky, create + link defects. |
 | Skill | `analyzing-test-flakiness` | Quantify flaky/unstable tests via history + `isFlaky`; confirm by re-run; recommend quarantine/fix. |
 | Skill | `assessing-release-readiness` | Five-dimension go / no-go quality gate for a milestone, plan, or release. |
+| Skill | `quality-pulse` | Visual HTML report card for any period — execution, pass rate, defect backlog, case activity, active users. |
 | Agent | `quality-supervisor` | Orchestrator that routes a quality question to the right skill(s) and rolls up results. |
 | Command | `/quality-supervisor:quality-report` | Read-only consolidated sweep: coverage + flakiness + triage + readiness. |
 
@@ -35,9 +36,9 @@ In Claude Code:
 /plugin install quality-supervisor@quality-supervisor
 ```
 
-After a restart, `/plugin` reports the inventory as **5 skills, 1 agent, 1
-PreToolUse hook**. Five because the CLI counts the `quality-report` command under
-`Skills`; four skills plus one command is what actually ships.
+After a restart, `/plugin` reports the inventory as **6 skills, 1 agent, 1
+PreToolUse hook**. Six because the CLI counts the `quality-report` command under
+`Skills`; five skills plus one command is what actually ships.
 
 In Cowork, install the packaged `.plugin` file directly, or add this repo as a
 marketplace if your build supports it.
@@ -67,7 +68,7 @@ reachable. Replace `.mcp.json` with:
       "args": ["-y", "@qase/mcp-server"],
       "env": {
         "QASE_API_TOKEN": "${QASE_API_TOKEN}",
-        "QASE_MCP_INTEGRATION": "quality-supervisor/0.1.1"
+        "QASE_MCP_INTEGRATION": "quality-supervisor/0.2.0"
       }
     }
   }
@@ -121,6 +122,7 @@ Ask in your own words — the skills pick themselves up from the question:
 - "What's our flake rate this month and which tests should we quarantine?"
 - "Which suites are empty?" · "Which cases are still manual?"
 - "Are we ready to ship milestone 2.3?" · "What's blocking the release?"
+- "Give me a quality pulse for WEB for the last two weeks." · "QA report card for August."
 
 ### When you want a guarantee, use the command
 
@@ -148,6 +150,7 @@ way the command does:
 /quality-supervisor:triaging-test-failures
 /quality-supervisor:finding-coverage-gaps
 /quality-supervisor:assessing-release-readiness
+/quality-supervisor:quality-pulse
 ```
 
 Use these when you want one specific analysis rather than the whole sweep, and
@@ -199,7 +202,8 @@ which is the part that degrades.
 │   ├── finding-coverage-gaps/
 │   ├── triaging-test-failures/
 │   ├── analyzing-test-flakiness/
-│   └── assessing-release-readiness/
+│   ├── assessing-release-readiness/
+│   └── quality-pulse/         # + assets/pulse-template.html
 ├── tests/
 │   ├── test-deny-destructive.sh
 │   └── test-version-sync.sh
