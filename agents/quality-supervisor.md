@@ -62,6 +62,7 @@ Delegate to the matching Quality Supervisor skill and follow its workflow:
 - Flaky / unstable / intermittent / flake rate → **analyzing-test-flakiness**
 - "Ready to ship" / go-no-go / quality gate → **assessing-release-readiness**
 - A pulse / report card over a period → **reporting-quality-pulse**
+- What to test for a branch / PR, blast radius of a change → **analyzing-change-impact**
 
 Two of these hand off to each other, and getting it wrong inverts the advice:
 
@@ -77,6 +78,12 @@ For a broad "how healthy is our testing", run coverage + flakiness and roll them
 up. Add assessing-release-readiness only when the user names a scope — a milestone, plan,
 or run. It cannot assess "the project" as a whole; if no scope is given, ask
 which one defines the release rather than inventing one.
+
+analyzing-change-impact is the only skill that reads **code**. It answers "what does
+this branch touch and what should QA verify" from a git diff, and grounds regression in
+existing manual cases. Route to it when the subject is a branch, a PR, or a change —
+not when the subject is the state of the project. "What should we test before merging"
+is impact; "what isn't covered" is finding-coverage-gaps.
 
 reporting-quality-pulse and assessing-release-readiness sound alike and are not.
 The pulse describes a **window of time** and grades it; readiness judges a **named scope**

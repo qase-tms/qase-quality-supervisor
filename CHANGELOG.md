@@ -3,6 +3,48 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.0] - 2026-08-20
+
+### Added
+- **`analyzing-change-impact`** — a sixth skill, adapted from the internal
+  `impact-analysis` plugin. Diffs the current branch against the default branch,
+  traces which surfaces the change actually reaches, and produces a QA-facing report:
+  an impact analysis (user-facing, plus the public API only when tracing shows it is
+  reached) and a numbered checklist split into Regression — grounded in existing
+  **manual / to-be-automated** cases, automated ones excluded — and New. Renders to
+  `impact-analysis-<branch>-<date>.html` via `assets/impact-template.html`.
+
+  This is the first skill that reads **code** rather than only Qase, which is also how
+  it is routed: a branch or PR is impact, the state of a project is one of the others.
+
+  Four things were changed from the internal original, and each was a bug or a
+  mismatch rather than a preference:
+
+  - **It targeted a Qase MCP that no longer exists.** Its `allowed-tools` named
+    `list_projects`, `list_suites`, `list_cases`, `get_case`, and `get_suite` — all
+    removed when the server consolidated its tool surface, leaving only `qql_search`
+    of the six. The coverage step is rewritten against `qase_project_context`,
+    `qql_search` (filtering `automation` at query time) and `qase_get`.
+  - **It posted to Jira automatically, by design** ("zero extra interaction"), through
+    an MCP whose comments cannot be edited or deleted afterwards. Posting is now
+    opt-in: the default output is the local HTML file, and a tracker comment happens
+    only when the user asks and confirms the ticket.
+  - **It required a tracker MCP as a hard precondition** and named tools by their
+    claude.ai identifiers, so it could not run in a client that registers them
+    differently. Requirements are now optional context: no tracker, no
+    `[MISMATCH]` flags, report still produced.
+  - **It hardcoded one Qase project** and carried an appendix of internal monolith
+    paths and class names. The project is now asked for like every other skill, and
+    the appendix is dropped — this repository is public. The generic caller-tracing
+    rules it generalised are kept.
+
+### Changed
+- `SECURITY.md`: records that this skill reads the local git repository (and that the
+  code never leaves the machine), that two skills now write HTML, and that a tracker
+  comment is a user-initiated exception to "Qase is the only destination".
+- Inventory counts move from 6 to 7 (six skills plus the command the CLI counts under
+  `Skills`).
+
 ## [0.2.0] - 2026-08-20
 
 ### Added

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QA Impact Analysis — feature/PROJ-1234-add-widget</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#171a21; --card2:#1e222b; --line:#2a2f3a;
+    --txt:#e8ebf0; --mut:#9aa3b2; --acc:#7c5cff; --acc2:#22d3ee;
+    --green:#34d399; --amber:#fbbf24; --red:#f87171; --grey:#6b7280;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 600px at 20% -10%,#1b2030 0%,var(--bg) 55%);color:var(--txt);
+    line-height:1.5;padding:32px 20px 60px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto}
+  header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:8px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.02em}
+  .sub{color:var(--mut);font-size:14px;margin-top:6px}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .meta .tag{display:inline-flex;align-items:baseline;gap:8px;background:var(--card);
+    border:1px solid var(--line);border-left:3px solid var(--acc2);border-radius:10px;padding:8px 14px}
+  .meta .tag.br{border-left-color:var(--acc)}
+  .meta .tag .k{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);font-weight:700}
+  .meta .tag .v{font-size:15px;font-weight:800;color:var(--txt)}
+  .meta .tag .v code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}
+  .count-pill{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);
+    border-radius:16px;padding:14px 20px}
+  .count-pill .g{font-size:40px;font-weight:900;line-height:1}
+  .count-pill .lbl{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
+
+  .sec{margin-top:34px}
+  .sec h2{font-size:15px;text-transform:uppercase;letter-spacing:.1em;color:var(--mut);margin-bottom:14px;
+    border-bottom:1px solid var(--line);padding-bottom:8px}
+  .sec h3{font-size:14px;font-weight:800;margin:18px 0 10px;color:var(--txt)}
+  .sec h3:first-child{margin-top:0}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .panel + .panel{margin-top:14px}
+
+  .summary{font-size:15px;color:var(--txt)}
+
+  .items{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .items li{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14px}
+  .items li .area{font-weight:700;color:var(--txt)}
+  .items li .what{color:var(--mut);display:block;margin-top:3px}
+  .none{color:var(--mut);font-style:italic;font-size:14px}
+
+  .flag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.06em;padding:2px 7px;
+    border-radius:5px;margin-right:8px;vertical-align:1px}
+  .f-new{background:rgba(52,211,153,.16);color:var(--green)}
+  .f-breaking{background:rgba(248,113,113,.16);color:var(--red)}
+  .f-mismatch{background:rgba(251,191,36,.16);color:var(--amber)}
+  .f-gap{background:rgba(124,92,255,.18);color:#b8a6ff}
+
+  ol.checks{list-style:none;counter-reset:chk;display:flex;flex-direction:column;gap:10px}
+  ol.checks li{counter-increment:chk;background:var(--card2);border:1px solid var(--line);border-radius:12px;
+    padding:13px 16px 13px 46px;position:relative;font-size:14px}
+  ol.checks li::before{content:counter(chk);position:absolute;left:14px;top:13px;width:22px;height:22px;
+    border-radius:50%;background:var(--line);color:var(--txt);font-size:11px;font-weight:800;
+    display:flex;align-items:center;justify-content:center}
+  ol.checks li .area{font-weight:700}
+  ol.checks li .what{color:var(--mut);display:block;margin-top:3px}
+
+  .note{font-size:13px;color:var(--mut);margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+  .note b{color:var(--txt)}
+  footer{margin-top:34px;font-size:12px;color:var(--mut);border-top:1px solid var(--line);padding-top:16px}
+  footer code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  @media(max-width:760px){header.top{align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>QA Impact Analysis</h1>
+      <div class="meta">
+        <span class="tag br"><span class="k">Branch</span><span class="v"><code>feature/PROJ-1234-add-widget</code></span></span>
+        <span class="tag"><span class="k">Base</span><span class="v"><code>origin/main</code></span></span>
+        <span class="tag"><span class="k">Commit</span><span class="v"><code>a1b2c3d</code></span></span>
+        <span class="tag"><span class="k">Ticket</span><span class="v">PROJ-1234</span></span>
+      </div>
+      <div class="sub">14 files changed · Generated 2026-08-20 (UTC)</div>
+    </div>
+    <div class="count-pill">
+      <div class="g" style="color:var(--amber)">12</div>
+      <div><div class="lbl">Checks</div><div style="font-size:13px;color:var(--mut)">7 regression · 5 new</div></div>
+    </div>
+  </header>
+
+  <!-- PART 1 -->
+  <div class="sec">
+    <h2>Part 1 — Impact</h2>
+    <div class="panel">
+      <div class="summary">
+        <!-- 3-5 sentences: what the branch changes and what the user or consumer notices.
+             Reviewers read this first — always keep it. -->
+        The branch adds a configurable widget to the project dashboard and changes how
+        saved layouts are loaded. Users see a new widget picker and, on existing
+        dashboards, a different ordering of previously saved widgets. Consumers of the
+        public dashboard endpoint receive an additional field on each layout entry;
+        existing fields are unchanged. Nothing was removed.
+      </div>
+      <div class="note">
+        <!-- Only when a genuine [MISMATCH] exists. Otherwise delete this block.
+             If acceptance criteria were unavailable, say so once here instead. -->
+        <span class="flag f-mismatch">MISMATCH</span> The ticket asks for the picker to
+        remember the last selection per user; the change stores it per browser instead.
+        Worth confirming which was intended.
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>1. User-Facing</h3>
+      <!-- Always present. If nothing is user-facing, keep the heading and use .none -->
+      <ul class="items">
+        <li>
+          <span class="flag f-new">NEW</span><span class="area">Dashboard — widget picker</span>
+          <span class="what">A new picker adds and removes widgets. Verify it appears for
+          every role that can view a dashboard, and that a cancelled selection leaves the
+          layout untouched.</span>
+        </li>
+        <li>
+          <span class="area">Dashboard — saved layouts</span>
+          <span class="what">Existing saved layouts load through the changed path, so
+          ordering and per-user visibility can shift for dashboards created before this
+          branch.</span>
+        </li>
+      </ul>
+      <!-- <div class="none">No user-facing scenarios affected.</div> -->
+    </div>
+
+    <div class="panel">
+      <!-- Section 2 ONLY when tracing shows the change reaches a public/external
+           surface. Otherwise delete this whole panel — no placeholder. -->
+      <h3>2. Public / External API</h3>
+      <ul class="items">
+        <li>
+          <span class="flag f-new">NEW</span><span class="area"><code>GET /v1/dashboard/{id}</code></span>
+          <span class="what">Each layout entry gains a field. Additive, so existing
+          consumers keep working — verify strict-schema clients tolerate the extra key.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div class="sec">
+    <h2>Part 2 — QA Checklist</h2>
+    <div class="panel">
+      <h3>Regression — existing behaviour the change reaches into</h3>
+      <!-- Grounded only in manual / to-be-automated Qase cases. No case IDs, no titles. -->
+      <ol class="checks">
+        <li><span class="area">Open a dashboard saved before this branch</span>
+          <span class="what">Widgets appear in the order they were saved in, and none are
+          missing.</span></li>
+        <li><span class="area">Dashboard visibility by role</span>
+          <span class="what">A viewer-role user sees the same widgets as before and cannot
+          reach edit controls.</span></li>
+        <li><span class="flag f-gap">COVERAGE GAP</span><span class="area">Dashboard export</span>
+          <span class="what">No existing cases for this area — it is reached by the change
+          and unverified.</span></li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h3>New — what this branch adds or changes</h3>
+      <ol class="checks">
+        <li><span class="flag f-new">NEW</span><span class="area">Add a widget through the picker</span>
+          <span class="what">It appears immediately and survives a page reload.</span></li>
+        <li><span class="area">Cancel the picker</span>
+          <span class="what">The layout is unchanged, and nothing is persisted.</span></li>
+        <li><span class="area">Layout entry field on the public endpoint</span>
+          <span class="what">The new field is present and correctly populated for a
+          dashboard with mixed widget types.</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <footer>
+    <!-- Provenance. Name the areas needing new/updated automated coverage, the suites
+         consulted, and that Qase was read-only. Never print case IDs. -->
+    <b>Test coverage to add / update:</b> widget picker, saved-layout ordering — changed or
+    new behaviour needing automated coverage.<br>
+    Diff: <code>git diff origin/main...HEAD</code> at <code>a1b2c3d</code> · 14 files.
+    Regression is grounded in existing <b>manual / to-be-automated</b> cases in Qase project
+    <code>CODE</code> (suites consulted: Dashboard, Permissions); automated cases excluded, and
+    individual cases are not listed. Qase was read-only. Flags: <code>[NEW]</code>,
+    <code>[BREAKING]</code>, <code>[MISMATCH]</code>. Generated by the quality-supervisor
+    plugin — review before relying on it.
+  </footer>
+
+</div>
+</body>
+</html>
