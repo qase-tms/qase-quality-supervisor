@@ -1,6 +1,6 @@
 {
   "name": "quality-supervisor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agentic QA quality-intelligence skills for Qase: coverage-gap analysis, failure triage & root-cause, flakiness/stability analysis, and assessing-release-readiness assessment — driven through the Qase MCP server.",
   "author": {
     "name": "Qase"
