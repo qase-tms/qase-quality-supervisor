@@ -56,8 +56,19 @@ results (status, stacktrace, duration), and defects. They do this through MCP
 tools — `qase_project_context`, `qql_search`, `qase_get`, and `qase_api` for
 endpoints the typed tools don't cover.
 
-There is no other destination. The plugin contacts no service of its own and writes
-nothing to disk.
+`quality-pulse` additionally reads the project's **user list** (names, titles, and
+the ids on runs, defects, and cases) to name who was active in the period, and
+those names appear in the HTML card it writes.
+
+There is no other destination. The plugin contacts no service of its own.
+
+**One skill writes a file.** `quality-pulse` renders its report card as a
+self-contained HTML file — `quality-pulse-<CODE>-<date>.html` — in the working
+directory, or wherever the user asks. That is the plugin's only write to disk, it
+stays local, and it goes nowhere on its own: the file contains the same Qase data
+the skill just read, and sending it anywhere is the user's action, not the
+plugin's. The skill is instructed not to write outside that directory and to ask
+before overwriting an existing file. Every other skill writes nothing.
 
 **It does name itself on those requests.** `.mcp.json` declares
 `X-Qase-Integration: quality-supervisor/<version>` (self-run: the same value in
