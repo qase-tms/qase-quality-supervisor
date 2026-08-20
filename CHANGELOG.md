@@ -3,6 +3,39 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+- **Adoption attribution.** `.mcp.json` now declares
+  `X-Qase-Integration: quality-supervisor/<version>`, and the self-run instructions
+  set the same value in `QASE_MCP_INTEGRATION`. The Qase MCP server (2.2.2+)
+  forwards it as `X-MCP-Integration-Name` / `X-MCP-Integration-Version`, letting
+  Qase count which teams use the plugin and on which version.
+
+  What this measures is deliberately narrow: the integration, per team, per version.
+  Not which skill ran, not what it concluded, nothing about the project or its test
+  data. The marker is a constant string, sent only to Qase, only on API calls the
+  client was already making — see [SECURITY.md](SECURITY.md), whose no-telemetry
+  claim was rewritten rather than left to cover this by omission.
+- `scripts/check-version-sync.sh` asserts that all four copies of the version agree
+  — both manifests, the marker in `.mcp.json`, and the README's self-run example.
+  Nothing builds the marker from the manifest at runtime (`.mcp.json` cannot
+  interpolate the plugin version and Claude Code exposes no variable for it), so a
+  release bump would otherwise leave it reporting a stale version indefinitely. The
+  failure is silent by nature: a wrong-but-well-formed version passes the MCP
+  server's validation exactly as well as a correct one. CI runs it as its own step
+  in `validate.yml`, ahead of the toolchain install — it needs only bash and sed,
+  and a mismatch should read as a version problem rather than a generic static-check
+  failure. `scripts/verify-plugin.sh` also calls it, so local runs and the install
+  job stay covered.
+- `scripts/set-version.sh <version>` bumps all four copies in one command, refuses a
+  non-semver argument, and repairs a repository that has already drifted.
+- `.githooks/pre-commit` — opt-in local version-sync check for feedback before the
+  push (`git config core.hooksPath .githooks`). See `docs/releasing.md`.
+- `tests/test-version-sync.sh` exercises both scripts against throwaway fixture
+  repositories, including the case that matters most: a missing marker must fail as
+  loudly as a mismatched one, since dropping it stops attribution silently.
+
 ## [0.1.0] - 2026-08-18
 
 First release. Nothing before this was tagged, so the sections below cover the

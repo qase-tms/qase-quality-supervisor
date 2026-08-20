@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# Blocks a commit whose version strings disagree — most importantly the
+# X-Qase-Integration marker in .mcp.json, which is reported to Qase analytics and
+# fails silently when stale (see scripts/check-version-sync.sh).
+#
+# CI runs the same check on every push, so this hook only buys earlier feedback.
+# It is opt-in, because this repository has no install step that could place it:
+#
+#   git config core.hooksPath .githooks
+#
+# It checks the working tree, not the index, so a partial `git add` can still
+# commit an inconsistent state. That is an accepted limit: CI is the gate, this is
+# the reminder. Deliberately does not run the full verify-plugin.sh — that one
+# installs the plugin through the claude CLI and is far too slow for a commit.
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+if ! bash "$REPO_ROOT/scripts/check-version-sync.sh" "$REPO_ROOT"; then
+  echo >&2
+  echo "Commit blocked. Bypass with --no-verify if you know the mismatch is intentional." >&2
+  exit 1
+fi

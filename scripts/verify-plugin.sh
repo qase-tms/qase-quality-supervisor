@@ -30,6 +30,7 @@ require_cmd() {
 require_cmd claude
 require_cmd grep
 require_cmd cut
+require_cmd sed
 
 # ---- Static checks (manifests, secrets, hook tests) -------------------------
 
@@ -57,6 +58,9 @@ for f in LICENSE CHANGELOG.md; do
     exit 1
   fi
 done
+
+echo "==> Version strings agree (manifests, integration marker, README)"
+bash scripts/check-version-sync.sh "$REPO_ROOT"
 
 echo "==> Destructive-call guards declared and executable"
 # `claude plugin details` reports hook EVENTS, not matcher entries, so it
