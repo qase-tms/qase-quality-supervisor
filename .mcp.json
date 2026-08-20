@@ -2,7 +2,10 @@
   "mcpServers": {
     "qase": {
       "type": "http",
-      "url": "https://mcp.qase.io/mcp"
+      "url": "https://mcp.qase.io/mcp",
+      "headers": {
+        "X-Qase-Integration": "quality-supervisor/0.1.0"
+      }
     }
   }
 }

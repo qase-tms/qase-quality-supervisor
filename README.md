@@ -65,7 +65,10 @@ reachable. Replace `.mcp.json` with:
     "qase": {
       "command": "npx",
       "args": ["-y", "@qase/mcp-server"],
-      "env": { "QASE_API_TOKEN": "${QASE_API_TOKEN}" }
+      "env": {
+        "QASE_API_TOKEN": "${QASE_API_TOKEN}",
+        "QASE_MCP_INTEGRATION": "quality-supervisor/0.1.0"
+      }
     }
   }
 }
@@ -74,6 +77,13 @@ reachable. Replace `.mcp.json` with:
 Then set `QASE_API_TOKEN` in your environment (create one at `app.qase.io` →
 API tokens). Keep the server name `qase` — the bundled guard hooks match tool
 names by that prefix, and renaming it silently disables them.
+
+`QASE_MCP_INTEGRATION` is the self-run equivalent of the `X-Qase-Integration`
+header the hosted configuration sends: it tells Qase that these calls came from
+this plugin, so usage can be counted per team. It carries this plugin's name and
+version and nothing else — see [SECURITY.md](SECURITY.md). Attribution needs
+**MCP server 2.2.2 or newer**; older servers ignore the variable, and dropping it
+costs you nothing but the count.
 
 The skills expect **MCP server 2.1.1 or newer**. Earlier versions ship broken QQL
 examples in the tool schema — which the model copies and the API rejects — and,
@@ -162,15 +172,18 @@ which is the part that degrades.
 ├── .claude-plugin/
 │   ├── marketplace.json   # marketplace manifest (lists this plugin, source ".")
 │   └── plugin.json        # plugin manifest
+├── .githooks/
+│   └── pre-commit         # opt-in version-sync check (see docs/releasing.md)
 ├── .github/workflows/
 │   └── validate.yml       # CI: manifest validation, secrets scan, hook tests
-├── .mcp.json               # Qase MCP server wiring
+├── .mcp.json               # Qase MCP server wiring, incl. the integration marker
 ├── agents/
 │   └── quality-supervisor.md
 ├── commands/
 │   └── quality-report.md
 ├── docs/
 │   ├── gui-smoke-check.md  # 10-minute manual check per GUI client
+│   ├── releasing.md        # version bumps, the pre-commit hook, release checks
 │   └── superpowers/        # design specs and plans behind each iteration
 ├── hooks/
 │   ├── hooks.json          # PreToolUse guards against destructive calls
@@ -179,14 +192,17 @@ which is the part that degrades.
 ├── references/
 │   └── qql.md              # verified QQL field/enum reference the skills read
 ├── scripts/
-│   └── verify-plugin.sh    # local verification (also run by CI)
+│   ├── verify-plugin.sh    # local verification (also run by CI)
+│   ├── check-version-sync.sh  # asserts every copy of the version agrees
+│   └── set-version.sh      # bumps all four copies in one command
 ├── skills/
 │   ├── finding-coverage-gaps/
 │   ├── triaging-test-failures/
 │   ├── analyzing-test-flakiness/
 │   └── assessing-release-readiness/
 ├── tests/
-│   └── test-deny-destructive.sh
+│   ├── test-deny-destructive.sh
+│   └── test-version-sync.sh
 ├── CHANGELOG.md
 ├── LICENSE
 ├── QUICKSTART.md           # install -> first report

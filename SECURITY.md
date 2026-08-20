@@ -56,8 +56,22 @@ results (status, stacktrace, duration), and defects. They do this through MCP
 tools — `qase_project_context`, `qql_search`, `qase_get`, and `qase_api` for
 endpoints the typed tools don't cover.
 
-There is no other destination. The plugin contacts no service of its own, has no
-telemetry, and writes nothing to disk.
+There is no other destination. The plugin contacts no service of its own and writes
+nothing to disk.
+
+**It does name itself on those requests.** `.mcp.json` declares
+`X-Qase-Integration: quality-supervisor/<version>` (self-run: the same value in
+`QASE_MCP_INTEGRATION`), which the Qase MCP server turns into
+`X-MCP-Integration-Name` and `X-MCP-Integration-Version` on the API calls it was
+already going to make. Qase records them to count which teams use this plugin, and
+on which version.
+
+That marker is a constant. It is this plugin's name and version — not your identity,
+your prompts, your project, your test data, or anything derived from them. It adds no
+request of its own: it travels to Qase only, only on calls your client was already
+sending, and the plugin never learns the result. Removing it (drop the `headers`
+block, or the env var when self-running) changes nothing except that your team stops
+being counted.
 
 **Access control is Qase's.** The plugin holds no privileges; the MCP server
 forwards the user's credential and Qase applies its own RBAC. A user cannot see

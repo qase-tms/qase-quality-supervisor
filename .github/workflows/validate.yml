@@ -21,6 +21,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # First, and before the toolchain: this needs nothing but bash and sed, and
+      # it guards a failure that is invisible everywhere else — a stale
+      # X-Qase-Integration version is reported to Qase analytics and still passes
+      # the MCP server's validation, so nothing downstream ever complains. Its own
+      # step so a mismatch reads as a version problem in the checks list instead of
+      # a generic "static checks failed". Also run inside verify-plugin.sh, which
+      # is what local runs and the install job use.
+      - name: Version strings agree (manifests, integration marker, README)
+        run: bash scripts/check-version-sync.sh
+
+      - name: Version tooling tests
+        run: bash tests/test-version-sync.sh
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
