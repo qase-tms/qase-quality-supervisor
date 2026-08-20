@@ -8,3 +8,11 @@ docs/superpowers/
 # Qase project and writes fixtures into it, so it would not run anywhere else
 # unchanged. Ignored rather than deleted — the working copy keeps it.
 evals/
+
+# Reports the two reporting skills write into the working directory. They are
+# deliverables for whoever asked for them, not repository content, and they carry
+# real project data — defect counts, and in the pulse card the names of the people
+# who were active. Ignored so a run inside any checkout cannot commit them by
+# accident. The templates under skills/*/assets/ are tracked; these outputs are not.
+quality-pulse-*.html
+impact-analysis-*.html
