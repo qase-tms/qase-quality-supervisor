@@ -1,0 +1,46 @@
+.mcp.json
+  s_0233ce05e4d37e::t_9136dc230519a9 7
+QUICKSTART.md
+  s_0233ce05e4d37e::t_0bc012fd017e80 31,34,37-38
+agents/quality-supervisor.md
+  s_0233ce05e4d37e::t_30464387e34295 64
+  s_0233ce05e4d37e::t_44b01fb15a0c03 81-87
+SECURITY.md
+  s_0233ce05e4d37e::t_10497e922b10e6 63-71
+  s_0233ce05e4d37e::t_c712bdeac62d45 59-62
+skills/quality-pulse/SKILL.md
+  s_0233ce05e4d37e::t_e0778c3f8ff2c9 1-102
+.claude-plugin/plugin.json
+  s_0233ce05e4d37e::t_9136dc230519a9 3
+scripts/verify-plugin.sh
+  s_0233ce05e4d37e::t_02c64d9114df31 132-133,143
+skills/quality-pulse/assets/pulse-template.html
+  s_0233ce05e4d37e::t_b7c28f2b754036 1-183
+README.md
+  s_0233ce05e4d37e::t_9136dc230519a9 71
+  s_0233ce05e4d37e::t_6eb61fe087379f 125
+  s_0233ce05e4d37e::t_ec64eb80c67325 23
+  s_0233ce05e4d37e::t_f5b7d3700aa13a 39-41
+  s_0233ce05e4d37e::t_2e6cfd4347cf7e 153
+  s_0233ce05e4d37e::t_fac0ac900febdf 205-206
+CHANGELOG.md
+  s_0233ce05e4d37e::t_8e1c49b21315a9 6-33
+.claude-plugin/marketplace.json
+  s_0233ce05e4d37e::t_9136dc230519a9 9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "f91fce627b5ee75777a07ae9325c5dc2e127083a",
+  "prompts": {},
+  "sessions": {
+    "s_0233ce05e4d37e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f2e5db55-4b09-4ad3-9c78-892226c202de",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
