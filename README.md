@@ -20,7 +20,7 @@ add it once and install (and update) `quality-supervisor` from it.
 | Skill | `triaging-test-failures` | Cluster a run's failures, classify bug vs. automation vs. env vs. flaky, create + link defects. |
 | Skill | `analyzing-test-flakiness` | Quantify flaky/unstable tests via history + `isFlaky`; confirm by re-run; recommend quarantine/fix. |
 | Skill | `assessing-release-readiness` | Five-dimension go / no-go quality gate for a milestone, plan, or release. |
-| Skill | `quality-pulse` | Visual HTML report card for any period — execution, pass rate, defect backlog, case activity, active users. |
+| Skill | `reporting-quality-pulse` | Visual HTML report card for any period — execution, pass rate, defect backlog, case activity, active users. |
 | Agent | `quality-supervisor` | Orchestrator that routes a quality question to the right skill(s) and rolls up results. |
 | Command | `/quality-supervisor:quality-report` | Read-only consolidated sweep: coverage + flakiness + triage + readiness. |
 
@@ -150,7 +150,7 @@ way the command does:
 /quality-supervisor:triaging-test-failures
 /quality-supervisor:finding-coverage-gaps
 /quality-supervisor:assessing-release-readiness
-/quality-supervisor:quality-pulse
+/quality-supervisor:reporting-quality-pulse
 ```
 
 Use these when you want one specific analysis rather than the whole sweep, and
@@ -203,7 +203,7 @@ which is the part that degrades.
 │   ├── triaging-test-failures/
 │   ├── analyzing-test-flakiness/
 │   ├── assessing-release-readiness/
-│   └── quality-pulse/         # + assets/pulse-template.html
+│   └── reporting-quality-pulse/         # + assets/pulse-template.html
 ├── tests/
 │   ├── test-deny-destructive.sh
 │   └── test-version-sync.sh
