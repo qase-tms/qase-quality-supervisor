@@ -67,7 +67,7 @@ reachable. Replace `.mcp.json` with:
       "args": ["-y", "@qase/mcp-server"],
       "env": {
         "QASE_API_TOKEN": "${QASE_API_TOKEN}",
-        "QASE_MCP_INTEGRATION": "quality-supervisor/0.1.0"
+        "QASE_MCP_INTEGRATION": "quality-supervisor/0.1.1"
       }
     }
   }
