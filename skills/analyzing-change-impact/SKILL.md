@@ -167,15 +167,21 @@ Read in a **bounded, narrowing** order — the project may be large:
    entity = "case" and project = "CODE" and suite in ["Suite A", "Suite B"]
    ```
 
-   **Do not decide automation state from a QQL predicate.** QQL's copy of
-   `automation` can lag the live case — measured eleven days behind on a real
-   workspace, calling automated cases manual — so `automation = "Manual"` will hand
-   you cases a human no longer runs. Read `automation` from the full entity instead
-   (`0` Manual, `1` To be automated, `2` Automated); that value is the live one. When
-   a case decides whether a whole area needs a manual check, confirm it with
-   `qase_get`. Also **deduplicate by case id** — row queries can return the same case
-   twice — and remember `suite = "X"` matches *every* suite with that title, which may
-   be more than the one you meant. `references/qql.md` has the evidence for all three.
+   Narrowing by `automation` in that query is fine — the predicate is applied
+   correctly. Two cautions, both verified against a purpose-built project and recorded
+   in `references/qql.md`:
+
+   - **The value can be stale.** QQL reads an index that catches up asynchronously:
+     minutes normally, and eleven days on one real project whose analytics republish
+     had stalled. So confirm the state of any case that decides whether a whole area
+     needs manual checking — read `automation` from the full entity, or `qase_get` it.
+   - **Never use `isManual` or `isToBeAutomated`.** In QQL both select *To be
+     automated* only, while REST's `isManual` covers Manual **and** To be automated.
+     The name will not mean what you expect. Filter on `automation` and read the field.
+
+   Also remember `suite = "X"` matches *every* suite with that title, which may be more
+   than the one you meant — check with `SELECT (suite, COUNT(*)) … GROUP BY suite` if a
+   count looks too large.
 
 3. `qase_get` on the matched cases, to confirm from the steps that they actually
    cover the area — not by title alone.

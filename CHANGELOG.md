@@ -6,35 +6,39 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [0.3.1] - 2026-08-21
 
 ### Fixed
-- **Two skills trusted QQL for automation state, which can be stale.** Found while
-  running `analyzing-change-impact` against a live workspace: cases `QTC-22` and
-  `QTC-98` read `Automated` through REST, and had since 2026-08-10, but QQL still
-  reported them `Manual` eleven days later. The filter is applied faithfully — to a
-  copy of the data that lags the case.
+- **Two skills read automation state from QQL without allowing for its lag.** QQL
+  answers from an index that catches up asynchronously, so a query can be internally
+  consistent and still describe the project as it was minutes — or much longer — ago.
+  Measured against a purpose-built project with known contents: a new project was
+  invisible for ~3 minutes, briefly visible as **1 of 8 cases** with nothing in the
+  response marking it partial, and converged at 5–7 minutes; a single case edit was
+  still stale at 10 minutes. On one real project the gap was **eleven days**, which
+  looks less like latency and more like a stalled analytics republish for that project.
 
-  That matters because both skills turn on this exact distinction.
-  `analyzing-change-impact` grounds its Regression block only on cases a human still
-  has to run, so a stale bucket puts automated coverage back on a manual checklist.
-  `finding-coverage-gaps` reports the not-automated buckets *as* the gap, so a lag
-  overstates it.
+  Both skills turn on this distinction. `analyzing-change-impact` grounds its
+  Regression block only on cases a human still has to run, and now confirms the state
+  of any case that decides whether an area needs manual checking. `finding-coverage-gaps`
+  reports the not-automated buckets *as* the gap, and now labels its distribution a
+  floor rather than a measurement — a stale index can only understate automation —
+  spot-checks the `Manual` bucket against REST, and treats a mismatch as a finding
+  about the project's analytics rather than a footnote.
 
-  Both now read `automation` from the live entity rather than deciding from a QQL
-  predicate, and the coverage skill labels its automation distribution as a floor
-  rather than a measurement, with an instruction to spot-check the `Manual` bucket
-  against REST before quoting a percentage.
+- **`isManual` / `isToBeAutomated` must not be used in QQL.** Both select *To be
+  automated* only, while REST's `isManual` covers Manual **and** To be automated. Shown
+  on the clean project: `isManual = true` returned two cases, both `automation: 1`,
+  where five cases carried REST's flag.
 
-- **Two neighbouring traps, documented with them**, since both distorted the first
-  reading of this data: `case.suite` matches by title, and a project can hold several
-  suites with the same name (`suite = "Exports"` returned 11 cases where the suite in
-  the tree held 6); and a row query can return the same case twice, inflating `total`
-  (a five-element `id` list came back as 8 rows, five distinct). Aggregated queries did
-  not show the duplication — `GROUP BY` summed exactly to an independent `COUNT(*)`
-  both project-wide and under a filter — so aggregation is preferred for any reported
-  number. `isManual` is also flagged as not meaning Manual: alone it returned exactly
-  the *To be automated* count.
+- **`case.suite` matches by title, and titles are not unique.** Two suites deliberately
+  given the same name were returned as one group; on a real project the same shape hid
+  a five-case discrepancy. Documented with the query that detects it.
 
-  `references/qql.md` records each finding with the query and the numbers, so the next
-  reader does not rediscover them.
+### Notes
+- An earlier draft of this entry claimed the `automation` filter itself was broken, and
+  that row queries duplicate results. Neither survived testing on clean data: the
+  combined predicate returned exactly the right cases, and the duplication reproduced
+  only on a project whose cases carry repeated custom-field entries. Both are recorded
+  in `references/qql.md` as traps that look like bugs, so the next reader does not spend
+  the same time on them.
 
 ## [0.3.0] - 2026-08-20
 

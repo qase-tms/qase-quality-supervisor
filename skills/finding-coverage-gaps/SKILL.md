@@ -132,13 +132,14 @@ SELECT (automation, COUNT(*)) entity = "case" and project = "CODE" GROUP BY auto
 One query, whole distribution. Aggregated responses return the enum as an
 integer: 0 = Manual, 1 = To be automated, 2 = Automated.
 
-**Caveat this number.** QQL's copy of `automation` can lag the live case — measured
-eleven days behind on a real workspace, still reporting cases as manual after they had
-been automated. The distribution is therefore a floor on automation, not a
-measurement: real coverage may be better than it says, never worse. Before quoting a
-percentage, spot-check two or three cases from the `Manual` bucket with `qase_get`; if
-they come back automated, report the figure as indicative and say why. See
-`references/qql.md`.
+**Caveat this number.** QQL reads an index that catches up asynchronously — minutes
+normally, but eleven days on one real project whose analytics republish had stalled,
+still calling cases manual long after they were automated. The distribution is
+therefore a **floor** on automation, not a measurement: real coverage can be better
+than it says, never worse. Before quoting a percentage, spot-check two or three cases
+from the `Manual` bucket with `qase_get`. If they come back automated, say the figure
+is indicative and that the project's analytics data looks stale — that is a finding in
+itself, not just a caveat. See `references/qql.md`.
 
 `To be automated` is the interesting bucket — someone already decided those
 should be automated and it hasn't happened. Report it separately from `Manual`
@@ -191,11 +192,10 @@ When priority *is* populated, the risk-weighted gap is:
 SELECT (automation, COUNT(*)) entity = "case" and project = "CODE" and priority = "High" GROUP BY automation
 ```
 
-Grouped rather than filtered per bucket, deliberately: a row query can return the same
-case twice and inflate the count, while aggregation summed exactly to an independent
-`COUNT(*)` in testing. Read the `Manual` and `To be automated` buckets from the
-grouping. If you need the cases themselves, query on `priority` alone and read each
-returned case's `automation` field.
+Grouped rather than one filtered query per bucket: aggregation summed exactly to an
+independent `COUNT(*)` everywhere it was checked, and it sidesteps the row-duplication
+seen on one messy project. Read the `Manual` and `To be automated` buckets from the
+grouping, and apply the freshness caveat above — it applies to this number too.
 
 ### 6. Freshness
 
