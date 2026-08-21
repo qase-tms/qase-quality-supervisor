@@ -6,29 +6,35 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [0.3.1] - 2026-08-21
 
 ### Fixed
-- **Two skills were selecting cases with a QQL filter that does not work.** Filtering
-  on `automation` — or on `isManual` / `isToBeAutomated` — in the same query as any
-  other field returns rows that contradict the predicate. Found while running
-  `analyzing-change-impact` against a live workspace: a query restricted to manual
-  cases returned cases whose own `automation` field read `Automated`.
+- **Two skills trusted QQL for automation state, which can be stale.** Found while
+  running `analyzing-change-impact` against a live workspace: cases `QTC-22` and
+  `QTC-98` read `Automated` through REST, and had since 2026-08-10, but QQL still
+  reported them `Manual` eleven days later. The filter is applied faithfully — to a
+  copy of the data that lags the case.
 
-  It fails in both directions, so neither an empty nor a populated result was
-  trustworthy: `automation = "Manual"` scoped to a suite of six automated cases
-  returned five of them, while `isManual = true` scoped to a suite that does have
-  manual cases returned none. Counts are inflated too — a five-element `id` list came
-  back with `total: 8`, and a suite-scoped page repeated the same case id twice. And
-  `isManual` appears mislabelled: it returned exactly the `GROUP BY` count of
-  *To be automated*, not of *Manual*.
+  That matters because both skills turn on this exact distinction.
+  `analyzing-change-impact` grounds its Regression block only on cases a human still
+  has to run, so a stale bucket puts automated coverage back on a manual checklist.
+  `finding-coverage-gaps` reports the not-automated buckets *as* the gap, so a lag
+  overstates it.
 
-  `analyzing-change-impact` and `finding-coverage-gaps` no longer put an `automation`
-  predicate in a combined query. They read each returned case's `automation` field
-  instead, and take distributions from a grouped query — which is reliable: its
-  buckets summed exactly to an independent `COUNT(*)` both with and without a
-  `priority` filter.
+  Both now read `automation` from the live entity rather than deciding from a QQL
+  predicate, and the coverage skill labels its automation distribution as a floor
+  rather than a measurement, with an instruction to spot-check the `Manual` bucket
+  against REST before quoting a percentage.
 
-  `references/qql.md` records the evidence query by query, so the next reader does not
-  rediscover it. This is a server-side defect worth reporting rather than only
-  working around; re-check it after a Qase release.
+- **Two neighbouring traps, documented with them**, since both distorted the first
+  reading of this data: `case.suite` matches by title, and a project can hold several
+  suites with the same name (`suite = "Exports"` returned 11 cases where the suite in
+  the tree held 6); and a row query can return the same case twice, inflating `total`
+  (a five-element `id` list came back as 8 rows, five distinct). Aggregated queries did
+  not show the duplication — `GROUP BY` summed exactly to an independent `COUNT(*)`
+  both project-wide and under a filter — so aggregation is preferred for any reported
+  number. `isManual` is also flagged as not meaning Manual: alone it returned exactly
+  the *To be automated* count.
+
+  `references/qql.md` records each finding with the query and the numbers, so the next
+  reader does not rediscover them.
 
 ## [0.3.0] - 2026-08-20
 

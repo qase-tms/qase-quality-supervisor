@@ -162,7 +162,7 @@ verify before relying on an unusual one, and never invent a value.
 | `priority` | Not set, High, Medium, Low — **there is no "critical"** |
 | `severity` | Not set, Blocker, Critical, Major, Normal, Minor, Trivial |
 | `case.status` | Actual, Draft, Deprecated |
-| `automation` | Manual, To be automated, Automated (`"Not automated"` is accepted as an alias for Manual) — **but see the warning below: this filter is unreliable when combined with another filter** |
+| `automation` | Manual, To be automated, Automated (`"Not automated"` is accepted as an alias for Manual) — the filter works, but **the value it filters on can lag the live case**; see the warning below |
 | `layer` | Not set, E2E, API, Unit |
 | `type` | Other, Functional, Smoke, Regression, Security, Usability, Performance, Acceptance, Compatibility, Integration, Exploratory |
 | `run.status` | In Progress, Passed, Aborted, Failed — `"active"` is **not** valid |
@@ -189,46 +189,57 @@ as an **integer**. Map them back before reporting:
 - `case.automation`: 0 = Manual, 1 = To be automated, 2 = Automated
 - `case.priority`: 0 = Not set, 1 = High, 2 = Medium, 3 = Low
 
-### The automation filter cannot be trusted alongside another filter
+### QQL's `automation` can disagree with the live case
 
-**Verified broken on 2026-08-21** against a live workspace (project `QTC`, 1,376
-cases). Filter on `automation` — or on `isManual` / `isToBeAutomated` — in the same
-query as any other field filter and the result does not honour the predicate. Both
-directions were observed:
+The filter itself works. What it filters is a copy of the data that can lag the case
+you would see in the UI or through REST — so a query about automation state can be
+internally consistent and still wrong about today.
 
-| Query | Returned | Should have |
-|---|---|---|
-| `automation = "Manual" and id in [131, 133, 149, 22, 97]` | `total: 8`, including cases 22 and 97 whose own `automation` field reads `2` (Automated) | at most 5 rows, none Automated |
-| `suite = "Exports" and automation = "Manual"` | `total: 5`, rows Automated | 0 — every case in that suite is Automated |
-| `suite = "Exports" and automation = "Automated"` | `total: 6` | 6 ✓ |
-| `suite = "Widgets" and isManual = true` | `total: 0` | non-zero — that suite has Manual cases |
-| `project = "QTC" and isManual = true` (alone) | `total: 164` | plausible ✓ |
+Measured on 2026-08-21 in project `QTC`:
 
-So it under-filters in some combinations and over-filters in others. Note also that
-`total: 8` for a five-element `id` list means **the row count is inflated too**, and a
-suite-scoped page came back with the same case id twice — so a combined query can
-return duplicates. Do not derive a count from one of these queries.
+| Case | Via QQL | Via REST (`qase_get`) | Last updated |
+|---|---|---|---|
+| `QTC-22` "Export in PDF" | `automation: 0` (Manual) | `automation: 2` (Automated) | 2026-08-10 |
+| `QTC-98` "Export in CSV" | `automation: 0` (Manual) | `automation: 2` (Automated) | 2026-08-10 |
 
-**`isManual` does not mean manual.** In the same workspace it returned exactly 164
-cases, which is precisely the `GROUP BY` count of `automation = 1` (To be automated),
-not of `automation = 0` (Manual, 670). Treat the name as unverified at best: read the
-`automation` field instead of either boolean flag.
+Eleven days after those cases were automated, QQL still called them manual. So
+`automation = "Manual"` returns them, and a `GROUP BY automation` distribution counts
+them in the wrong bucket. The predicate is applied faithfully — to stale values.
 
-**Aggregation is the reliable path.** A grouped query honours the field:
+**A full-entity response mixes both sources**, which is what makes this confusing to
+diagnose. Ask for whole cases and the hydrated `automation` field shows the live value
+(`2`); ask for a projection — `SELECT (id, automation) …` — and the same case reports
+QQL's value (`0`). One query, two answers, and the filter agrees with the projection.
 
-```
-SELECT (automation, COUNT(*)) entity = "case" and project = "CODE" GROUP BY automation
-```
+**So:** treat the live value as authoritative for "does a human still have to run
+this". Select on other fields, then read `automation` from the full entity (or confirm
+with `qase_get`). Use the filter for narrowing when a stale bucket is acceptable, never
+as proof of automation state. When you report an automation figure, say it came from
+QQL, or spot-check a few cases against REST first.
 
-Its buckets summed exactly to QQL's own unfiltered `COUNT(*)` for the project, so the
-distribution is internally consistent. (That total may still differ from the REST case
-count — a separate, already-documented divergence; see the last section.)
+### Two more traps that make automation counts look broken
 
-**So, to select cases by automation state:** query without the automation predicate,
-then read each returned case's own `automation` field (`0` / `1` / `2`) and filter in
-your own reasoning. That field is reliable — it is the same value the filter
-contradicts. Deduplicate by case id before counting. For a distribution, use the
-grouped query above rather than one filtered query per bucket.
+Both bit an earlier reading of the data above; neither is about automation as such.
+
+**A title can name more than one suite.** `case.suite` matches by title, and a project
+can hold several suites with the same name. `suite = "Exports"` in `QTC` returned 11
+cases while the suite of that name in the tree held 6 — the rest came from another
+suite titled "Exports" elsewhere in the project. A count scoped that way is not scoped
+to the suite you were looking at. Confirm with
+`SELECT (suite, COUNT(*)) … GROUP BY suite`, or scope by `suiteTree` / id where you can.
+
+**Row queries can return the same case twice.** `automation = "Manual" and id in
+[131, 133, 149, 22, 97]` reported `total: 8` and returned eight rows — five distinct
+cases, with `QTC-131`, `QTC-133` and `QTC-149` each appearing twice. **Deduplicate by
+id before counting anything from a row query.** Aggregated queries did not show this:
+`GROUP BY automation` summed to exactly QQL's own `COUNT(*)`, both project-wide
+(670 + 164 + 861 = 1695) and under a `priority = "High"` filter (37 + 5 + 84 = 126).
+Prefer aggregation for any number you intend to report.
+
+**`isManual` is not a synonym for Manual.** Alone it returned 164 cases — exactly the
+`GROUP BY` count of `automation = 1` (To be automated), not of `automation = 0`
+(Manual, 670). One coincidence of counts is not proof, but it is enough reason not to
+use the flag: filter on `automation` and read the field.
 
 This is a server-side defect, not a syntax mistake, so it is worth reporting rather
 than working around silently. Re-check it after a Qase release before trusting the
