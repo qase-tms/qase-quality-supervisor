@@ -3,6 +3,33 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Fixed
+- **Two skills were selecting cases with a QQL filter that does not work.** Filtering
+  on `automation` — or on `isManual` / `isToBeAutomated` — in the same query as any
+  other field returns rows that contradict the predicate. Found while running
+  `analyzing-change-impact` against a live workspace: a query restricted to manual
+  cases returned cases whose own `automation` field read `Automated`.
+
+  It fails in both directions, so neither an empty nor a populated result was
+  trustworthy: `automation = "Manual"` scoped to a suite of six automated cases
+  returned five of them, while `isManual = true` scoped to a suite that does have
+  manual cases returned none. Counts are inflated too — a five-element `id` list came
+  back with `total: 8`, and a suite-scoped page repeated the same case id twice. And
+  `isManual` appears mislabelled: it returned exactly the `GROUP BY` count of
+  *To be automated*, not of *Manual*.
+
+  `analyzing-change-impact` and `finding-coverage-gaps` no longer put an `automation`
+  predicate in a combined query. They read each returned case's `automation` field
+  instead, and take distributions from a grouped query — which is reliable: its
+  buckets summed exactly to an independent `COUNT(*)` both with and without a
+  `priority` filter.
+
+  `references/qql.md` records the evidence query by query, so the next reader does not
+  rediscover it. This is a server-side defect worth reporting rather than only
+  working around; re-check it after a Qase release.
+
 ## [0.3.0] - 2026-08-20
 
 ### Added

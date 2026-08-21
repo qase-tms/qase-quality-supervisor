@@ -162,7 +162,7 @@ verify before relying on an unusual one, and never invent a value.
 | `priority` | Not set, High, Medium, Low — **there is no "critical"** |
 | `severity` | Not set, Blocker, Critical, Major, Normal, Minor, Trivial |
 | `case.status` | Actual, Draft, Deprecated |
-| `automation` | Manual, To be automated, Automated (`"Not automated"` is accepted as an alias for Manual) |
+| `automation` | Manual, To be automated, Automated (`"Not automated"` is accepted as an alias for Manual) — **but see the warning below: this filter is unreliable when combined with another filter** |
 | `layer` | Not set, E2E, API, Unit |
 | `type` | Other, Functional, Smoke, Regression, Security, Usability, Performance, Acceptance, Compatibility, Integration, Exploratory |
 | `run.status` | In Progress, Passed, Aborted, Failed — `"active"` is **not** valid |
@@ -188,6 +188,51 @@ as an **integer**. Map them back before reporting:
   5 = Skipped, 7 = In progress, 8 = Invalid
 - `case.automation`: 0 = Manual, 1 = To be automated, 2 = Automated
 - `case.priority`: 0 = Not set, 1 = High, 2 = Medium, 3 = Low
+
+### The automation filter cannot be trusted alongside another filter
+
+**Verified broken on 2026-08-21** against a live workspace (project `QTC`, 1,376
+cases). Filter on `automation` — or on `isManual` / `isToBeAutomated` — in the same
+query as any other field filter and the result does not honour the predicate. Both
+directions were observed:
+
+| Query | Returned | Should have |
+|---|---|---|
+| `automation = "Manual" and id in [131, 133, 149, 22, 97]` | `total: 8`, including cases 22 and 97 whose own `automation` field reads `2` (Automated) | at most 5 rows, none Automated |
+| `suite = "Exports" and automation = "Manual"` | `total: 5`, rows Automated | 0 — every case in that suite is Automated |
+| `suite = "Exports" and automation = "Automated"` | `total: 6` | 6 ✓ |
+| `suite = "Widgets" and isManual = true` | `total: 0` | non-zero — that suite has Manual cases |
+| `project = "QTC" and isManual = true` (alone) | `total: 164` | plausible ✓ |
+
+So it under-filters in some combinations and over-filters in others. Note also that
+`total: 8` for a five-element `id` list means **the row count is inflated too**, and a
+suite-scoped page came back with the same case id twice — so a combined query can
+return duplicates. Do not derive a count from one of these queries.
+
+**`isManual` does not mean manual.** In the same workspace it returned exactly 164
+cases, which is precisely the `GROUP BY` count of `automation = 1` (To be automated),
+not of `automation = 0` (Manual, 670). Treat the name as unverified at best: read the
+`automation` field instead of either boolean flag.
+
+**Aggregation is the reliable path.** A grouped query honours the field:
+
+```
+SELECT (automation, COUNT(*)) entity = "case" and project = "CODE" GROUP BY automation
+```
+
+Its buckets summed exactly to QQL's own unfiltered `COUNT(*)` for the project, so the
+distribution is internally consistent. (That total may still differ from the REST case
+count — a separate, already-documented divergence; see the last section.)
+
+**So, to select cases by automation state:** query without the automation predicate,
+then read each returned case's own `automation` field (`0` / `1` / `2`) and filter in
+your own reasoning. That field is reliable — it is the same value the filter
+contradicts. Deduplicate by case id before counting. For a distribution, use the
+grouped query above rather than one filtered query per bucket.
+
+This is a server-side defect, not a syntax mistake, so it is worth reporting rather
+than working around silently. Re-check it after a Qase release before trusting the
+filter again.
 
 Codes 1, 2, 5, 8 for `result.status` and all three `automation` codes were
 confirmed live; the rest follow the documented option order — state the label

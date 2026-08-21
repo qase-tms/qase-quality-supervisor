@@ -180,8 +180,14 @@ built on 0.4% of the data.
 When priority *is* populated, the risk-weighted gap is:
 
 ```
-entity = "case" and project = "CODE" and automation = "Manual" and priority = "High"
+SELECT (automation, COUNT(*)) entity = "case" and project = "CODE" and priority = "High" GROUP BY automation
 ```
+
+Grouped, not filtered, and deliberately: an `automation` predicate combined with
+another filter returns rows that contradict it, with inflated counts — see the
+warning in `references/qql.md`. Read the `Manual` and `To be automated` buckets from
+the grouping. If you need the cases themselves rather than the count, query on
+`priority` alone and filter on each returned case's `automation` field.
 
 ### 6. Freshness
 

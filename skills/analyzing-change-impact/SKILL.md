@@ -161,12 +161,19 @@ Read in a **bounded, narrowing** order — the project may be large:
 1. `qase_project_context` once, for the suite tree. Shortlist only suites whose
    name or scope fits an affected area.
 2. `qql_search` for cases in those suites whose titles match the affected
-   functionality. Filter automation state at query time — `automation` accepts
-   `Manual`, `To be automated`, `Automated` (see `references/qql.md`):
+   functionality:
 
    ```
-   entity = "case" and project = "CODE" and automation in ["Manual", "To be automated"]
+   entity = "case" and project = "CODE" and suite in ["Suite A", "Suite B"]
    ```
+
+   **Do not add an automation predicate to that query.** Filtering on `automation`
+   (or `isManual` / `isToBeAutomated`) alongside another filter returns rows that
+   contradict it — verified against a live workspace, in both directions, with
+   inflated counts and duplicate rows besides. `references/qql.md` records the
+   evidence. Instead, read each returned case's own `automation` field — `0` Manual,
+   `1` To be automated, `2` Automated — and drop the `2`s yourself. That field is
+   reliable. Deduplicate by case id before counting.
 
 3. `qase_get` on the matched cases, to confirm from the steps that they actually
    cover the area — not by title alone.
@@ -176,7 +183,8 @@ needs more, note that rather than silently reading hundreds of cases. The point 
 inform the checklist, not to mirror the project.
 
 **Exclude already-automated cases from Regression.** Ground it only on cases that are
-**manual** or **to be automated** — the ones a human still has to run. If an affected
+**manual** or **to be automated** — the ones a human still has to run. Do that from
+each case's `automation` field, per step 2, never from a query filter. If an affected
 area's only coverage is automated, it needs no manual regression item, and that is
 **not** a coverage gap. A coverage gap is an area with **no** cases at all.
 
