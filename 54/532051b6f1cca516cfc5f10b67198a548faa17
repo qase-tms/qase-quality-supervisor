@@ -1,0 +1,19 @@
+references/qql.md
+  s_0233ce05e4d37e::t_715eb5666791ec 209-211,246,259-262
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "54532051b6f1cca516cfc5f10b67198a548faa17",
+  "prompts": {},
+  "sessions": {
+    "s_0233ce05e4d37e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f2e5db55-4b09-4ad3-9c78-892226c202de",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
