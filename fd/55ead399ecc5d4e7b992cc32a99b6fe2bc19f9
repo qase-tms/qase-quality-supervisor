@@ -1,0 +1,27 @@
+.claude-plugin/marketplace.json
+  s_0233ce05e4d37e::t_6d76278d6f041f 9
+.mcp.json
+  s_0233ce05e4d37e::t_6d76278d6f041f 7
+.claude-plugin/plugin.json
+  s_0233ce05e4d37e::t_6d76278d6f041f 3
+CHANGELOG.md
+  s_0233ce05e4d37e::t_19259157b1746e 6
+README.md
+  s_0233ce05e4d37e::t_6d76278d6f041f 76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "fd55ead399ecc5d4e7b992cc32a99b6fe2bc19f9",
+  "prompts": {},
+  "sessions": {
+    "s_0233ce05e4d37e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f2e5db55-4b09-4ad3-9c78-892226c202de",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
