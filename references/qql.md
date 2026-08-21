@@ -206,9 +206,9 @@ Measured on 2026-08-21 against a purpose-built project with known contents
 The partial state is the dangerous one: `COUNT(*)` returned `1` with nothing in the
 response to say the other seven cases were still in flight.
 
-**Staleness can be much worse than minutes.** In project `QTC`, cases `QTC-22` and
-`QTC-98` read `automation: 2` (Automated) through REST — and had since 2026-08-10 —
-while QQL still reported `0` (Manual) eleven days later. A plausible cause is a
+**Staleness can be much worse than minutes.** On one large, long-lived project, two
+cases read `automation: 2` (Automated) through REST — and had for eleven days — while
+QQL still reported `0` (Manual). A plausible cause is a
 stalled analytics republish for that project (the failure mode that branch
 `NSGHTS-155` fixes: the catch-up times out, retries the same statement, and parks as
 permanently failed with no automatic recovery). Treat a long-lived divergence as a
@@ -243,7 +243,7 @@ In QQL the two flags are aliases for *To be automated*. Do not use either to mea
 
 `case.suite` matches by title, and a project may hold several suites sharing a name.
 Two suites deliberately titled `Collide` in the clean project, holding one case each,
-were returned as one group by `suite = "Collide"` — and in `QTC`, `suite = "Exports"`
+were returned as one group by `suite = "Collide"`; on a real project the same shape
 returned 11 cases where the suite of that name in the tree held 6. A count scoped that
 way is not scoped to the suite you meant. Confirm with
 `SELECT (suite, COUNT(*)) … GROUP BY suite`, or scope by id where you can.
@@ -256,10 +256,10 @@ project rather than of QQL:
 - **Combining an `automation` predicate with another filter is fine.** On the clean
   project `suite = "Collide" and automation = "Manual"` returned exactly the one
   matching case, and `automation = "Manual" and id in [1..5]` returned exactly two.
-- **Row duplication is data-dependent, not general.** In `QTC` a five-element `id` list
-  came back as eight rows with three cases repeated; the same shape of query on clean
-  data returned no duplicates. The `QTC` cases involved carried repeated custom-field
-  entries, which is the likely fan-out. Still worth deduplicating by id before counting
+- **Row duplication is data-dependent, not general.** On one real project a
+  five-element `id` list came back as eight rows with three cases repeated; the same
+  shape of query on clean data returned no duplicates. Those cases carried repeated
+  custom-field entries, which is the likely fan-out. Still worth deduplicating by id before counting
   from a row query in an unfamiliar project — and aggregation avoids the question
   entirely: `GROUP BY` summed exactly to an independent `COUNT(*)` everywhere it was
   checked.
