@@ -1,0 +1,29 @@
+README.md
+  s_0233ce05e4d37e::t_92a3cabc89b73b 188-189,208-209,219
+scripts/release-notes.sh
+  s_0233ce05e4d37e::t_bf740fa9710f42 1-52
+tests/test-release-notes.sh
+  s_0233ce05e4d37e::t_0c1d4e5213e8f2 1-142
+.github/workflows/release.yml
+  s_0233ce05e4d37e::t_37e78c93bcfd90 1-63
+docs/releasing.md
+  s_0233ce05e4d37e::t_92a3cabc89b73b 102,107-108
+  s_0233ce05e4d37e::t_8cc66c7e77a631 33-65
+  s_0233ce05e4d37e::t_e7f31627585e22 109
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "d61ae40f21e64326141fb6145f9f3820ac589f99",
+  "prompts": {},
+  "sessions": {
+    "s_0233ce05e4d37e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f2e5db55-4b09-4ad3-9c78-892226c202de",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
