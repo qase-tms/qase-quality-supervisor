@@ -3,6 +3,43 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.1] - 2026-08-21
+
+### Fixed
+- **Two skills read automation state from QQL without allowing for its lag.** QQL
+  answers from an index that catches up asynchronously, so a query can be internally
+  consistent and still describe the project as it was minutes — or much longer — ago.
+  Measured against a purpose-built project with known contents: a new project was
+  invisible for ~3 minutes, briefly visible as **1 of 8 cases** with nothing in the
+  response marking it partial, and converged at 5–7 minutes; a single case edit was
+  still stale at 10 minutes. On one real project the gap was **eleven days**, which
+  looks less like latency and more like a stalled analytics republish for that project.
+
+  Both skills turn on this distinction. `analyzing-change-impact` grounds its
+  Regression block only on cases a human still has to run, and now confirms the state
+  of any case that decides whether an area needs manual checking. `finding-coverage-gaps`
+  reports the not-automated buckets *as* the gap, and now labels its distribution a
+  floor rather than a measurement — a stale index can only understate automation —
+  spot-checks the `Manual` bucket against REST, and treats a mismatch as a finding
+  about the project's analytics rather than a footnote.
+
+- **`isManual` / `isToBeAutomated` must not be used in QQL.** Both select *To be
+  automated* only, while REST's `isManual` covers Manual **and** To be automated. Shown
+  on the clean project: `isManual = true` returned two cases, both `automation: 1`,
+  where five cases carried REST's flag.
+
+- **`case.suite` matches by title, and titles are not unique.** Two suites deliberately
+  given the same name were returned as one group; on a real project the same shape hid
+  a five-case discrepancy. Documented with the query that detects it.
+
+### Notes
+- An earlier draft of this entry claimed the `automation` filter itself was broken, and
+  that row queries duplicate results. Neither survived testing on clean data: the
+  combined predicate returned exactly the right cases, and the duplication reproduced
+  only on a project whose cases carry repeated custom-field entries. Both are recorded
+  in `references/qql.md` as traps that look like bugs, so the next reader does not spend
+  the same time on them.
+
 ## [0.3.0] - 2026-08-20
 
 ### Added

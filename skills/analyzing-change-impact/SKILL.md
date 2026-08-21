@@ -161,12 +161,27 @@ Read in a **bounded, narrowing** order — the project may be large:
 1. `qase_project_context` once, for the suite tree. Shortlist only suites whose
    name or scope fits an affected area.
 2. `qql_search` for cases in those suites whose titles match the affected
-   functionality. Filter automation state at query time — `automation` accepts
-   `Manual`, `To be automated`, `Automated` (see `references/qql.md`):
+   functionality:
 
    ```
-   entity = "case" and project = "CODE" and automation in ["Manual", "To be automated"]
+   entity = "case" and project = "CODE" and suite in ["Suite A", "Suite B"]
    ```
+
+   Narrowing by `automation` in that query is fine — the predicate is applied
+   correctly. Two cautions, both verified against a purpose-built project and recorded
+   in `references/qql.md`:
+
+   - **The value can be stale.** QQL reads an index that catches up asynchronously:
+     minutes normally, and eleven days on one real project whose analytics republish
+     had stalled. So confirm the state of any case that decides whether a whole area
+     needs manual checking — read `automation` from the full entity, or `qase_get` it.
+   - **Never use `isManual` or `isToBeAutomated`.** In QQL both select *To be
+     automated* only, while REST's `isManual` covers Manual **and** To be automated.
+     The name will not mean what you expect. Filter on `automation` and read the field.
+
+   Also remember `suite = "X"` matches *every* suite with that title, which may be more
+   than the one you meant — check with `SELECT (suite, COUNT(*)) … GROUP BY suite` if a
+   count looks too large.
 
 3. `qase_get` on the matched cases, to confirm from the steps that they actually
    cover the area — not by title alone.
@@ -176,9 +191,10 @@ needs more, note that rather than silently reading hundreds of cases. The point 
 inform the checklist, not to mirror the project.
 
 **Exclude already-automated cases from Regression.** Ground it only on cases that are
-**manual** or **to be automated** — the ones a human still has to run. If an affected
-area's only coverage is automated, it needs no manual regression item, and that is
-**not** a coverage gap. A coverage gap is an area with **no** cases at all.
+**manual** or **to be automated** — the ones a human still has to run. Take that from
+each case's live `automation` field, per step 2, not from a QQL predicate. If an
+affected area's only coverage is automated, it needs no manual regression item, and
+that is **not** a coverage gap. A coverage gap is an area with **no** cases at all.
 
 **Do not list or quote the cases.** They are input to your reasoning; the checklist is
 written in your own words as self-contained checks. Track which suites you consulted —

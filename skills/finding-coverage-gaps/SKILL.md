@@ -132,6 +132,15 @@ SELECT (automation, COUNT(*)) entity = "case" and project = "CODE" GROUP BY auto
 One query, whole distribution. Aggregated responses return the enum as an
 integer: 0 = Manual, 1 = To be automated, 2 = Automated.
 
+**Caveat this number.** QQL reads an index that catches up asynchronously — minutes
+normally, but eleven days on one real project whose analytics republish had stalled,
+still calling cases manual long after they were automated. The distribution is
+therefore a **floor** on automation, not a measurement: real coverage can be better
+than it says, never worse. Before quoting a percentage, spot-check two or three cases
+from the `Manual` bucket with `qase_get`. If they come back automated, say the figure
+is indicative and that the project's analytics data looks stale — that is a finding in
+itself, not just a caveat. See `references/qql.md`.
+
 `To be automated` is the interesting bucket — someone already decided those
 should be automated and it hasn't happened. Report it separately from `Manual`
 rather than lumping both into "not automated".
@@ -180,8 +189,13 @@ built on 0.4% of the data.
 When priority *is* populated, the risk-weighted gap is:
 
 ```
-entity = "case" and project = "CODE" and automation = "Manual" and priority = "High"
+SELECT (automation, COUNT(*)) entity = "case" and project = "CODE" and priority = "High" GROUP BY automation
 ```
+
+Grouped rather than one filtered query per bucket: aggregation summed exactly to an
+independent `COUNT(*)` everywhere it was checked, and it sidesteps the row-duplication
+seen on one messy project. Read the `Manual` and `To be automated` buckets from the
+grouping, and apply the freshness caveat above — it applies to this number too.
 
 ### 6. Freshness
 

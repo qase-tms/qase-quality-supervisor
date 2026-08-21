@@ -162,7 +162,7 @@ verify before relying on an unusual one, and never invent a value.
 | `priority` | Not set, High, Medium, Low — **there is no "critical"** |
 | `severity` | Not set, Blocker, Critical, Major, Normal, Minor, Trivial |
 | `case.status` | Actual, Draft, Deprecated |
-| `automation` | Manual, To be automated, Automated (`"Not automated"` is accepted as an alias for Manual) |
+| `automation` | Manual, To be automated, Automated (`"Not automated"` is accepted as an alias for Manual) — the filter works, but **the value it filters on can lag the live case**; see the warning below |
 | `layer` | Not set, E2E, API, Unit |
 | `type` | Other, Functional, Smoke, Regression, Security, Usability, Performance, Acceptance, Compatibility, Integration, Exploratory |
 | `run.status` | In Progress, Passed, Aborted, Failed — `"active"` is **not** valid |
@@ -189,10 +189,80 @@ as an **integer**. Map them back before reporting:
 - `case.automation`: 0 = Manual, 1 = To be automated, 2 = Automated
 - `case.priority`: 0 = Not set, 1 = High, 2 = Medium, 3 = Low
 
-Codes 1, 2, 5, 8 for `result.status` and all three `automation` codes were
-confirmed live; the rest follow the documented option order — state the label
-you inferred rather than presenting an unverified mapping as fact.
+### QQL reads its own index, which lags the live case
 
+The filters work. What they filter is a separate index that catches up
+asynchronously, so a query can be internally consistent and still describe the
+project as it was minutes — sometimes far longer — ago.
+
+Measured on 2026-08-21 against a purpose-built project with known contents
+(9 cases, created through the API):
+
+| Event | When QQL reflected it |
+|---|---|
+| New project + 8 cases created | invisible for ~3 min; **partial** at 3 min (1 of 8, reported as a clean `COUNT(*)` of 1); converged at 5–7 min |
+| One case's `automation` and title changed | still stale at 10 min; correct by ~17 min |
+
+The partial state is the dangerous one: `COUNT(*)` returned `1` with nothing in the
+response to say the other seven cases were still in flight.
+
+**Staleness can be much worse than minutes.** On one large, long-lived project, two
+cases read `automation: 2` (Automated) through REST — and had for eleven days — while
+QQL still reported `0` (Manual). A plausible cause is a
+stalled analytics republish for that project (the failure mode that branch
+`NSGHTS-155` fixes: the catch-up times out, retries the same statement, and parks as
+permanently failed with no automatic recovery). Treat a long-lived divergence as a
+signal that a project's republish is stuck, not as normal latency.
+
+**A full-entity response mixes both sources**, which makes this confusing to diagnose.
+Ask for whole cases and the hydrated fields show live values; ask for a projection —
+`SELECT (id, automation) …` — and the same case reports the index's values. One query,
+two answers, with the predicate agreeing with the projection.
+
+**So:** for a decision that turns on a single case — "does a human still have to run
+this?" — take the value from the full entity or confirm with `qase_get`. For a reported
+figure, say it came from QQL, and spot-check a few rows against REST when the number
+matters. Right after a write, do not trust a QQL count at all: wait, or read through
+REST.
+
+### `isManual` and `isToBeAutomated` do not mean what REST means by them
+
+Verified on the same clean project. REST sets `isManual: true` for `automation` **0 and
+1** — "not automated, a human still runs it". QQL's flag of the same name selects
+`automation = 1` only, and `isToBeAutomated` returns exactly the same rows:
+
+| Query on the clean project | Returned | Ground truth |
+|---|---|---|
+| `isManual = true` | 2 cases, both `automation: 1` | 5 cases have REST's `isManual` (three `0`, two `1`) |
+| `isToBeAutomated = true` | the same 2 cases | 2 ✓ |
+
+In QQL the two flags are aliases for *To be automated*. Do not use either to mean
+"not automated" — filter on `automation` and read the field.
+
+### A title can name more than one suite
+
+`case.suite` matches by title, and a project may hold several suites sharing a name.
+Two suites deliberately titled `Collide` in the clean project, holding one case each,
+were returned as one group by `suite = "Collide"`; on a real project the same shape
+returned 11 cases where the suite of that name in the tree held 6. A count scoped that
+way is not scoped to the suite you meant. Confirm with
+`SELECT (suite, COUNT(*)) … GROUP BY suite`, or scope by id where you can.
+
+### Two things that looked broken and are not
+
+Worth recording because both cost real time, and both were properties of one messy
+project rather than of QQL:
+
+- **Combining an `automation` predicate with another filter is fine.** On the clean
+  project `suite = "Collide" and automation = "Manual"` returned exactly the one
+  matching case, and `automation = "Manual" and id in [1..5]` returned exactly two.
+- **Row duplication is data-dependent, not general.** On one real project a
+  five-element `id` list came back as eight rows with three cases repeated; the same
+  shape of query on clean data returned no duplicates. Those cases carried repeated
+  custom-field entries, which is the likely fan-out. Still worth deduplicating by id before counting
+  from a row query in an unfamiliar project — and aggregation avoids the question
+  entirely: `GROUP BY` summed exactly to an independent `COUNT(*)` everywhere it was
+  checked.
 ## Limits
 
 | Constraint | Value |
