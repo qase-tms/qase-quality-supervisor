@@ -1,0 +1,30 @@
+skills/analyzing-change-impact/SKILL.md
+  s_0233ce05e4d37e::t_54c00220e94354 164,167,170-176
+  s_0233ce05e4d37e::t_ad0cf490f5410f 186-187
+  s_0233ce05e4d37e::t_0407d93e6363f4 177
+references/qql.md
+  s_0233ce05e4d37e::t_a75909c6530ecf 192-211,232-236
+  s_0233ce05e4d37e::t_e565c37af75e66 212-231
+  s_0233ce05e4d37e::t_b5384bd055e18a 165
+skills/finding-coverage-gaps/SKILL.md
+  s_0233ce05e4d37e::t_7b79ba1729b4ab 183,186-190
+  s_0233ce05e4d37e::t_52e456982f76b2 191
+CHANGELOG.md
+  s_0233ce05e4d37e::t_bceda75e6cf483 6-32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "a2ad36f6444f36e0e5595b7b691c61e9cffa44fb",
+  "prompts": {},
+  "sessions": {
+    "s_0233ce05e4d37e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f2e5db55-4b09-4ad3-9c78-892226c202de",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
