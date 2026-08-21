@@ -1,0 +1,63 @@
+name: Release
+
+# Publishes a GitHub release when a `v*` tag is pushed. The tag is the trigger and
+# the decision — nothing here decides *whether* to release, only that the tag is
+# consistent with what the repository actually contains.
+#
+# Note that validate.yml has no branch or tag filter, so it runs on this same push:
+# manifests, guards and the version-sync check are already covered there, and this
+# workflow deliberately does not repeat them. What it adds is the one thing validate
+# cannot know — that the tag agrees with the version in the manifests.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write # required to create the release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      # A tag can be pushed at any commit, including one whose manifests say a
+      # different version. Publishing v0.4.0 from a tree that still reports 0.3.0
+      # would ship an installable plugin that disagrees with its own release — and
+      # the integration marker sent to Qase analytics would report the stale value
+      # too. Fail here instead.
+      - name: Tag matches the version in the manifests
+        run: |
+          tag_version="${GITHUB_REF_NAME#v}"
+          plugin_version="$(sed -nE 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' .claude-plugin/plugin.json | head -1)"
+          if [ "$tag_version" != "$plugin_version" ]; then
+            echo "FAIL: tag ${GITHUB_REF_NAME} implies version ${tag_version}, but .claude-plugin/plugin.json says ${plugin_version}." >&2
+            echo "      Run scripts/set-version.sh ${tag_version}, commit, and re-tag." >&2
+            exit 1
+          fi
+          echo "tag ${GITHUB_REF_NAME} matches plugin.json ${plugin_version}"
+          echo "VERSION=${tag_version}" >> "$GITHUB_ENV"
+
+      # Belt and braces: the same check developers run locally, so a tag pushed at a
+      # commit where the four copies of the version disagree cannot be released.
+      - name: Version strings agree across the repository
+        run: bash scripts/check-version-sync.sh
+
+      # The changelog is written by hand and explains why each change was made, so it
+      # makes better notes than a generated commit list. No section means the release
+      # was never written up — that fails rather than publishing an empty release.
+      - name: Build release notes from the changelog
+        run: |
+          bash scripts/release-notes.sh "$VERSION" > release-notes.md
+          echo "--- notes ---"
+          cat release-notes.md
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME — Quality Supervisor" \
+            --notes-file release-notes.md \
+            --verify-tag

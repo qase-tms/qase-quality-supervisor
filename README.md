@@ -185,7 +185,8 @@ which is the part that degrades.
 ├── .githooks/
 │   └── pre-commit         # opt-in version-sync check (see docs/releasing.md)
 ├── .github/workflows/
-│   └── validate.yml       # CI: manifest validation, secrets scan, hook tests
+│   ├── validate.yml       # CI: manifest validation, secrets scan, hook tests
+│   └── release.yml        # CI: publish a release when a v* tag is pushed
 ├── .mcp.json               # Qase MCP server wiring, incl. the integration marker
 ├── agents/
 │   └── quality-supervisor.md
@@ -204,7 +205,8 @@ which is the part that degrades.
 ├── scripts/
 │   ├── verify-plugin.sh    # local verification (also run by CI)
 │   ├── check-version-sync.sh  # asserts every copy of the version agrees
-│   └── set-version.sh      # bumps all four copies in one command
+│   ├── set-version.sh      # bumps all four copies in one command
+│   └── release-notes.sh    # extracts a version's CHANGELOG section for a release
 ├── skills/
 │   ├── finding-coverage-gaps/
 │   ├── triaging-test-failures/
@@ -214,6 +216,7 @@ which is the part that degrades.
 │   └── analyzing-change-impact/         # + assets/impact-template.html
 ├── tests/
 │   ├── test-deny-destructive.sh
+│   ├── test-release-notes.sh
 │   └── test-version-sync.sh
 ├── CHANGELOG.md
 ├── LICENSE
