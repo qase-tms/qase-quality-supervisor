@@ -30,7 +30,39 @@ It rewrites all four, refuses a non-semver argument, and re-runs the consistency
 check. It rewrites by pattern rather than by the current value, so it also repairs
 a repository that has already drifted.
 
-Then add the `CHANGELOG.md` entry and commit.
+Then add the `CHANGELOG.md` entry and commit. The entry is not optional bookkeeping:
+it becomes the release notes, and a tag for a version with no changelog section fails
+the release workflow rather than publishing an empty one.
+
+## Cutting the release
+
+Once the version bump is merged to `main`, tag it and push:
+
+```bash
+git checkout main && git pull
+git tag -a v0.4.0 -m "Quality Supervisor 0.4.0"
+git push origin v0.4.0
+```
+
+`.github/workflows/release.yml` takes it from there: it asserts the tag matches the
+version in the manifests, re-runs the version-sync check, extracts that version's
+`CHANGELOG.md` section, and publishes the GitHub release. Tag format is `v<version>`,
+annotated, message `Quality Supervisor <version>` — matching the tags already in the
+repository.
+
+Two things worth knowing:
+
+- **The tag is the trigger and the decision.** Nothing decides *whether* to release;
+  pushing the tag does. So push it only from a commit you intend to ship.
+- **A mismatched tag fails rather than publishing.** Tagging `v0.4.0` at a tree whose
+  manifests still say `0.3.0` would ship a plugin that disagrees with its own release,
+  and its integration marker would report the stale version into Qase analytics. The
+  workflow refuses instead. Fix with `scripts/set-version.sh`, commit, delete the bad
+  tag (`git tag -d` and `git push origin :refs/tags/v0.4.0`), and re-tag.
+
+`claude plugin tag` also exists and validates the same manifest agreement, but it
+names tags `quality-supervisor--v<version>`. This repository uses the plain `v<version>`
+form its earlier tags and releases already use.
 
 ## Why a stale version is worse than a broken one
 
@@ -67,9 +99,13 @@ bypasses it. CI catches both.
 
 ```bash
 bash tests/test-version-sync.sh          # the version tooling itself
+bash tests/test-release-notes.sh         # changelog extraction for the release
 bash scripts/verify-plugin.sh --static-only  # manifests, secrets, guards, hook tests
 bash scripts/verify-plugin.sh            # the above, plus a real install and inventory
 ```
+
+`verify-plugin.sh` runs every `tests/test-*.sh`, so both test files are covered by the
+first two commands and by CI.
 
 The full run installs and uninstalls `quality-supervisor@quality-supervisor`
 through the `claude` CLI and removes that marketplace registration on exit —
