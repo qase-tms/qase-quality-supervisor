@@ -32,7 +32,7 @@ the data itself. That is the last section here, and it still applies.
 
 Read the section you need; the whole file is not required for a single query.
 
-**QQL requires a Business or Enterprise subscription.** On lower plans
+**QQL requires a Teams or Enterprise subscription.** On lower plans
 `qql_search` fails for every query. If it fails with a permission error, say so
 plainly and stop rather than retrying variations.
 

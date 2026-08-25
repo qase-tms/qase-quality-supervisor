@@ -43,7 +43,7 @@ GO.
 - A **project code** and a **release scope**. If the user hasn't named one, ask
   which milestone, plan, or runs define the release — do not default to the whole
   project.
-- QQL access (Business/Enterprise), plus `qase_api` for cross-checks.
+- QQL access (Teams/Enterprise), plus `qase_api` for cross-checks.
 
 ## Tools
 

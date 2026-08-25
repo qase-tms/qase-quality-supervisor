@@ -7,9 +7,9 @@ takes real time is the authorisation click.
 
 - A Qase project you can read, and its **project code** — the short uppercase
   prefix on your case IDs (`DEMO-42` → `DEMO`).
-- A Qase plan of **Business or Enterprise**. The analysis runs on QQL, which
+- A Qase plan of **Teams or Enterprise**. The analysis runs on QQL, which
   lower plans don't include. The hosted connection additionally needs
-  **Enterprise**; on Business, use the local server in step 2b.
+  **Enterprise**; on Teams, use the local server in step 2b.
 
 ## 1. Install the plugin
 
@@ -49,7 +49,7 @@ stores a credential.
 If the flow doesn't start, the usual cause is a client that can't open a browser
 (a headless or remote session). Use 2b there.
 
-### 2b. Local — for Business plans, or headless
+### 2b. Local — for Teams plans, or headless
 
 Create a token at `app.qase.io` → **Settings → API tokens**, put it in your
 environment, and replace `.mcp.json` with:
@@ -162,7 +162,7 @@ Deletion is blocked outright, in code, and cannot be approved. See
 | `/plugin` lists 5 skills, not 4 | expected: the CLI counts the `quality-report` command under Skills |
 | `Unknown command: /quality-report` | the prefix is required: `/quality-supervisor:quality-report` |
 | A skill answers "no access to Qase data" | the MCP server isn't connected or authorised — step 2 |
-| "QQL is only available in Business and Enterprise" | plan limitation; there is no workaround in the plugin |
+| "QQL is only available in Teams and Enterprise" | plan limitation; there is no workaround in the plugin |
 | A question gets a general answer, no analysis | routing missed; name the skill or use the command |
 | Suite or milestone lists look short | `qase_project_context` caps at 100 per collection and says so; treat them as a sample |
 | Numbers disagree with the Qase UI | expected on older projects — the search index has no historical backfill. The report flags it under Data confidence |

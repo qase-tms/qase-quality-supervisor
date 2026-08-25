@@ -57,12 +57,12 @@ marketplace if your build supports it.
   issue-tracker MCP is optional; without one it skips acceptance-criteria checks, and
   it never posts anywhere unless you ask it to.
 - **Plan:** the hosted endpoint requires an **Enterprise** subscription, and the
-  skills' analysis relies on QQL, which requires **Business or Enterprise**. On
-  a Business plan, use the local server instead (below).
+  skills' analysis relies on QQL, which requires **Teams or Enterprise**. On
+  a Teams plan, use the local server instead (below).
 
 ### Running the MCP server locally instead
 
-Useful on Business plans, for development, or where the hosted endpoint isn't
+Useful on Teams plans, for development, or where the hosted endpoint isn't
 reachable. Replace `.mcp.json` with:
 
 ```json
