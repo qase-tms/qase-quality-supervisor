@@ -1,0 +1,37 @@
+QUICKSTART.md
+  s_91abe2f2ad3179::t_9a0248111cc27f 10,12,52,165
+README.md
+  s_91abe2f2ad3179::t_0a62484d59c258 60-61,65
+docs/gui-smoke-check.md
+  s_91abe2f2ad3179::t_13751ae759ddf2 64-65
+references/qql.md
+  s_91abe2f2ad3179::t_ceb020f1d74647 35
+skills/analyzing-change-impact/SKILL.md
+  s_91abe2f2ad3179::t_6fb334dbac0846 36
+skills/analyzing-test-flakiness/SKILL.md
+  s_91abe2f2ad3179::t_078a75946c7018 46
+skills/assessing-release-readiness/SKILL.md
+  s_91abe2f2ad3179::t_8b64bd8af5139c 46
+skills/finding-coverage-gaps/SKILL.md
+  s_91abe2f2ad3179::t_fceffe76b11dbc 69
+skills/reporting-quality-pulse/SKILL.md
+  s_91abe2f2ad3179::t_23e231a0cb142c 31
+skills/triaging-test-failures/SKILL.md
+  s_91abe2f2ad3179::t_4911363159c7ec 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "c955d04e24887734fda25d49190c1486e3905b00",
+  "prompts": {},
+  "sessions": {
+    "s_91abe2f2ad3179": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a23e946f-3179-4d9c-8be7-f4f361a75f0f",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Manju R <cskmnrpt@gmail.com>"
+    }
+  }
+}
