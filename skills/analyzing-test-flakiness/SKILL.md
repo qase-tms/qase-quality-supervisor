@@ -43,7 +43,7 @@ counts, you have candidates, not findings.
 ## Prerequisites
 
 - A **project code**. If the user didn't give one, ask — never guess.
-- QQL access (Business/Enterprise). If `qql_search` returns a permission error,
+- QQL access (Teams/Enterprise). If `qql_search` returns a permission error,
   say so and stop; there is no fallback path for this analysis.
 
 ## Tools

@@ -27,7 +27,7 @@ differ per entity and a wrong name is a hard error, not an empty result.
 ## Prerequisites
 
 - A **project code**. A run ID if the user has one; otherwise find the latest.
-- QQL access (Business/Enterprise) for the run lookup and history checks. The
+- QQL access (Teams/Enterprise) for the run lookup and history checks. The
   row-level work goes through the REST API and needs no QQL.
 
 ## Tools

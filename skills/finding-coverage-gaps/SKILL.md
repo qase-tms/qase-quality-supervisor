@@ -66,7 +66,7 @@ them rather than quoting raw slugs at the user.
 ## Prerequisites
 
 - A **project code**. If the user didn't give one, ask — never guess.
-- QQL access (Business/Enterprise) for everything except the suite listing.
+- QQL access (Teams/Enterprise) for everything except the suite listing.
 
 ## Tools
 

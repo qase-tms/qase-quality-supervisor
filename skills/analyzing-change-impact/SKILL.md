@@ -33,7 +33,7 @@ Repository-agnostic: infer the stack from the repo rather than assuming one.
 - A **project code** for the Qase project holding the reference cases. If the user
   didn't give one, ask — never guess. Teams often keep one shared project for this;
   ask once and reuse it for the run.
-- QQL access (Business/Enterprise) for the coverage step.
+- QQL access (Teams/Enterprise) for the coverage step.
 - **Read `references/qql.md` before composing any QQL query.** Field names are not
   uniform across entities, and a wrong one is a hard error rather than an empty
   result.

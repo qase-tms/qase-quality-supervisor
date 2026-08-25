@@ -28,7 +28,7 @@ This is a **period overview**, not a scoped release decision. "Are we ready to s
 ## Prerequisites
 
 - A **project code**. If the user didn't give one, ask — never guess.
-- QQL access (Business/Enterprise) for the case-activity counts. If `qql_search`
+- QQL access (Teams/Enterprise) for the case-activity counts. If `qql_search`
   returns a permission error, say so and report the rest of the card without the
   new/updated case tiles rather than dropping the whole pulse.
 - **Read `references/qql.md` before composing any QQL query.** Field names are not
