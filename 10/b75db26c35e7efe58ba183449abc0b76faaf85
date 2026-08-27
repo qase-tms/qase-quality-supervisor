@@ -1,0 +1,43 @@
+CHANGELOG.md
+  s_15c538c6f05969::t_829e80d225f9ec 6-23
+.mcp.json
+  s_15c538c6f05969::t_03a779472ef582 7
+scripts/verify-plugin.sh
+  s_15c538c6f05969::t_4448c81a57b201 133,139
+.claude-plugin/plugin.json
+  s_15c538c6f05969::t_03a779472ef582 5
+skills/analyzing-test-coverage/SKILL.md
+  s_15c538c6f05969::t_3320a4eda9af73 1-68,70-276
+QUICKSTART.md
+  s_15c538c6f05969::t_2dfc197701dbbb 36-37
+  s_15c538c6f05969::t_4448c81a57b201 141
+.claude-plugin/marketplace.json
+  s_15c538c6f05969::t_03a779472ef582 9
+docs/gui-smoke-check.md
+  s_15c538c6f05969::t_2dfc197701dbbb 32
+agents/quality-supervisor.md
+  s_15c538c6f05969::t_4448c81a57b201 60,86
+skills/assessing-release-readiness/SKILL.md
+  s_15c538c6f05969::t_4448c81a57b201 53,126,174
+README.md
+  s_15c538c6f05969::t_4448c81a57b201 19,157,211
+  s_15c538c6f05969::t_03a779472ef582 76
+commands/quality-report.md
+  s_15c538c6f05969::t_4448c81a57b201 18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "10b75db26c35e7efe58ba183449abc0b76faaf85",
+  "prompts": {},
+  "sessions": {
+    "s_15c538c6f05969": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2a76f257-8e09-4e0f-9be8-d0c2691ce3ce",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
