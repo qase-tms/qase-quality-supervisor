@@ -16,7 +16,7 @@ add it once and install (and update) `quality-supervisor` from it.
 
 | Component | Name | Purpose |
 |-----------|------|---------|
-| Skill | `finding-coverage-gaps` | Find untested requirements/suites/critical paths; draft missing cases on approval. |
+| Skill | `analyzing-test-coverage` | Find untested requirements/suites/critical paths; draft missing cases on approval. |
 | Skill | `triaging-test-failures` | Cluster a run's failures, classify bug vs. automation vs. env vs. flaky, create + link defects. |
 | Skill | `analyzing-test-flakiness` | Quantify flaky/unstable tests via history + `isFlaky`; confirm by re-run; recommend quarantine/fix. |
 | Skill | `assessing-release-readiness` | Five-dimension go / no-go quality gate for a milestone, plan, or release. |
@@ -73,7 +73,7 @@ reachable. Replace `.mcp.json` with:
       "args": ["-y", "@qase/mcp-server"],
       "env": {
         "QASE_API_TOKEN": "${QASE_API_TOKEN}",
-        "QASE_MCP_INTEGRATION": "quality-supervisor/0.3.1"
+        "QASE_MCP_INTEGRATION": "quality-supervisor/0.3.2"
       }
     }
   }
@@ -154,7 +154,7 @@ way the command does:
 ```
 /quality-supervisor:analyzing-test-flakiness
 /quality-supervisor:triaging-test-failures
-/quality-supervisor:finding-coverage-gaps
+/quality-supervisor:analyzing-test-coverage
 /quality-supervisor:assessing-release-readiness
 /quality-supervisor:reporting-quality-pulse
 /quality-supervisor:analyzing-change-impact
@@ -208,7 +208,7 @@ which is the part that degrades.
 │   ├── set-version.sh      # bumps all four copies in one command
 │   └── release-notes.sh    # extracts a version's CHANGELOG section for a release
 ├── skills/
-│   ├── finding-coverage-gaps/
+│   ├── analyzing-test-coverage/
 │   ├── triaging-test-failures/
 │   ├── analyzing-test-flakiness/
 │   ├── assessing-release-readiness/

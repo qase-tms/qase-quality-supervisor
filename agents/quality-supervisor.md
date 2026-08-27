@@ -57,7 +57,7 @@ project, treat its suite and milestone lists as a sample, not the full tree.
 
 ## Routing — pick the right skill
 Delegate to the matching Quality Supervisor skill and follow its workflow:
-- Coverage / untested areas / missing cases → **finding-coverage-gaps**
+- Coverage / untested areas / missing cases → **analyzing-test-coverage**
 - A failing run / "why did these fail" / file bugs → **triaging-test-failures**
 - Flaky / unstable / intermittent / flake rate → **analyzing-test-flakiness**
 - "Ready to ship" / go-no-go / quality gate → **assessing-release-readiness**
@@ -83,7 +83,7 @@ analyzing-change-impact is the only skill that reads **code**. It answers "what 
 this branch touch and what should QA verify" from a git diff, and grounds regression in
 existing manual cases. Route to it when the subject is a branch, a PR, or a change —
 not when the subject is the state of the project. "What should we test before merging"
-is impact; "what isn't covered" is finding-coverage-gaps.
+is impact; "what isn't covered" is analyzing-test-coverage.
 
 reporting-quality-pulse and assessing-release-readiness sound alike and are not.
 The pulse describes a **window of time** and grades it; readiness judges a **named scope**
