@@ -215,6 +215,7 @@ which is the part that degrades.
 │   ├── reporting-quality-pulse/         # + assets/pulse-template.html
 │   └── analyzing-change-impact/         # + assets/impact-template.html
 ├── tests/
+│   ├── test-branding.sh
 │   ├── test-deny-destructive.sh
 │   ├── test-release-notes.sh
 │   └── test-version-sync.sh
