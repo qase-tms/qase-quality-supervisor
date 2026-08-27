@@ -1,0 +1,50 @@
+skills/analyzing-test-coverage/SKILL.md
+  s_15c538c6f05969::t_72c0c65bb7092d 249
+  s_15c538c6f05969::t_d863d97fe40c29 219-220,250-251
+skills/triaging-test-failures/SKILL.md
+  s_15c538c6f05969::t_72c0c65bb7092d 193
+  s_15c538c6f05969::t_d863d97fe40c29 173-174,194-195
+skills/analyzing-change-impact/SKILL.md
+  s_15c538c6f05969::t_8aa898fababf56 287-289
+  s_15c538c6f05969::t_08ffab609d1bcb 290-291,315
+skills/reporting-quality-pulse/SKILL.md
+  s_15c538c6f05969::t_08ffab609d1bcb 87
+tests/test-branding.sh
+  s_15c538c6f05969::t_6ca35c757f7b4a 9-86
+  s_15c538c6f05969::t_f8caf49ed4e93a 1-8,87-92
+README.md
+  s_15c538c6f05969::t_9366f92f5e7574 218
+CHANGELOG.md
+  s_15c538c6f05969::t_e75596a5f2f1cc 8-25
+skills/assessing-release-readiness/SKILL.md
+  s_15c538c6f05969::t_d863d97fe40c29 229-230,256-257
+  s_15c538c6f05969::t_72c0c65bb7092d 255
+skills/reporting-quality-pulse/assets/pulse-template.html
+  s_15c538c6f05969::t_71f61e82c4bf32 179
+  s_15c538c6f05969::t_c42d1bdcbc33f1 83
+skills/analyzing-test-flakiness/SKILL.md
+  s_15c538c6f05969::t_72c0c65bb7092d 182
+  s_15c538c6f05969::t_d863d97fe40c29 155-156,183-184
+skills/analyzing-change-impact/assets/impact-template.html
+  s_15c538c6f05969::t_c42d1bdcbc33f1 84
+  s_15c538c6f05969::t_71f61e82c4bf32 189-191
+commands/quality-report.md
+  s_15c538c6f05969::t_3707c3a4da3b67 38-39,61-63,66-69
+  s_15c538c6f05969::t_7707f97f952f8f 70
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "ae5f22a1445873a5a1745253d309ecbc6780cb3b",
+  "prompts": {},
+  "sessions": {
+    "s_15c538c6f05969": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2a76f257-8e09-4e0f-9be8-d0c2691ce3ce",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
