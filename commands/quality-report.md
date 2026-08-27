@@ -15,7 +15,7 @@ Steps:
 
 2. Run these analyses in order, each using its Quality Supervisor skill:
 
-   a. **finding-coverage-gaps** — top risk-ranked gaps, against the case total as
+   a. **analyzing-test-coverage** — top risk-ranked gaps, against the case total as
       the denominator.
    b. **analyzing-test-flakiness** — flake rate and least-stable cases. Confirm the
       time window holds results before reporting; an empty window is not a clean

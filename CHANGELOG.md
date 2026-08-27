@@ -3,6 +3,24 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.2] - 2026-08-27
+
+### Changed
+- **`finding-coverage-gaps` renamed to `analyzing-test-coverage`.** The old name read
+  as a promise the skill does not keep: "finding gaps" suggests the missing coverage is
+  derived from the codebase, while the skill works from the Qase test inventory —
+  execution, automation, suite structure, freshness. The new name also follows the
+  gerund convention the rest of the plugin already uses (`analyzing-test-flakiness`,
+  `assessing-release-readiness`, `triaging-test-failures`, `reporting-quality-pulse`,
+  `analyzing-change-impact`), which names a skill by the action it performs rather than
+  by an artifact.
+
+  **Breaking for anyone invoking it by name:** `/quality-supervisor:finding-coverage-gaps`
+  becomes `/quality-supervisor:analyzing-test-coverage`. No alias is shipped. Every
+  in-repo reference is updated — the agent's routing table, `quality-report`,
+  `assessing-release-readiness`, README, QUICKSTART, the GUI smoke check, and
+  `scripts/verify-plugin.sh`. The skill's content is unchanged.
+
 ## [0.3.1] - 2026-08-21
 
 ### Fixed

@@ -29,7 +29,7 @@ Restart the client so the skills load, then:
 **Expect:** `quality-supervisor` listed and enabled, with **5 skills, 1 agent, 1
 PreToolUse hook** — the CLI counts the `quality-report` command under `Skills`, so
 four skills plus a command prints as five. The five names are
-`analyzing-test-flakiness`, `assessing-release-readiness`, `finding-coverage-gaps`,
+`analyzing-test-coverage`, `analyzing-test-flakiness`, `assessing-release-readiness`,
 `quality-report`, `triaging-test-failures`.
 
 **Note if:** the marketplace add fails, the install needs different syntax in this

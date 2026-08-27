@@ -50,7 +50,7 @@ GO.
 - `qase_project_context` — project, milestones, environments. Call first.
 - `qql_search` — scope resolution, defects, flaky cases.
 - `qase_api` — run listings and stats, and the REST cross-check in step 6.
-- Delegate depth: `finding-coverage-gaps` for untested scope,
+- Delegate depth: `analyzing-test-coverage` for untested scope,
   `analyzing-test-flakiness` for stability risk.
 
 ## Workflow
@@ -123,7 +123,7 @@ Aggregated responses return status as an integer: 1 = Passed, 2 = Failed,
 3 = Blocked, 4 = Retest, 5 = Skipped, 8 = Invalid.
 
 Weight by priority or severity **only after checking they're populated** — see
-`finding-coverage-gaps` step 5. If most cases are "Not set", say the project has
+`analyzing-test-coverage` step 5. If most cases are "Not set", say the project has
 no usable risk metadata instead of ranking on a handful of tagged cases.
 
 ### 4. Blocking defects — use REST, not QQL
@@ -171,7 +171,7 @@ don't, assess project-wide and say that's what you did.
 ### 5. Untested scope and stability risk
 
 - **Untested scope**: the `untested` count from step 2 is the direct answer. For
-  which areas are uncovered, invoke `finding-coverage-gaps`.
+  which areas are uncovered, invoke `analyzing-test-coverage`.
 - **Stability risk**: flaky tests inside the scope inflate or mask failures.
 
 ```

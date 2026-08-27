@@ -33,8 +33,8 @@ PreToolUse hook**.
 
 Seven, not six: the CLI counts the `quality-report` command under `Skills` — there
 is no separate Commands row in its output. So the expected inventory is
-`analyzing-change-impact`, `analyzing-test-flakiness`, `assessing-release-readiness`,
-`finding-coverage-gaps`, `quality-report`, `reporting-quality-pulse`,
+`analyzing-change-impact`, `analyzing-test-coverage`, `analyzing-test-flakiness`,
+`assessing-release-readiness`, `quality-report`, `reporting-quality-pulse`,
 `triaging-test-failures`. Six skills plus a command is what ships; seven is what the
 inventory prints.
 
@@ -138,7 +138,7 @@ certainty, name the skill:
 ```
 /quality-supervisor:analyzing-test-flakiness
 /quality-supervisor:triaging-test-failures
-/quality-supervisor:finding-coverage-gaps
+/quality-supervisor:analyzing-test-coverage
 /quality-supervisor:assessing-release-readiness
 ```
 
