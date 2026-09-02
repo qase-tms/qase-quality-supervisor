@@ -130,6 +130,12 @@ through the `claude` CLI and removes that marketplace registration on exit —
 including one you added by hand. Expect to re-add it afterwards.
 
 Attribution itself cannot be verified from this repository: it needs an
-authenticated call from an installed plugin, then a look at the `PUBLIC_API_CALL`
-event, where `mcp_integration_name` should read `quality-supervisor` alongside an
-unchanged `source_name` (`qase-mcp-hosted`) and `mcp_client_name` (the AI host).
+authenticated call from an installed plugin, and then a check in Qase's internal
+analytics that the call is credited to this plugin — its name and version, and
+the component that produced it — with the server and AI-host identities
+unchanged. That last step belongs to the Qase side; the specific fields are
+documented there rather than here, since this is a public repository.
+
+`tests/e2e/wire-check.sh` covers everything up to that boundary: it proves the
+marker leaves the machine correctly attached to the right component, which is the
+part this repository owns.
