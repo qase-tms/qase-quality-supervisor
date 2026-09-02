@@ -1,0 +1,23 @@
+tests/test-mark-run.sh
+  s_5260ff255dbcae::t_2f2055117954b0 196-218
+  s_5260ff255dbcae::t_966dd59da37005 172-175,177-180,182
+hooks/mark-run.js
+  s_5260ff255dbcae::t_d4615b507e8be9 28-36,43,140-142
+  s_5260ff255dbcae::t_2d28c932476dbf 27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "5978f82e71233643c8bd70dd911d82fd4f808722",
+  "prompts": {},
+  "sessions": {
+    "s_5260ff255dbcae": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98c2e098-4d54-40df-a61f-2fb2d53949bb",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
