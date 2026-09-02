@@ -76,6 +76,65 @@ else
   pass "fails open on empty input"
 fi
 
+# --- A skill activation opens a run; seq increments per call ----------------
+
+shared_tmp="$(mktemp -d)"
+hook_in_shared() { TMPDIR="$shared_tmp" node "$HOOK"; }
+
+printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s2","tool_name":"Skill","tool_input":{"skill":"quality-supervisor:analyzing-test-coverage"}}' | hook_in_shared > /dev/null
+
+first="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s2","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"x"}}' | hook_in_shared)"
+second="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s2","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"y"}}' | hook_in_shared)"
+
+p1="$(echo "$first"  | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
+p2="$(echo "$second" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
+
+if [ "$p1" != "analyzing-test-coverage/1/skill" ]; then
+  fail "first call producer was '$p1', expected 'analyzing-test-coverage/1/skill'"
+else
+  pass "opens a run and strips the plugin prefix"
+fi
+if [ "$p2" != "analyzing-test-coverage/2/skill" ]; then
+  fail "second call producer was '$p2', expected seq 2"
+else
+  pass "increments seq within a run"
+fi
+
+# --- Stop closes the run -----------------------------------------------------
+
+printf '%s' '{"hook_event_name":"Stop","session_id":"s2"}' | hook_in_shared > /dev/null
+after="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s2","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"z"}}' | hook_in_shared)"
+p3="$(echo "$after" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // "absent"')"
+if [ "$p3" != "absent" ]; then
+  fail "a call after Stop was attributed to '$p3'; the run must be closed"
+else
+  pass "Stop closes the run"
+fi
+
+# --- Another plugin's skill is not ours --------------------------------------
+
+foreign_tmp="$(mktemp -d)"
+printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s3","tool_name":"Skill","tool_input":{"skill":"superpowers:brainstorming"}}' | TMPDIR="$foreign_tmp" node "$HOOK" > /dev/null
+foreign="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s3","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"q"}}' | TMPDIR="$foreign_tmp" node "$HOOK")"
+pf="$(echo "$foreign" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // "absent"')"
+if [ "$pf" != "absent" ]; then
+  fail "another plugin's skill was attributed to us as '$pf'"
+else
+  pass "ignores skills from other plugins"
+fi
+
+# --- A subagent does not share the parent's run ------------------------------
+
+sub_tmp="$(mktemp -d)"
+printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s4","tool_name":"Skill","tool_input":{"skill":"quality-supervisor:analyzing-test-flakiness"}}' | TMPDIR="$sub_tmp" node "$HOOK" > /dev/null
+sub="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s4","agent_id":"a99","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"q"}}' | TMPDIR="$sub_tmp" node "$HOOK")"
+ps="$(echo "$sub" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // "absent"')"
+if [ "$ps" != "absent" ]; then
+  fail "a subagent inherited the parent's run as '$ps'; state must be keyed by agent_id too"
+else
+  pass "keys run state by session_id + agent_id"
+fi
+
 if [ "$failures" -gt 0 ]; then
   echo "$failures check(s) failed" >&2
   exit 1
