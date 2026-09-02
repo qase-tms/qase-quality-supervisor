@@ -1,5 +1,5 @@
 {
-  "description": "Blocks Qase MCP tool calls that could delete data: any mcp__qase__*delete* tool call, and any mcp__qase__qase_api call whose method is DELETE — enforces the plugin's non-destructive design principle technically, not just in prompt text.",
+  "description": "Two jobs, with opposite failure contracts. The deny-* hooks block Qase MCP tool calls that could delete data (any mcp__qase__*delete* call, and any mcp__qase__qase_api call whose method is DELETE) and are fail-closed: an internal error blocks the call. mark-run.js attributes this plugin's Qase calls for usage analytics and is fail-open: any error leaves the call untouched and unmarked.",
   "hooks": {
     "PreToolUse": [
       {
@@ -17,6 +17,18 @@
           {
             "type": "command",
             "command": "${CLAUDE_PLUGIN_ROOT}/hooks/deny-destructive-api.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__qase__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": [
+              "${CLAUDE_PLUGIN_ROOT}/hooks/mark-run.js"
+            ]
           }
         ]
       }
