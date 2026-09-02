@@ -21,6 +21,32 @@ const crypto = require('crypto');
 
 const QASE_TOOL = /^mcp__qase__/;
 
+const PLUGIN_PREFIX = 'quality-supervisor:';
+
+function readState(file) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function writeState(file, state) {
+  try {
+    fs.writeFileSync(file, JSON.stringify(state));
+  } catch {
+    // Fail open: an unwritable tmpdir costs attribution, never the call.
+  }
+}
+
+function clearState(file) {
+  try {
+    fs.unlinkSync(file);
+  } catch {
+    // Already gone, or never written.
+  }
+}
+
 function readStdin() {
   try {
     return fs.readFileSync(0, 'utf8');
@@ -50,12 +76,39 @@ function emitUpdatedInput(toolInput) {
 
 function main() {
   const payload = JSON.parse(readStdin());
+  const event = payload.hook_event_name;
+  const file = statePath(payload);
 
-  if (payload.hook_event_name !== 'PreToolUse') return;
+  if (event === 'Stop') {
+    clearState(file);
+    return;
+  }
+
+  if (event !== 'PreToolUse') return;
+
+  if (payload.tool_name === 'Skill') {
+    const skill = (payload.tool_input || {}).skill || '';
+    if (skill.startsWith(PLUGIN_PREFIX)) {
+      writeState(file, {
+        producer: skill.slice(PLUGIN_PREFIX.length),
+        entrypoint: 'skill',
+        seq: 0,
+      });
+    }
+    return;
+  }
+
   if (!QASE_TOOL.test(payload.tool_name || '')) return;
 
   const toolInput = { ...(payload.tool_input || {}) };
   toolInput._qase_integration = `quality-supervisor/${pluginVersion()}`;
+
+  const state = readState(file);
+  if (state && state.producer) {
+    state.seq = (state.seq || 0) + 1;
+    writeState(file, state);
+    toolInput._qase_producer = `${state.producer}/${state.seq}/${state.entrypoint}`;
+  }
 
   emitUpdatedInput(toolInput);
 }
