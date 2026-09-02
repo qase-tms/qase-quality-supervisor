@@ -3,6 +3,57 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.0] - 2026-09-02
+
+### Added
+- **Usage is now attributed to the part of the plugin that produced it.** A bundled
+  hook, `hooks/mark-run.js`, adds two hidden fields to the arguments of each Qase MCP
+  call: `_qase_integration` (this plugin and its version) and, while a skill, the
+  `/quality-report` command, or the agent is running, `_qase_producer` — which of them
+  made the call, its position in that run, and whether it was reached as a skill, a
+  command, or the agent. The Qase MCP server turns these into `X-MCP-Integration-*`
+  headers.
+
+  This answers what the previous counter could not: which skills people actually run,
+  how many teams run each one, and whether the command and the agent are used at all.
+  A run is counted as its first call, so a skill issuing forty queries does not
+  outrank one issuing four.
+
+  Attribution is deterministic rather than trusting: the hook stamps the marker, so it
+  does not depend on the model remembering to on the fortieth tool call of a long run.
+  It is also fail-open — a machine with no Node, an unreadable temp directory, or any
+  internal error leaves the call untouched and simply unattributed. Requires **MCP
+  server 2.3.0 or newer**; older servers ignore the fields.
+
+### Changed
+- **`.mcp.json` no longer declares `X-Qase-Integration`.** A header on the MCP
+  connection cannot distinguish a call this plugin made from a call made while it was
+  merely installed — it tagged the whole session, and the resulting number was read as
+  usage. The hook above knows the difference.
+
+  The version-sync tooling shrank with it: `.mcp.json` and the README's self-run
+  example no longer repeat the plugin version, because the hook reads
+  `.claude-plugin/plugin.json` at runtime and puts the version on the wire itself.
+  `set-version.sh` now bumps two manifests instead of four files.
+
+  Self-run users no longer need `QASE_MCP_INTEGRATION`: the hook attributes hosted and
+  self-run alike.
+
+### Fixed
+- **Destructive Qase calls were unguarded on Windows without Git Bash.** Claude Code
+  runs hooks through Git Bash there and falls back to PowerShell when it is absent —
+  and both `deny-destructive` guards are shell scripts, so on such a machine they were
+  never executed. A hook that cannot run yields a non-blocking error, which means the
+  deletion proceeded. The guards were fail-closed by design and, in that environment,
+  absent in practice.
+
+  Each now has a PowerShell twin registered alongside it, so in every environment at
+  least one of the pair runs. They stay on bash rather than moving to Node: a
+  fail-closed guard must run everywhere, and Node is guaranteed on no platform, so
+  migrating would have traded a Windows hole for a hole on every platform.
+  `tests/test-hook-coverage.sh` fails if a destructive matcher is ever guarded in one
+  shell only.
+
 ## [0.3.2] - 2026-08-27
 
 ### Added

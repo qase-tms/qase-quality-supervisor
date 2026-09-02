@@ -197,8 +197,8 @@ which is the part that degrades.
 ├── hooks/
 │   ├── hooks.json          # destructive-call guards + usage attribution
 │   ├── mark-run.js         # attributes each Qase call to the part that made it
-│   ├── deny-destructive.sh
-│   └── deny-destructive-api.sh
+│   ├── deny-destructive.sh     # + .ps1 twin, so the guard runs on Windows too
+│   └── deny-destructive-api.sh # + .ps1 twin
 ├── references/
 │   └── qql.md              # verified QQL field/enum reference the skills read
 ├── scripts/
@@ -215,6 +215,7 @@ which is the part that degrades.
 │   └── analyzing-change-impact/         # + assets/impact-template.html
 ├── tests/
 │   ├── test-branding.sh
+│   ├── test-hook-coverage.sh
 │   ├── test-mark-run.sh
 │   ├── test-deny-destructive.sh
 │   ├── test-release-notes.sh
