@@ -89,19 +89,25 @@ prompt-level constraint, like the other write gates: the plugin ships no tracker
 credentials and no tracker MCP, so the capability exists only if the user has already
 connected one.
 
-**It does name itself on those requests.** `.mcp.json` declares
-`X-Qase-Integration: quality-supervisor/<version>` (self-run: the same value in
-`QASE_MCP_INTEGRATION`), which the Qase MCP server turns into
-`X-MCP-Integration-Name` and `X-MCP-Integration-Version` on the API calls it was
-already going to make. Qase records them to count which teams use this plugin, and
-on which version.
+**It does name itself on those requests.** A bundled hook, `hooks/mark-run.js`,
+adds two hidden fields to the arguments of each Qase MCP call: `_qase_integration`,
+this plugin's name and version, and — when a skill, the `/quality-report` command,
+or the agent is running — `_qase_producer`, naming which of them made the call, its
+position in that run, and whether it was reached as a skill, a command, or the
+agent. The Qase MCP server turns them into `X-MCP-Integration-*` headers on the API
+calls it was already going to make. Qase records them to count which teams use this
+plugin, which parts of it, and on which version.
 
-That marker is a constant. It is this plugin's name and version — not your identity,
-your prompts, your project, your test data, or anything derived from them. It adds no
-request of its own: it travels to Qase only, only on calls your client was already
-sending, and the plugin never learns the result. Removing it (drop the `headers`
-block, or the env var when self-running) changes nothing except that your team stops
-being counted.
+Every value is a constant drawn from this plugin's own namespace: skill names, a
+call counter, one of three entrypoint words. Not your identity, your prompts, your
+project code, your queries, your branch or file names, your test data, or anything
+derived from them. The hook adds no request of its own — the marker travels to Qase
+only, only on calls your client was already sending, and the plugin never learns the
+result.
+
+To switch it off, remove the `mark-run.js` entries from `hooks/hooks.json`, or run
+without Node on your PATH. Either way the calls still work; only the counting
+stops.
 
 **Access control is Qase's.** The plugin holds no privileges; the MCP server
 forwards the user's credential and Qase applies its own RBAC. A user cannot see

@@ -2,11 +2,12 @@
 #
 # Sets the plugin version everywhere it appears, in one command.
 #
-# The version lives in four places — two manifests, the X-Qase-Integration marker
-# in .mcp.json, and the self-run example in README.md — because .mcp.json cannot
-# interpolate it and Claude Code exposes no plugin-version variable to substitute.
-# Bumping by hand means remembering all four; this script is the single entry
-# point, and scripts/check-version-sync.sh is the net under it.
+# The version lives in two places — the plugin manifest and the marketplace
+# manifest — because neither can read the other. It used to live in four: the
+# X-Qase-Integration marker in .mcp.json and the self-run example in README.md
+# are gone, since hooks/mark-run.js reads the manifest at runtime and puts the
+# version on the wire itself. This script is still the single entry point, and
+# scripts/check-version-sync.sh is the net under it.
 #
 # Deliberately rewrites by pattern rather than by the current value, so it also
 # repairs a repository that is already out of sync.
@@ -28,7 +29,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="${2:-$(cd "$SCRIPT_DIR/.." && pwd)}"
 cd "$REPO_ROOT"
 
-INTEGRATION_NAME="quality-supervisor"
 
 # Semver only. The MCP server validates the marker's version against
 # ^[\w.\-+]{1,32}$ and silently drops anything else — keeping the name but losing
@@ -57,25 +57,9 @@ set_manifest_version() {
   printf '  %-34s %s -> %s\n' "$file" "$before" "$after"
 }
 
-# Replace every quality-supervisor/<version> occurrence in a text file.
-set_marker_version() {
-  local file="$1" before count
-  before="$(grep -oE "${INTEGRATION_NAME}/[0-9][^\"' ]*" "$file" | head -1 || true)"
-  count="$(grep -oE "${INTEGRATION_NAME}/[0-9][^\"' ]*" "$file" | wc -l | tr -d ' ')"
-  if [ "$count" -eq 0 ]; then
-    echo "FAIL: no ${INTEGRATION_NAME}/<version> marker found in $file." >&2
-    exit 1
-  fi
-  sed -i.bak -E "s|${INTEGRATION_NAME}/[0-9][^\"' ]*|${INTEGRATION_NAME}/${NEW_VERSION}|g" "$file"
-  rm -f "$file.bak"
-  printf '  %-34s %s -> %s/%s (%s occurrence(s))\n' "$file" "${before:-none}" "$INTEGRATION_NAME" "$NEW_VERSION" "$count"
-}
-
 echo "==> Setting version to $NEW_VERSION"
 set_manifest_version .claude-plugin/plugin.json
 set_manifest_version .claude-plugin/marketplace.json
-set_marker_version .mcp.json
-set_marker_version README.md
 
 echo "==> Verifying"
 bash "$SCRIPT_DIR/check-version-sync.sh" "$REPO_ROOT"

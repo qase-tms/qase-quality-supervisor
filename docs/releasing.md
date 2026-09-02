@@ -4,21 +4,23 @@ For maintainers. Users of the plugin need nothing here.
 
 ## Bump the version with the script, not by hand
 
-The version appears in four places:
+The version appears in two places:
 
 | File | Why it carries the version |
 |------|----------------------------|
 | `.claude-plugin/plugin.json` | The source of truth. |
 | `.claude-plugin/marketplace.json` | What the marketplace offers. |
-| `.mcp.json` | The `X-Qase-Integration` marker, reported to Qase analytics. |
-| `README.md` | The `QASE_MCP_INTEGRATION` value in the self-run example. |
 
-It is repeated rather than interpolated because `.mcp.json` has no way to
-interpolate it: Claude Code expands environment variables and
-`${CLAUDE_PLUGIN_ROOT}` there, but exposes no plugin-version variable. An
-unexpanded placeholder would not fail loudly either — the MCP server validates the
-marker's version and silently drops a malformed one while keeping the name, so the
-call would still be counted, just without a version.
+It is repeated rather than interpolated because neither manifest can read the
+other. Two further copies used to exist — the `X-Qase-Integration` marker in
+`.mcp.json` and the self-run example in `README.md` — and they are gone:
+`hooks/mark-run.js` reads `.claude-plugin/plugin.json` at runtime and puts the
+version on the wire itself, which is precisely what nothing could do before.
+
+The version still reaches Qase, so a malformed one still degrades quietly: the
+MCP server validates it and drops a bad value while keeping the name, leaving the
+call counted without a version. `set-version.sh` refuses non-semver for that
+reason.
 
 So bump in one command:
 
