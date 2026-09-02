@@ -23,6 +23,18 @@ const QASE_TOOL = /^mcp__qase__/;
 
 const PLUGIN_PREFIX = 'quality-supervisor:';
 
+const COMMAND_PREFIX = '/quality-supervisor:';
+const OUR_AGENT = 'quality-supervisor';
+
+// Which part of the plugin is driving, when a skill is activated. A run started
+// by our command or our agent keeps that entrypoint: the skill is how the work
+// is done, the entrypoint is how the user asked for it.
+function entrypointFor(payload, existing) {
+  if (existing && existing.entrypoint === 'command') return 'command';
+  if (payload.agent_type === OUR_AGENT) return 'agent';
+  return 'skill';
+}
+
 function readState(file) {
   try {
     return JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -84,6 +96,18 @@ function main() {
     return;
   }
 
+  if (event === 'UserPromptSubmit') {
+    const prompt = (payload.prompt || '').trim();
+    if (prompt.startsWith(COMMAND_PREFIX)) {
+      const name = prompt.slice(COMMAND_PREFIX.length).split(/\s/)[0];
+      if (name) writeState(file, { producer: name, entrypoint: 'command', seq: 0 });
+    } else {
+      // A new prompt that is not ours ends whatever run was open.
+      clearState(file);
+    }
+    return;
+  }
+
   if (event !== 'PreToolUse') return;
 
   if (payload.tool_name === 'Skill') {
@@ -91,7 +115,7 @@ function main() {
     if (skill.startsWith(PLUGIN_PREFIX)) {
       writeState(file, {
         producer: skill.slice(PLUGIN_PREFIX.length),
-        entrypoint: 'skill',
+        entrypoint: entrypointFor(payload, readState(file)),
         seq: 0,
       });
     }
@@ -103,7 +127,10 @@ function main() {
   const toolInput = { ...(payload.tool_input || {}) };
   toolInput._qase_integration = `quality-supervisor/${pluginVersion()}`;
 
-  const state = readState(file);
+  let state = readState(file);
+  if (!state && payload.agent_type === OUR_AGENT) {
+    state = { producer: OUR_AGENT, entrypoint: 'agent', seq: 0 };
+  }
   if (state && state.producer) {
     state.seq = (state.seq || 0) + 1;
     writeState(file, state);

@@ -135,6 +135,71 @@ else
   pass "keys run state by session_id + agent_id"
 fi
 
+# --- A slash command opens a run named after the command --------------------
+
+cmd_tmp="$(mktemp -d)"
+printf '%s' '{"hook_event_name":"UserPromptSubmit","session_id":"s5","prompt":"/quality-supervisor:quality-report WEB"}' | TMPDIR="$cmd_tmp" node "$HOOK" > /dev/null
+cmd_call="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s5","tool_name":"mcp__qase__qase_project_context","tool_input":{"code":"WEB"}}' | TMPDIR="$cmd_tmp" node "$HOOK")"
+pc="$(echo "$cmd_call" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
+if [ "$pc" != "quality-report/1/command" ]; then
+  fail "command call producer was '$pc', expected 'quality-report/1/command'"
+else
+  pass "attributes pre-skill calls to the command"
+fi
+
+# --- A skill inside that command keeps the command entrypoint ---------------
+
+printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s5","tool_name":"Skill","tool_input":{"skill":"quality-supervisor:analyzing-test-coverage"}}' | TMPDIR="$cmd_tmp" node "$HOOK" > /dev/null
+in_cmd="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s5","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"q"}}' | TMPDIR="$cmd_tmp" node "$HOOK")"
+pic="$(echo "$in_cmd" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
+if [ "$pic" != "analyzing-test-coverage/1/command" ]; then
+  fail "skill inside a command was '$pic', expected 'analyzing-test-coverage/1/command'"
+else
+  pass "keeps the command entrypoint for skills it launched"
+fi
+
+# --- A prompt that is not our command does not open a run -------------------
+
+other_tmp="$(mktemp -d)"
+printf '%s' '{"hook_event_name":"UserPromptSubmit","session_id":"s6","prompt":"/gsd:help"}' | TMPDIR="$other_tmp" node "$HOOK" > /dev/null
+oc="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s6","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"q"}}' | TMPDIR="$other_tmp" node "$HOOK" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // "absent"')"
+if [ "$oc" != "absent" ]; then
+  fail "another plugin's command opened a run as '$oc'"
+else
+  pass "ignores commands from other plugins"
+fi
+
+# --- The agent attributes its own pre-skill calls ---------------------------
+
+agent_tmp="$(mktemp -d)"
+pa="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s7","agent_id":"a1","agent_type":"quality-supervisor","tool_name":"mcp__qase__qase_project_context","tool_input":{"code":"WEB"}}' | TMPDIR="$agent_tmp" node "$HOOK" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
+if [ "$pa" != "quality-supervisor/1/agent" ]; then
+  fail "agent call producer was '$pa', expected 'quality-supervisor/1/agent'"
+else
+  pass "attributes the agent's own calls"
+fi
+
+# --- A skill run by our agent reports the agent entrypoint ------------------
+
+printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s7","agent_id":"a1","agent_type":"quality-supervisor","tool_name":"Skill","tool_input":{"skill":"quality-supervisor:triaging-test-failures"}}' | TMPDIR="$agent_tmp" node "$HOOK" > /dev/null
+pas="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s7","agent_id":"a1","agent_type":"quality-supervisor","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"q"}}' | TMPDIR="$agent_tmp" node "$HOOK" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
+if [ "$pas" != "triaging-test-failures/1/agent" ]; then
+  fail "skill inside our agent was '$pas', expected 'triaging-test-failures/1/agent'"
+else
+  pass "marks skills run by our agent as agent-entrypoint"
+fi
+
+# --- A third-party agent running our skill is still 'skill' -----------------
+
+gp_tmp="$(mktemp -d)"
+printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s8","agent_id":"a2","agent_type":"general-purpose","tool_name":"Skill","tool_input":{"skill":"quality-supervisor:analyzing-test-coverage"}}' | TMPDIR="$gp_tmp" node "$HOOK" > /dev/null
+pgp="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s8","agent_id":"a2","agent_type":"general-purpose","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"q"}}' | TMPDIR="$gp_tmp" node "$HOOK" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
+if [ "$pgp" != "analyzing-test-coverage/1/skill" ]; then
+  fail "third-party agent gave '$pgp', expected entrypoint 'skill'"
+else
+  pass "a third-party agent running our skill is still skill-entrypoint"
+fi
+
 if [ "$failures" -gt 0 ]; then
   echo "$failures check(s) failed" >&2
   exit 1
