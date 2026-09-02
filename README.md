@@ -219,7 +219,8 @@ which is the part that degrades.
 │   ├── test-mark-run.sh
 │   ├── test-deny-destructive.sh
 │   ├── test-release-notes.sh
-│   └── test-version-sync.sh
+│   ├── test-version-sync.sh
+│   └── e2e/                    # wire check; needs `claude`, run before a release
 ├── CHANGELOG.md
 ├── LICENSE
 ├── QUICKSTART.md           # install -> first report

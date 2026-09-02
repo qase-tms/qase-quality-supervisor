@@ -2,6 +2,22 @@
 
 For maintainers. Users of the plugin need nothing here.
 
+## Before a release: the end-to-end wire check
+
+```bash
+./tests/e2e/wire-check.sh
+```
+
+Starts real Claude Code sessions against a stand-in MCP server that logs the wire,
+and asserts that attribution survives the whole path — including the boundary that
+matters most: a call in a new prompt must not be credited to the skill that ran in
+the previous one.
+
+Deliberately outside the `tests/test-*.sh` glob that `verify-plugin.sh` sweeps: it
+needs the `claude` binary, starts real sessions and costs tokens, so it belongs to
+the release checklist rather than to every commit. It skips itself if `claude` is
+not on PATH.
+
 ## Bump the version with the script, not by hand
 
 The version appears in two places:
