@@ -72,8 +72,7 @@ reachable. Replace `.mcp.json` with:
       "command": "npx",
       "args": ["-y", "@qase/mcp-server"],
       "env": {
-        "QASE_API_TOKEN": "${QASE_API_TOKEN}",
-        "QASE_MCP_INTEGRATION": "quality-supervisor/0.3.2"
+        "QASE_API_TOKEN": "${QASE_API_TOKEN}"
       }
     }
   }
@@ -84,12 +83,11 @@ Then set `QASE_API_TOKEN` in your environment (create one at `app.qase.io` →
 API tokens). Keep the server name `qase` — the bundled guard hooks match tool
 names by that prefix, and renaming it silently disables them.
 
-`QASE_MCP_INTEGRATION` is the self-run equivalent of the `X-Qase-Integration`
-header the hosted configuration sends: it tells Qase that these calls came from
-this plugin, so usage can be counted per team. It carries this plugin's name and
-version and nothing else — see [SECURITY.md](SECURITY.md). Attribution needs
-**MCP server 2.2.2 or newer**; older servers ignore the variable, and dropping it
-costs you nothing but the count.
+Nothing else to set for attribution: the plugin names itself on each call from a
+hook, hosted and self-run alike, so both configurations are counted the same way
+— see [SECURITY.md](SECURITY.md). Attribution needs **MCP server 2.3.0 or
+newer** and Node on your PATH; without either, the calls simply go unattributed
+and everything else works.
 
 The skills expect **MCP server 2.1.1 or newer**. Earlier versions ship broken QQL
 examples in the tool schema — which the model copies and the API rejects — and,
@@ -187,7 +185,7 @@ which is the part that degrades.
 ├── .github/workflows/
 │   ├── validate.yml       # CI: manifest validation, secrets scan, hook tests
 │   └── release.yml        # CI: publish a release when a v* tag is pushed
-├── .mcp.json               # Qase MCP server wiring, incl. the integration marker
+├── .mcp.json               # Qase MCP server wiring
 ├── agents/
 │   └── quality-supervisor.md
 ├── commands/
@@ -197,7 +195,8 @@ which is the part that degrades.
 │   ├── releasing.md        # version bumps, the pre-commit hook, release checks
 │   └── superpowers/        # design specs and plans behind each iteration
 ├── hooks/
-│   ├── hooks.json          # PreToolUse guards against destructive calls
+│   ├── hooks.json          # destructive-call guards + usage attribution
+│   ├── mark-run.js         # attributes each Qase call to the part that made it
 │   ├── deny-destructive.sh
 │   └── deny-destructive-api.sh
 ├── references/
@@ -216,6 +215,7 @@ which is the part that degrades.
 │   └── analyzing-change-impact/         # + assets/impact-template.html
 ├── tests/
 │   ├── test-branding.sh
+│   ├── test-mark-run.sh
 │   ├── test-deny-destructive.sh
 │   ├── test-release-notes.sh
 │   └── test-version-sync.sh
