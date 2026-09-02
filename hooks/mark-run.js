@@ -24,14 +24,23 @@ const QASE_TOOL = /^mcp__qase__/;
 const PLUGIN_PREFIX = 'quality-supervisor:';
 
 const COMMAND_PREFIX = '/quality-supervisor:';
-const OUR_AGENT = 'quality-supervisor';
+
+// Claude Code namespaces a plugin's agent the same way it namespaces its skills:
+// "<plugin>:<agent>". Matching the prefix rather than a bare name is what makes
+// entrypoint=agent possible at all, and it keeps working if this plugin ever
+// ships a second agent. Returns the agent's own name, or null when the caller is
+// not one of ours.
+function ourAgentName(payload) {
+  const type = payload.agent_type || '';
+  return type.startsWith(PLUGIN_PREFIX) ? type.slice(PLUGIN_PREFIX.length) : null;
+}
 
 // Which part of the plugin is driving, when a skill is activated. A run started
 // by our command or our agent keeps that entrypoint: the skill is how the work
 // is done, the entrypoint is how the user asked for it.
 function entrypointFor(payload, existing) {
   if (existing && existing.entrypoint === 'command') return 'command';
-  if (payload.agent_type === OUR_AGENT) return 'agent';
+  if (ourAgentName(payload)) return 'agent';
   return 'skill';
 }
 
@@ -128,8 +137,9 @@ function main() {
   toolInput._qase_integration = `quality-supervisor/${pluginVersion()}`;
 
   let state = readState(file);
-  if (!state && payload.agent_type === OUR_AGENT) {
-    state = { producer: OUR_AGENT, entrypoint: 'agent', seq: 0 };
+  if (!state) {
+    const agent = ourAgentName(payload);
+    if (agent) state = { producer: agent, entrypoint: 'agent', seq: 0 };
   }
   if (state && state.producer) {
     state.seq = (state.seq || 0) + 1;
