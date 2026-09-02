@@ -1,0 +1,34 @@
+CHANGELOG.md
+  s_5260ff255dbcae::t_60439a8670f798 6-56
+hooks/hooks.json
+  s_5260ff255dbcae::t_96ef835f4652d0 11-22,32-43
+.claude-plugin/marketplace.json
+  s_5260ff255dbcae::t_60439a8670f798 9
+README.md
+  s_5260ff255dbcae::t_60439a8670f798 218
+  s_5260ff255dbcae::t_1378773a137609 200-201
+.claude-plugin/plugin.json
+  s_5260ff255dbcae::t_60439a8670f798 5
+hooks/deny-destructive-api.ps1
+  s_5260ff255dbcae::t_6f769397bb7226 1-34
+hooks/deny-destructive.ps1
+  s_5260ff255dbcae::t_858d4dbc810e03 1-29
+tests/test-hook-coverage.sh
+  s_5260ff255dbcae::t_67e05e7b12f569 1-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "f9c501468b479c67451d7ed9c3b112f5dc2b1079",
+  "prompts": {},
+  "sessions": {
+    "s_5260ff255dbcae": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98c2e098-4d54-40df-a61f-2fb2d53949bb",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
