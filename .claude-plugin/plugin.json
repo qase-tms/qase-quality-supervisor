@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "quality-supervisor",
   "displayName": "Quality Supervisor",
-  "version": "0.4.0",
+  "version": "0.3.3",
   "description": "Agentic QA quality-intelligence for Qase: coverage gaps, failure triage and root-cause, flakiness vs. regression, release-readiness gating, a visual quality pulse for any period, and branch impact analysis with a regression checklist — driven through the Qase MCP server, with Qase as the system of record.",
   "author": {
     "name": "Qase",
