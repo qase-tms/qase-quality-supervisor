@@ -59,7 +59,7 @@ for f in LICENSE CHANGELOG.md; do
   fi
 done
 
-echo "==> Version strings agree (manifests, integration marker, README)"
+echo "==> Version strings agree (plugin and marketplace manifests)"
 bash scripts/check-version-sync.sh "$REPO_ROOT"
 
 echo "==> Destructive-call guards declared and executable"
