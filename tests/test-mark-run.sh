@@ -169,24 +169,17 @@ else
   pass "ignores commands from other plugins"
 fi
 
-# --- The agent attributes its own pre-skill calls ---------------------------
+# --- A bare agent name is not ours -----------------------------------------
+#
+# Only the namespaced form identifies this plugin's agent. An unrelated agent
+# that happens to be called "quality-supervisor" must not be counted as ours.
 
-agent_tmp="$(mktemp -d)"
-pa="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s7","agent_id":"a1","agent_type":"quality-supervisor","tool_name":"mcp__qase__qase_project_context","tool_input":{"code":"WEB"}}' | TMPDIR="$agent_tmp" node "$HOOK" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
-if [ "$pa" != "quality-supervisor/1/agent" ]; then
-  fail "agent call producer was '$pa', expected 'quality-supervisor/1/agent'"
+bare_tmp="$(mktemp -d)"
+bare="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s10","agent_id":"a4","agent_type":"quality-supervisor","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"q"}}' | TMPDIR="$bare_tmp" node "$HOOK" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // "absent"')"
+if [ "$bare" != "absent" ]; then
+  fail "an agent named 'quality-supervisor' but not from this plugin was counted as '$bare'"
 else
-  pass "attributes the agent's own calls"
-fi
-
-# --- A skill run by our agent reports the agent entrypoint ------------------
-
-printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s7","agent_id":"a1","agent_type":"quality-supervisor","tool_name":"Skill","tool_input":{"skill":"quality-supervisor:triaging-test-failures"}}' | TMPDIR="$agent_tmp" node "$HOOK" > /dev/null
-pas="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s7","agent_id":"a1","agent_type":"quality-supervisor","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"q"}}' | TMPDIR="$agent_tmp" node "$HOOK" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
-if [ "$pas" != "triaging-test-failures/1/agent" ]; then
-  fail "skill inside our agent was '$pas', expected 'triaging-test-failures/1/agent'"
-else
-  pass "marks skills run by our agent as agent-entrypoint"
+  pass "an unnamespaced agent of the same name is not ours"
 fi
 
 # --- A third-party agent running our skill is still 'skill' -----------------
@@ -198,6 +191,29 @@ if [ "$pgp" != "analyzing-test-coverage/1/skill" ]; then
   fail "third-party agent gave '$pgp', expected entrypoint 'skill'"
 else
   pass "a third-party agent running our skill is still skill-entrypoint"
+fi
+
+# --- our agent is namespaced too, exactly like our skills -------------------
+#
+# Claude Code reports a plugin agent as "<plugin>:<agent>", so a bare-name
+# comparison never matches and entrypoint=agent would never be produced. Caught
+# by a live run, not by the unit tests, which had only ever exercised the
+# unprefixed general-purpose agent.
+
+ns_tmp="$(mktemp -d)"
+ns="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s9","agent_id":"a3","agent_type":"quality-supervisor:quality-supervisor","tool_name":"mcp__qase__qase_project_context","tool_input":{"code":"QM"}}' | TMPDIR="$ns_tmp" node "$HOOK" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
+if [ "$ns" != "quality-supervisor/1/agent" ]; then
+  fail "namespaced agent gave '$ns', expected 'quality-supervisor/1/agent'"
+else
+  pass "recognises our agent under its namespaced agent_type"
+fi
+
+printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s9","agent_id":"a3","agent_type":"quality-supervisor:quality-supervisor","tool_name":"Skill","tool_input":{"skill":"quality-supervisor:triaging-test-failures"}}' | TMPDIR="$ns_tmp" node "$HOOK" > /dev/null
+nss="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"s9","agent_id":"a3","agent_type":"quality-supervisor:quality-supervisor","tool_name":"mcp__qase__qase_qql","tool_input":{"query":"q"}}' | TMPDIR="$ns_tmp" node "$HOOK" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
+if [ "$nss" != "triaging-test-failures/1/agent" ]; then
+  fail "skill inside the namespaced agent gave '$nss', expected entrypoint 'agent'"
+else
+  pass "skills run by the namespaced agent report the agent entrypoint"
 fi
 
 if [ "$failures" -gt 0 ]; then
