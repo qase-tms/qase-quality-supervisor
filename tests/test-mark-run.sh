@@ -216,6 +216,54 @@ else
   pass "skills run by the namespaced agent report the agent entrypoint"
 fi
 
+# --- Codex mode: a skill is loaded by reading its SKILL.md, not by a tool call --
+#
+# Codex has no skill event (openai/codex#17132 is still open), and it loads a
+# skill by shelling out to read the file. The path is how the run is opened there.
+# It must be OUR plugin's file: another plugin's skill sits under a different root.
+
+codex_tmp="$(mktemp -d)"
+PLUGIN_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+load_cmd="sed -n '1,240p' $PLUGIN_ROOT/skills/analyzing-test-coverage/SKILL.md"
+printf '{"hook_event_name":"PreToolUse","session_id":"c1","tool_name":"Bash","tool_input":{"command":"%s"}}' "$load_cmd" \
+  | TMPDIR="$codex_tmp" node "$HOOK" --codex > /dev/null
+
+cx="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"c1","tool_name":"mcp__qase__qql_search","tool_input":{"query":"q"}}' | TMPDIR="$codex_tmp" node "$HOOK" --codex)"
+cxp="$(echo "$cx" | jq -r '.hookSpecificOutput.updatedInput._qase_producer // empty')"
+if [ "$cxp" != "analyzing-test-coverage/1/skill" ]; then
+  fail "codex mode: producer was '$cxp', expected 'analyzing-test-coverage/1/skill'"
+else
+  pass "codex mode opens a run from the SKILL.md read"
+fi
+
+# Codex applies updatedInput only when the hook also allows the call.
+cxd="$(echo "$cx" | jq -r '.hookSpecificOutput.permissionDecision // "absent"')"
+if [ "$cxd" != "allow" ]; then
+  fail "codex mode: permissionDecision was '$cxd'; Codex drops updatedInput without allow"
+else
+  pass "codex mode returns permissionDecision allow beside updatedInput"
+fi
+
+# Claude Code must NOT get that allow: it would remove the permission gate there.
+cc="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"c2","tool_name":"mcp__qase__qql_search","tool_input":{"query":"q"}}' | TMPDIR="$(mktemp -d)" node "$HOOK")"
+ccd="$(echo "$cc" | jq -r '.hookSpecificOutput.permissionDecision // "absent"')"
+if [ "$ccd" != "absent" ]; then
+  fail "default mode emitted permissionDecision '$ccd'; it must never approve a call"
+else
+  pass "default mode never approves a call"
+fi
+
+# A skill belonging to some other plugin must not open our run.
+other_tmp="$(mktemp -d)"
+printf '%s' '{"hook_event_name":"PreToolUse","session_id":"c3","tool_name":"Bash","tool_input":{"command":"sed -n 1,10p /somewhere/else/skills/their-skill/SKILL.md"}}' \
+  | TMPDIR="$other_tmp" node "$HOOK" --codex > /dev/null
+op="$(printf '%s' '{"hook_event_name":"PreToolUse","session_id":"c3","tool_name":"mcp__qase__qql_search","tool_input":{"query":"q"}}' | TMPDIR="$other_tmp" node "$HOOK" --codex | jq -r '.hookSpecificOutput.updatedInput._qase_producer // "absent"')"
+if [ "$op" != "absent" ]; then
+  fail "another plugin's SKILL.md opened our run as '$op'"
+else
+  pass "codex mode ignores another plugin's skill file"
+fi
+
 if [ "$failures" -gt 0 ]; then
   echo "$failures check(s) failed" >&2
   exit 1
