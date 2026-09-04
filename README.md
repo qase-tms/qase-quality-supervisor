@@ -41,6 +41,35 @@ After a restart, `/plugin` reports the inventory as **7 skills, 1 agent, 1
 PreToolUse hook**. Seven because the CLI counts the `quality-report` command under
 `Skills`; six skills plus one command is what actually ships.
 
+In Codex:
+
+```
+codex plugin marketplace add qase-tms/qase-quality-supervisor
+codex plugin add quality-supervisor@quality-supervisor
+```
+
+The six skills arrive namespaced as `quality-supervisor:<skill>` — invoke one with
+`$quality-supervisor:analyzing-test-coverage`, or just describe the problem and let
+Codex route to it. The Qase MCP server is registered from `.mcp.json`
+automatically; authenticate it once with `codex mcp login qase`.
+
+The destructive-call guards and usage attribution both work here. Codex will not
+run a plugin's hooks until you accept its prompt to **trust** them, on the first
+interactive run after install; until you do they are skipped silently, so a fresh
+install has the skills and the MCP server but not yet the guards. `codex exec`
+never prompts, so in non-interactive use they stay inert unless trust was granted
+earlier. What the attribution sends, and the one permission it changes, are in
+[SECURITY.md](SECURITY.md).
+
+On Windows **without Git Bash** the guards do not run at all: Codex has no
+interpreter for the shell scripts, and the PowerShell twins are not registered for
+it. Withhold the destructive tools in `~/.codex/config.toml` there —
+`disabled_tools` on the Qase server keeps them out of the model's reach entirely.
+
+The command and the agent have no Codex equivalent, so `/quality-report` and the
+`quality-supervisor` agent are Claude Code only. The skills they orchestrate all
+work; you run them one at a time.
+
 In Cowork, install the packaged `.plugin` file directly, or add this repo as a
 marketplace if your build supports it.
 
@@ -185,6 +214,7 @@ which is the part that degrades.
 ├── .github/workflows/
 │   ├── validate.yml       # CI: manifest validation, secrets scan, hook tests
 │   └── release.yml        # CI: publish a release when a v* tag is pushed
+├── .codex-plugin/          # Codex plugin manifest (skills, MCP, hooks)
 ├── .mcp.json               # Qase MCP server wiring
 ├── agents/
 │   └── quality-supervisor.md
@@ -195,7 +225,8 @@ which is the part that degrades.
 │   ├── releasing.md        # version bumps, the pre-commit hook, release checks
 │   └── superpowers/        # design specs and plans behind each iteration
 ├── hooks/
-│   ├── hooks.json          # destructive-call guards + usage attribution
+│   ├── hooks.json          # Claude Code: guards + usage attribution
+│   ├── hooks.codex.json    # Codex: guards only (see Install)
 │   ├── mark-run.js         # attributes each Qase call to the part that made it
 │   ├── deny-destructive.sh     # + .ps1 twin, so the guard runs on Windows too
 │   └── deny-destructive-api.sh # + .ps1 twin
@@ -216,6 +247,7 @@ which is the part that degrades.
 ├── tests/
 │   ├── test-branding.sh
 │   ├── test-hook-coverage.sh
+│   ├── test-hook-parity.sh
 │   ├── test-mark-run.sh
 │   ├── test-deny-destructive.sh
 │   ├── test-release-notes.sh

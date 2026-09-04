@@ -3,7 +3,7 @@
 # Asserts that every place carrying this plugin's version agrees with
 # .claude-plugin/plugin.json, which is the single source of truth.
 #
-# Two manifests repeat the version, and they are all that is left to check. The
+# Three manifests repeat the version, and they are all that is left to check. The
 # X-Qase-Integration marker in .mcp.json and the self-run example in README.md
 # used to be here too, and the argument for checking them was that nothing could
 # build them from the manifest at runtime. hooks/mark-run.js does exactly that —
@@ -40,4 +40,13 @@ if [ "$marketplace_version" != "$plugin_version" ]; then
   fail ".claude-plugin/marketplace.json is version ${marketplace_version}, but .claude-plugin/plugin.json is ${plugin_version}."
 fi
 
-echo "version $plugin_version is consistent across plugin.json and marketplace.json"
+# The Codex manifest is a second plugin manifest for a second harness. A stale
+# version here misreports which release a Codex user is running, and the two
+# manifests are never read by the same tool, so nothing else would notice.
+codex_version="$(sed -nE 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' .codex-plugin/plugin.json | head -1)"
+[ -n "$codex_version" ] || fail "could not read \"version\" from .codex-plugin/plugin.json."
+if [ "$codex_version" != "$plugin_version" ]; then
+  fail ".codex-plugin/plugin.json is version ${codex_version}, but .claude-plugin/plugin.json is ${plugin_version}."
+fi
+
+echo "version $plugin_version is consistent across both plugin manifests and marketplace.json"

@@ -107,7 +107,23 @@ result.
 
 To switch it off, remove the `mark-run.js` entries from `hooks/hooks.json`, or run
 without Node on your PATH. Either way the calls still work; only the counting
-stops.
+stops. The same applies on any host that does not run hooks, or whose hooks you
+have not trusted: nothing is sent and nothing is counted, without any action on
+your part.
+
+**In Codex the hook returns an approval, on four tools only.** That host discards a
+hook's rewritten arguments unless the same hook also approves the call, so on
+`qase_get`, `qase_project_context`, `qql_search` and `qql_help` the attribution
+hook returns one. None of the four can change anything in Qase — they are the read
+and QQL operations — and they never overlap the destructive guards, so an approval
+here can never override a block. Writes are not in that list.
+
+Observed, and worth stating because it contradicts what this document said in an
+earlier draft: Codex still shows **its own** approval prompt for MCP tools, so the
+hook's approval does not remove a gate you would otherwise have had. Whether the
+marker itself reaches Qase from Codex has not been confirmed end to end. Removing
+the two `mark-run.js` entries from `hooks/hooks.codex.json` drops the approval and
+the attribution together, and leaves the guards untouched.
 
 **Access control is Qase's.** The plugin holds no privileges; the MCP server
 forwards the user's credential and Qase applies its own RBAC. A user cannot see
@@ -127,6 +143,20 @@ That gating is prompt-level: it constrains the model, and a model can be argued
 with. It is why the destructive path below is enforced in code instead.
 
 ## Destructive operations are blocked in code
+
+**Enforced by hooks, so only where the host runs them, and only in the shell it
+can run.** On Windows without Git Bash under Codex neither guard executes: there is
+no shell for the `.sh` scripts and the PowerShell twins are registered only for
+Claude Code. `README.md` shows how to withhold the destructive tools in Codex's own
+configuration there, which does not depend on a hook running at all.
+
+**Enforced by hooks, so only where the host runs them.** Claude Code runs them on
+install. Codex runs them too — same matchers, same fail-closed scripts, same block
+— but only after you accept its prompt to trust the plugin's hooks, which it shows
+on the first interactive run. Until then they are skipped silently, and `codex
+exec` never prompts at all. A host that does not run hooks, or hooks you have not
+yet trusted, leaves only the skills' own instructions between an agent and a
+deletion. Treat any host you have not verified as being in that state.
 
 Two `PreToolUse` hooks, which run in the host before a tool call reaches the
 server:
