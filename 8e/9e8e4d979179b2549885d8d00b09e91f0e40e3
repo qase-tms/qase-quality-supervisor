@@ -1,0 +1,35 @@
+SECURITY.md
+  s_5260ff255dbcae::t_e3cd1ba8b8d311 140
+  s_5260ff255dbcae::t_4fc3850359212b 110-112,133-139
+CHANGELOG.md
+  s_5260ff255dbcae::t_31b97b19e95dc1 22-31
+  s_5260ff255dbcae::t_837e8dedcb148b 6-21,32-36
+scripts/set-version.sh
+  s_5260ff255dbcae::t_85baa78059b61e 5-7,64
+tests/test-version-sync.sh
+  s_5260ff255dbcae::t_a787a53c9abc0a 10-11,32,47-54,83-96,113-115
+.codex-plugin/plugin.json
+  s_5260ff255dbcae::t_37da6c030424a7 1-3,5-27,29-44
+  s_5260ff255dbcae::t_d2e1f2eb498168 4,28
+README.md
+  s_5260ff255dbcae::t_7663e307f1f563 44-55,66,211
+  s_5260ff255dbcae::t_4fc3850359212b 56-65
+scripts/check-version-sync.sh
+  s_5260ff255dbcae::t_85baa78059b61e 6,43-52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "8e9e8e4d979179b2549885d8d00b09e91f0e40e3",
+  "prompts": {},
+  "sessions": {
+    "s_5260ff255dbcae": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "98c2e098-4d54-40df-a61f-2fb2d53949bb",
+        "model": "claude-opus-5"
+      },
+      "human_author": null
+    }
+  }
+}
