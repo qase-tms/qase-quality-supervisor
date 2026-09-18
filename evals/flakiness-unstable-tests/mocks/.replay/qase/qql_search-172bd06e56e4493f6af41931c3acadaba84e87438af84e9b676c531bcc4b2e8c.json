@@ -1,9 +1,0 @@
-{
-  "input": {
-    "query": "SELECT (caseId, AVG(timeSpent), MIN(timeSpent), MAX(timeSpent), COUNT(*)) entity = \"result\" and project = \"DEMO\" and caseId in (2, 4, 7, 9) and ended >= now(\"-14d\") GROUP BY caseId"
-  },
-  "output": "QQL does not support aggregation functions AVG, MIN, MAX — only COUNT(*) is available in GROUP BY queries",
-  "verdict": "tool_error",
-  "recordedAt": "2026-09-18T13:15:06.002Z",
-  "model": "claude-haiku-4-5"
-}
