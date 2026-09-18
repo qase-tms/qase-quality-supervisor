@@ -1,0 +1,22 @@
+evals/flakiness-unstable-tests/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_d4e6ba8dceee7e 4,6-9
+evals/flakiness-unstable-tests/graders/asked-about-demo.md
+  s_9c272d5542e4be::t_4b228e24912c02 1-3,5
+  s_9c272d5542e4be::t_22fba400cebb63 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e0949330a6f2ef9972ce8997c08fff5afe2e19a4",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
