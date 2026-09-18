@@ -1,0 +1,23 @@
+.gitignore
+  s_9c272d5542e4be::t_488636efe8bfe4 7-10
+scripts/run-evals.sh
+  s_9c272d5542e4be::t_de8dd5824d9eaf 1-61
+tests/test-run-evals.sh
+  s_9c272d5542e4be::t_8f4126d38a8598 1-54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "af5cc011c0ceea8c1f0c5f3891b5e473553dc0c8",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
