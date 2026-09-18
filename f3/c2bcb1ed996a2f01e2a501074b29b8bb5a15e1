@@ -1,0 +1,59 @@
+evals/release-go-no-go/graders/asked-about-demo.md
+  s_9c272d5542e4be::t_09876ded2f89eb 4
+  s_9c272d5542e4be::t_a2c1c115463e39 1-3,5
+evals/triage-red-run/prompt.md
+  s_9c272d5542e4be::t_3eca709fd0e35a 1-8
+evals/coverage-untested-areas/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_86847c126727fb 1-3,5,10-33
+  s_9c272d5542e4be::t_f4ed4fd2d60955 4,6-9
+evals/coverage-untested-areas/prompt.md
+  s_9c272d5542e4be::t_ed05256ea8f63d 1-8
+evals/release-go-no-go/graders/no-pulse-skill.md
+  s_9c272d5542e4be::t_bc6e59031b62a4 1-8
+evals/release-go-no-go/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_209aff0c934a9e 1-3,5,10-40
+  s_9c272d5542e4be::t_8c551fa88f2f25 4,6-9
+evals/release-go-no-go/prompt.md
+  s_9c272d5542e4be::t_1a82a53d25e0a8 1-8
+evals/coverage-untested-areas/graders/names-the-gaps.md
+  s_9c272d5542e4be::t_37db32fa10beb1 1-14
+evals/coverage-untested-areas/graders/no-pulse-skill.md
+  s_9c272d5542e4be::t_07db9d2be43010 1-8
+evals/release-go-no-go/graders/skill-fired.md
+  s_9c272d5542e4be::t_918df4b896f15b 1-5
+evals/triage-red-run/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_52598cd3c6a269 1-3,5,10-39
+  s_9c272d5542e4be::t_60390a0c4d1327 4,6-9
+evals/triage-red-run/graders/asked-about-demo.md
+  s_9c272d5542e4be::t_491ce6900f9086 1-3,5
+  s_9c272d5542e4be::t_b6067f82301642 4
+evals/triage-red-run/graders/clusters-by-cause.md
+  s_9c272d5542e4be::t_882e73f72f7b7a 1-15
+evals/triage-red-run/graders/no-flakiness-skill.md
+  s_9c272d5542e4be::t_92ec036d32674f 1-8
+evals/triage-red-run/graders/skill-fired.md
+  s_9c272d5542e4be::t_2d231ecef40daf 1-5
+evals/coverage-untested-areas/graders/asked-about-demo.md
+  s_9c272d5542e4be::t_d2e73649580e88 4
+  s_9c272d5542e4be::t_7763f96452a2b6 1-3,5
+evals/coverage-untested-areas/graders/skill-fired.md
+  s_9c272d5542e4be::t_34521a3cdfa3e9 1-5
+evals/release-go-no-go/graders/blockers-and-verdict.md
+  s_9c272d5542e4be::t_d2c7cf28d64db3 1-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f3c2bcb1ed996a2f01e2a501074b29b8bb5a15e1",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
