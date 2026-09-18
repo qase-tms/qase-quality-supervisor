@@ -1,0 +1,37 @@
+evals/flakiness-unstable-tests/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_706895b86ae583 1-16,18-35,38-39
+  s_9c272d5542e4be::t_0806aca387b76a 17
+  s_9c272d5542e4be::t_6d66f26b3bfdd9 36-37
+evals/flakiness-unstable-tests/graders/no-triage-skill.md
+  s_9c272d5542e4be::t_a7dabb4a2a8c29 1-8
+evals/flakiness-unstable-tests/prompt.md
+  s_9c272d5542e4be::t_8b77131318e25a 1-8
+evals/mocks/qase/qql_help.md
+  s_9c272d5542e4be::t_98a6debc44a96d 1-6
+evals/flakiness-unstable-tests/graders/skill-fired.md
+  s_9c272d5542e4be::t_d67d4d8d4f6b2e 1-5
+evals/flakiness-unstable-tests/graders/separates-flaky-from-broken.md
+  s_9c272d5542e4be::t_fbf833b1503e6d 1-15
+evals/mocks/qase/_tools.json
+  s_9c272d5542e4be::t_9e16f445ce7dcd 1-57
+evals/mocks/qase/qase_project_context.md
+  s_9c272d5542e4be::t_ecc39765a0e9c4 1-6
+evals/flakiness-unstable-tests/graders/window-aggregate.md
+  s_9c272d5542e4be::t_73a0a10faf336e 1-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "58dfbd17a3301fd73dba4439475035ccfeb519ce",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": null
+    }
+  }
+}
