@@ -1,0 +1,57 @@
+{
+  "tools": [
+    {
+      "name": "qase_project_context",
+      "description": "Seed everything about a project in one call: project details, the full suite tree, milestones, environments, custom fields, and users. This is the first call to make when starting work on a project — it replaces six separate list calls and gives the model the metadata it needs to build any later query. For a single record you already have the ID for, qase_get is cheaper; for filtered or cross-project questions, use qql_search.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "project": { "type": "string", "description": "Project code, such as DEMO." },
+          "full": { "type": "boolean", "description": "Page through every collection instead of the first 100 entities." }
+        },
+        "required": ["project"]
+      }
+    },
+    {
+      "name": "qql_search",
+      "description": "Search any entity with Qase Query Language: filtering, cross-project queries, sorting, and aggregation. This is the right tool for every question that is not \"give me this one record by ID\" — \"cases without automation\", \"results that failed this week\", \"open blockers across projects\" — and the right way to fetch many records at once instead of looping over qase_get. Call qql_help first for the syntax, the fields available per entity, and the enum values; a query naming an unknown attribute is rejected outright.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": { "type": "string", "description": "A QQL query, such as: entity = \"result\" and project = \"DEMO\" and status = \"failed\"" },
+          "limit": { "type": "integer", "description": "Page size, up to 100." },
+          "offset": { "type": "integer", "description": "Offset into the result set." }
+        },
+        "required": ["query"]
+      }
+    },
+    {
+      "name": "qql_help",
+      "description": "Read the QQL reference before writing a query. Pass a topic: overview, syntax, entities, operators, functions, examples, aggregation, or enumValues. `entities` lists the fields each entity actually exposes and `enumValues` gives the accepted values, and both matter, because QQL rejects a query naming an attribute that does not exist on the entity rather than ignoring it.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "enum": ["overview", "syntax", "entities", "operators", "functions", "examples", "aggregation", "enumValues"]
+          },
+          "entity": { "type": "string", "description": "Narrow the reference to one entity, such as result or case." }
+        }
+      }
+    },
+    {
+      "name": "qase_get",
+      "description": "Fetch one known record by type and ID: case, suite, run, result, plan, defect, milestone, environment, or custom_field. `code` is required for project-scoped entities. Use this only when you already know the ID and want a single record. For several records, for anything filtered, or when you are about to call this in a loop, use qql_search instead — one search returns the whole page at once.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "entity": { "type": "string", "description": "case, suite, run, result, plan, defect, milestone, environment, or custom_field." },
+          "code": { "type": "string", "description": "Project code, required for project-scoped entities." },
+          "id": { "type": "integer", "description": "Numeric ID of the record." },
+          "fields": { "type": "array", "items": { "type": "string" }, "description": "Narrow the payload; [\"*\"] for everything." }
+        },
+        "required": ["entity"]
+      }
+    }
+  ]
+}
