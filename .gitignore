@@ -4,10 +4,10 @@ node_modules/
 .superpowers/
 docs/superpowers/
 
-# The eval harness is kept locally, not in the repository: it targets an internal
-# Qase project and writes fixtures into it, so it would not run anywhere else
-# unchanged. Ignored rather than deleted — the working copy keeps it.
-evals/
+# Eval cases and their mocks are part of the plugin and are committed. Only what
+# a run writes is not: every run drops a timestamped directory here with the
+# report, the aggregate JSON and the raw mock recordings.
+evals/results/
 
 # Reports the two reporting skills write into the working directory. They are
 # deliverables for whoever asked for them, not repository content, and they carry
