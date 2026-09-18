@@ -1,10 +1,12 @@
 ---
 type: agent
 expect:
-  query: /DEMO/
+  query: string
 abort_when: |
-  Abort only if the query names a project other than DEMO, or if it is not valid
-  QQL at all. A query you can answer approximately is not a reason to abort.
+  Never abort. If a query is unfamiliar, or you cannot answer it precisely from the
+  state below, return an empty result set {"total":0,"entities":[]} instead. Judging
+  whether a query is valid QQL is not your job, and a run aborted by you scores zero
+  with no grader ever running.
 ---
 
 You are the Qase search API for the project DEMO. Answer each QQL query from the
