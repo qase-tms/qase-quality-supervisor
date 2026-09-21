@@ -1,0 +1,27 @@
+docs/evals.md
+  s_9c272d5542e4be::t_b673d5ba8cd0d6 1-28,30-99
+  s_9c272d5542e4be::t_5ededcbad9c95a 29
+CHANGELOG.md
+  s_9c272d5542e4be::t_57cf829df7ff06 6-15
+.github/workflows/validate.yml
+  s_9c272d5542e4be::t_6f7479175b9928 75-111
+  s_9c272d5542e4be::t_37cc6180a6363c 6-12
+README.md
+  s_9c272d5542e4be::t_8baae0ab03ae78 197
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b2b821f2cc8948a040304a0052f6b3b63a0eef18",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
