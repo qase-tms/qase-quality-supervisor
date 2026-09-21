@@ -2,7 +2,7 @@
 type: llm
 focus:
   source: file
-  path: 'quality-pulse-DEMO-*.html'
+  path: 'quality-pulse.html'
 ---
 
 This is a QA pulse card generated from a fixture whose window holds 214 results —

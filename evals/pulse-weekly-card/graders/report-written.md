@@ -1,4 +1,4 @@
 ---
 type: file_exists
-path: 'quality-pulse-DEMO-*.html'
+path: 'quality-pulse.html'
 ---
