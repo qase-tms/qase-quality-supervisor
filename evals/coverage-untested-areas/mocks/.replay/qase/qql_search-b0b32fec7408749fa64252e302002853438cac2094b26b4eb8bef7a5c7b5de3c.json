@@ -1,9 +1,0 @@
-{
-  "input": {
-    "query": "entity = \"case\" and project = \"DEMO\" and updated <= now(\"-6m\")"
-  },
-  "output": "```json\n{\"total\":2,\"entities\":[{\"id\":11,\"title\":\"Account: delete my data\",\"suite_id\":3,\"automation\":0,\"priority\":1,\"created\":\"2026-02-03\",\"updated\":\"2026-02-03\"},{\"id\":12,\"title\":\"Account: change email\",\"suite_id\":3,\"automation\":0,\"priority\":1,\"created\":\"2026-02-03\",\"updated\":\"2026-02-03\"}]}\n```",
-  "verdict": "ok",
-  "recordedAt": "2026-09-21T11:42:42.637Z",
-  "model": "claude-haiku-4-5"
-}

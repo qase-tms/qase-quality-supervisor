@@ -74,6 +74,14 @@ stale — and the adoption pass pinned both answers. Before recording, read the 
 list what it will ask for; state each answer in the fixture, including the ones that are
 "obviously" nothing.
 
+**A known limitation of `asked-about-demo`:** the grader proves the right project was
+queried, not that no other project was — a plugin that queries `project = "DEMO"` once
+and then also queries `project = "OTHER"` still passes. We did not write a negative
+grader for this because a mock answers an unknown project with an empty result set
+rather than failing the run, so a stray cross-project query would go unnoticed either
+way; catching it would need the mock itself to refuse unfamiliar projects, which is a
+bigger change than this suite makes.
+
 ## Adding a case
 
 1. `claude plugin eval init --bare <name>` for the blank skeleton, or copy the

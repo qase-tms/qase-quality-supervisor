@@ -61,5 +61,54 @@ for case_dir in "$EVALS_DIR"/*/; do
   fi
 done
 
+# The shared project mock is the seed every case reads first. If its suite
+# tree contradicts what it claims (a suites.total that doesn't match the
+# number of suites it actually lists), or drops the fourth "Payments" suite a
+# fixture promises exists, cases built on top of it silently disagree with
+# their own seed. Catch that here rather than case by case.
+MOCK_CONTEXT="$EVALS_DIR/mocks/qase/qase_project_context.md"
+if [ -f "$MOCK_CONTEXT" ]; then
+  mock_json="$(grep -m1 '^{' "$MOCK_CONTEXT")"
+  if [ -n "$mock_json" ]; then
+    suites_total="$(echo "$mock_json" | jq -r '.suites.total // empty' 2>/dev/null)"
+    suites_count="$(echo "$mock_json" | jq -r '.suites.entities | length' 2>/dev/null)"
+    if [ -z "$suites_total" ] || [ -z "$suites_count" ]; then
+      fail "mocks/qase/qase_project_context.md: could not read suites.total / suites.entities from the seed JSON"
+    elif [ "$suites_total" != "$suites_count" ]; then
+      fail "mocks/qase/qase_project_context.md: suites.total ($suites_total) does not equal the number of suite entries it lists ($suites_count)"
+    fi
+  else
+    fail "mocks/qase/qase_project_context.md: no JSON body found to check suite counts against"
+  fi
+
+  mock_has_payments=false
+  grep -q "Payments" "$MOCK_CONTEXT" && mock_has_payments=true
+  for fixture in "$EVALS_DIR"/*/mocks/qase/qql_search.md; do
+    [ -e "$fixture" ] || continue
+    if grep -q "fourth suite" "$fixture" && [ "$mock_has_payments" = false ]; then
+      fail "$fixture mentions a 'fourth suite' but mocks/qase/qase_project_context.md lists no suite named Payments"
+    fi
+  done
+fi
+
+# A recording pins an answer forever; if it tells the skill the project is
+# empty while the shared mock reports 12 cases, 4 defects and 7 runs, the
+# fixture and the replay disagree and whichever loses is undefined. None of
+# these three bare, unfiltered project-wide queries should ever be recorded
+# as returning nothing.
+for rec in "$EVALS_DIR"/*/mocks/.replay/qase/*.json; do
+  [ -e "$rec" ] || continue
+  query="$(jq -r '.input.query // empty' "$rec" 2>/dev/null)"
+  case "$query" in
+    'entity = "case" and project = "DEMO"' | 'entity = "defect" and project = "DEMO"' | 'entity = "run" and project = "DEMO"')
+      clean_output="$(jq -r '.output' "$rec" 2>/dev/null | sed -e '1{/^```/d;}' -e '$ {/^```$/d;}')"
+      total="$(echo "$clean_output" | jq -r '.total // empty' 2>/dev/null)"
+      if [ "$total" = "0" ]; then
+        fail "$rec pins '$query' to total:0, contradicting the shared mock's non-empty DEMO project"
+      fi
+      ;;
+  esac
+done
+
 if [ "$failures" -gt 0 ]; then exit 1; fi
 echo "Every skill has an eval case, and every grader names a skill that exists."

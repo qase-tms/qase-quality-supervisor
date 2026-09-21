@@ -1,9 +1,0 @@
-{
-  "input": {
-    "query": "select status, count(*) entity = \"result\" and project = \"DEMO\" and ended >= \"2026-09-14\" and ended <= \"2026-09-21\" group by status"
-  },
-  "output": "```json\n{\"total\":4,\"entities\":[{\"status\":1,\"count_all\":155},{\"status\":2,\"count_all\":18},{\"status\":3,\"count_all\":1},{\"status\":5,\"count_all\":4}]}\n```",
-  "verdict": "ok",
-  "recordedAt": "2026-09-21T12:02:50.516Z",
-  "model": "claude-haiku-4-5"
-}
