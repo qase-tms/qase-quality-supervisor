@@ -1,0 +1,51 @@
+evals/flakiness-unstable-tests/mocks/.replay/qase/qql_search-a0939c77073af585459e6d253295436a03d496565a1071da33c6fb5ca22547fa.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/flakiness-unstable-tests/mocks/.replay/qase/qql_search-484271797c5e68a64c81b1038bd475559dd0d5e2b3eb14b2d72d7b479706ef5d.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/coverage-untested-areas/mocks/.replay/qase/qql_search-2fa6aaa92ae09f4d19f0115e8212713510d42fbbbc5b6ce12323d200fa06277b.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/coverage-untested-areas/mocks/.replay/qase/qql_search-57a0b1d8d7c88ae4bdc6174b8125706f4e7af1d7ede2e7933fe2b483bcdf0f95.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/coverage-untested-areas/mocks/.replay/qase/qql_search-5c9c4cea3982dc15326d36def858c72a578ae18e081c87fc7c4e6f1eb98a66c0.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/flakiness-unstable-tests/mocks/.replay/qase/qql_search-13d377a7af66bdc464d3675cecb9a3ac512b9a3470c28d11aae185f4f375af9b.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/coverage-untested-areas/mocks/.replay/qase/qql_search-80c8ada5c27a8be299df9aa661b63cb966c05f46bafaa08c853a93ca3f801638.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/flakiness-unstable-tests/mocks/.replay/qase/qql_search-ecd555b3fbccbedb75056e5dfe0e6400b9c9cb3c537b006f253b4b99d9e368c5.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/flakiness-unstable-tests/mocks/.replay/qase/qql_search-cfbef240aa639759e974e6ea8ba647adcb6b3eaa7504a295728cacca5c6b6f44.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/coverage-untested-areas/mocks/.replay/qase/qql_search-ffb059393b0cce22fcaf3ed628cc196ace1682975d7141f6f5941731cceb9bfd.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/coverage-untested-areas/mocks/.replay/qase/qql_search-0ec78e3f6c1d0fa1ff79a9e31f9338bc50e3c6fc2320bcfd500c58283f54252a.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/flakiness-unstable-tests/mocks/.replay/qase/qql_search-37d8d97efd769af990dc00656fab853b1ea4e5023caa00d94ab2f1aef3347546.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/coverage-untested-areas/mocks/.replay/qase/qql_search-f579413252b624e2b9afb8df7bfd3cd4e17674c7d74cf50a1c328f784c55522c.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/coverage-untested-areas/mocks/.replay/qase/qql_search-0942872487ca693f913cd800596b0c581fe1e57958bf32088bb3b8b14c70b5a0.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/flakiness-unstable-tests/mocks/.replay/qase/qql_search-01d2e3969c1890a08a1c7a8a791eacfd7dfe2bbff524330d82b5201281ee9ff1.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/coverage-untested-areas/mocks/.replay/qase/qql_search-2758722690544d1d5c1911e3c14ecd5c367e1a0c5477ffb2ea9e7a818359c3ce.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+evals/coverage-untested-areas/mocks/.replay/qase/qql_search-3b4504142561c5f1903d61a3007f90bf255a49bcece3072d411c26fe2f38230d.json
+  s_9c272d5542e4be::t_5afc4da0893c2d 1-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "02b59c4c38adfc26cc98cb5d9aecc5e76011b6bc",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
