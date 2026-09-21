@@ -1,6 +1,6 @@
 ---
 type: regex
-focus:
+target:
   source: file
   path: 'quality-pulse.html'
 pattern: '\{\{|TODO|Lorem|PLACEHOLDER'
