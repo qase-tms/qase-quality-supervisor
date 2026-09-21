@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"defect\" and project = \"DEMO\" and status = \"open\""
+  },
+  "output": "```json\n{\n  \"total\": 4,\n  \"entities\": [\n    {\n      \"id\": 301,\n      \"title\": \"Promo code not applied to cart total\",\n      \"severity\": \"blocker\",\n      \"status\": \"open\",\n      \"created\": \"2026-09-12T00:00:00Z\"\n    },\n    {\n      \"id\": 302,\n      \"title\": \"CSV export writes to a missing path\",\n      \"severity\": \"critical\",\n      \"status\": \"open\",\n      \"created\": \"2026-09-14T00:00:00Z\"\n    },\n    {\n      \"id\": 303,\n      \"title\": \"Search returns stale results after tag edit\",\n      \"severity\": \"normal\",\n      \"status\": \"open\",\n      \"created\": \"2026-09-15T00:00:00Z\"\n    },\n    {\n      \"id\": 304,\n      \"title\": \"Avatar upload rejects PNG over 2MB\",\n      \"severity\": \"minor\",\n      \"status\": \"open\",\n      \"created\": \"2026-08-30T00:00:00Z\"\n    }\n  ]\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:35:35.915Z",
+  "model": "claude-haiku-4-5"
+}

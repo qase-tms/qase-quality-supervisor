@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "SELECT (case_id, COUNT(*)) entity = \"result\" and project = \"DEMO\" and run in (\"Run 4870\", \"Run 4881\", \"Run 4899\", \"Run 4902\") GROUP BY case_id"
+  },
+  "output": "```json\n{\"total\":10,\"entities\":[{\"case_id\":1,\"count_all\":1},{\"case_id\":2,\"count_all\":1},{\"case_id\":3,\"count_all\":1},{\"case_id\":4,\"count_all\":1},{\"case_id\":5,\"count_all\":1},{\"case_id\":6,\"count_all\":1},{\"case_id\":7,\"count_all\":1},{\"case_id\":8,\"count_all\":1},{\"case_id\":9,\"count_all\":1},{\"case_id\":10,\"count_all\":1}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:35:46.917Z",
+  "model": "claude-haiku-4-5"
+}

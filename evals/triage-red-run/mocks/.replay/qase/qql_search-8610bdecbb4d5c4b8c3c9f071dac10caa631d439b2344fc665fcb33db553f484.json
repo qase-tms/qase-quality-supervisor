@@ -1,0 +1,10 @@
+{
+  "input": {
+    "query": "entity = \"result\" and project = \"DEMO\" and caseId in (2,4,6,7,8,9,10,11,12) ORDER BY ended DESC",
+    "limit": 100
+  },
+  "output": "```json\n{\"total\":9,\"entities\":[{\"hash\":\"0000000000000000000000000000000000000012\",\"run_id\":4902,\"case_id\":12,\"status\":\"Failed\",\"comment\":\"TimeoutError: connect ETIMEDOUT auth.staging.internal:443\"},{\"hash\":\"0000000000000000000000000000000000000011\",\"run_id\":4902,\"case_id\":11,\"status\":\"Failed\",\"comment\":\"AssertionError: expected total 249.00, received 241.50\"},{\"hash\":\"0000000000000000000000000000000000000010\",\"run_id\":4902,\"case_id\":10,\"status\":\"Failed\",\"comment\":\"AssertionError: expected total 249.00, received 241.50\"},{\"hash\":\"0000000000000000000000000000000000000009\",\"run_id\":4902,\"case_id\":9,\"status\":\"Failed\",\"comment\":\"Error: ENOENT: no such file or directory, open '/tmp/export.csv'\"},{\"hash\":\"0000000000000000000000000000000000000008\",\"run_id\":4902,\"case_id\":8,\"status\":\"Failed\",\"comment\":\"TimeoutError: connect ETIMEDOUT auth.staging.internal:443\"},{\"hash\":\"0000000000000000000000000000000000000007\",\"run_id\":4902,\"case_id\":7,\"status\":\"Failed\",\"comment\":\"TimeoutError: connect ETIMEDOUT auth.staging.internal:443\"},{\"hash\":\"0000000000000000000000000000000000000006\",\"run_id\":4902,\"case_id\":6,\"status\":\"Failed\",\"comment\":\"TimeoutError: connect ETIMEDOUT auth.staging.internal:443\"},{\"hash\":\"0000000000000000000000000000000000000004\",\"run_id\":4902,\"case_id\":4,\"status\":\"Failed\",\"comment\":\"TimeoutError: connect ETIMEDOUT auth.staging.internal:443\"},{\"hash\":\"0000000000000000000000000000000000000002\",\"run_id\":4902,\"case_id\":2,\"status\":\"Failed\",\"comment\":\"TimeoutError: connect ETIMEDOUT auth.staging.internal:443\"}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:33:55.082Z",
+  "model": "claude-haiku-4-5"
+}

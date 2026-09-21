@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "SELECT (COUNT(id)) entity = \"result\" and project = \"DEMO\" GROUP BY caseId"
+  },
+  "output": "{\"total\":0,\"entities\":[]}",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:31:32.807Z",
+  "model": "claude-haiku-4-5"
+}

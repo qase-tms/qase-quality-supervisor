@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"run\" and project = \"DEMO\" and milestone = \"Release 2.4\""
+  },
+  "output": "```json\n{\n  \"total\": 4,\n  \"entities\": [\n    {\n      \"id\": 4870,\n      \"title\": \"Run 4870\",\n      \"status\": \"completed\",\n      \"milestone_id\": 11,\n      \"started\": \"2026-09-16T08:00:00Z\",\n      \"ended\": \"2026-09-16T09:30:00Z\"\n    },\n    {\n      \"id\": 4881,\n      \"title\": \"Run 4881\",\n      \"status\": \"completed\",\n      \"milestone_id\": 11,\n      \"started\": \"2026-09-17T10:00:00Z\",\n      \"ended\": \"2026-09-17T11:15:00Z\"\n    },\n    {\n      \"id\": 4899,\n      \"title\": \"Run 4899\",\n      \"status\": \"completed\",\n      \"milestone_id\": 11,\n      \"started\": \"2026-09-18T07:00:00Z\",\n      \"ended\": \"2026-09-18T08:45:00Z\"\n    },\n    {\n      \"id\": 4902,\n      \"title\": \"Run 4902\",\n      \"status\": \"completed\",\n      \"milestone_id\": 11,\n      \"started\": \"2026-09-18T12:00:00Z\",\n      \"ended\": \"2026-09-18T13:30:00Z\"\n    }\n  ]\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:35:14.517Z",
+  "model": "claude-haiku-4-5"
+}
