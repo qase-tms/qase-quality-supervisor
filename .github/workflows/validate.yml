@@ -3,6 +3,13 @@ name: Validate plugin
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: 'smoke (PR-sized) or full (both arms, three runs)'
+        type: choice
+        options: [smoke, full]
+        default: smoke
 
 permissions:
   contents: read
@@ -65,3 +72,40 @@ jobs:
 
       - name: Full verification (install + component inventory)
         run: bash scripts/verify-plugin.sh
+
+  # Behaviour, not shape: does the plugin route a natural request to the right
+  # skill and finish the analysis. Needs an authenticated CLI, so it is skipped
+  # for pull requests from forks, which have no access to the secret.
+  evals:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Pinned separately from the other jobs: `plugin eval` needs 2.1.269+,
+      # which the 2.1.221 they pin predates.
+      - name: Install claude CLI
+        run: npm install -g @anthropic-ai/claude-code@2.1.276
+
+      - name: Run the eval suite
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.scope }}" = "full" ]; then
+            bash scripts/run-evals.sh
+          else
+            bash scripts/run-evals.sh --smoke
+          fi
+
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report
+          path: evals/results/
+          retention-days: 14
