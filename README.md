@@ -194,6 +194,7 @@ which is the part that degrades.
 │   ├── gui-smoke-check.md  # 10-minute manual check per GUI client
 │   ├── releasing.md        # version bumps, the pre-commit hook, release checks
 │   └── superpowers/        # design specs and plans behind each iteration
+├── evals/                  # Behaviour eval cases and their Qase mocks — see docs/evals.md
 ├── hooks/
 │   ├── hooks.json          # destructive-call guards + usage attribution
 │   ├── mark-run.js         # attributes each Qase call to the part that made it

@@ -3,6 +3,16 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- A behaviour eval suite under `evals/`, run with `scripts/run-evals.sh` and on
+  every pull request. Ten cases check that a natural request reaches the right
+  skill, that neighbouring skills stay out of it, and that the two HTML reports
+  carry the fixture's real numbers. Qase is answered by mocks, so the suite runs
+  anywhere without a token.
+
 ## [0.3.3] - 2026-09-02
 
 ### Added
