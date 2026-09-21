@@ -2,7 +2,6 @@
 tags: [full]
 max_turns: 30
 timeout_seconds: 1800
-runs: 2
 allowed_tools: [Read, Glob, Grep, Skill, Write]
 ---
 
