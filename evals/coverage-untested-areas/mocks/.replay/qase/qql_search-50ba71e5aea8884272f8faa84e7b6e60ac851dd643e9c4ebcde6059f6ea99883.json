@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"requirement\" and project = \"DEMO\""
+  },
+  "output": "{\"total\":0,\"entities\":[]}",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:32:08.372Z",
+  "model": "claude-haiku-4-5"
+}

@@ -1,0 +1,10 @@
+{
+  "input": {
+    "query": "SELECT (id, title, automation) entity = \"case\" and project = \"DEMO\" and isFlaky = true",
+    "limit": 100
+  },
+  "output": "```json\n{\"total\":3,\"entities\":[{\"id\":2,\"title\":\"Login: SSO redirect\",\"automation\":1},{\"id\":4,\"title\":\"Checkout: apply promo code\",\"automation\":1},{\"id\":7,\"title\":\"Search: filter by tag\",\"automation\":2}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:30:18.674Z",
+  "model": "claude-haiku-4-5"
+}

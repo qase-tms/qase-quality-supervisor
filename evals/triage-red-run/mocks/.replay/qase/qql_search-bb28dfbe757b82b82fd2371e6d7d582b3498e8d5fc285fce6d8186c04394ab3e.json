@@ -1,0 +1,10 @@
+{
+  "input": {
+    "query": "entity = \"defect\" and project = \"DEMO\"",
+    "limit": 20
+  },
+  "output": "```json\n{\"total\":0,\"entities\":[]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:34:10.997Z",
+  "model": "claude-haiku-4-5"
+}

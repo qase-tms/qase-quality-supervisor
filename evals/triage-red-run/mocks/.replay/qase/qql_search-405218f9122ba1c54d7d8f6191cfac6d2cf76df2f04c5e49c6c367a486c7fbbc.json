@@ -1,0 +1,10 @@
+{
+  "input": {
+    "query": "entity = \"run\" and project = \"DEMO\"",
+    "limit": 100
+  },
+  "output": "```json\n{\"total\":1,\"entities\":[{\"id\":4902,\"title\":\"Nightly 2026-09-17\",\"status\":\"complete\",\"started\":\"2026-09-17T23:00:00+00:00\",\"ended\":\"2026-09-17T23:52:00+00:00\",\"environment_id\":21}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:33:29.759Z",
+  "model": "claude-haiku-4-5"
+}

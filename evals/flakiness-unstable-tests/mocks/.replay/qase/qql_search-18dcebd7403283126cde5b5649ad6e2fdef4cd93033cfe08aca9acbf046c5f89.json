@@ -1,0 +1,10 @@
+{
+  "input": {
+    "query": "SELECT (caseId, AVG(timeSpent), MIN(timeSpent), MAX(timeSpent), COUNT(*)) entity = \"result\" and project = \"DEMO\" and caseId in (2, 4, 7) and ended >= now(\"-14d\") GROUP BY caseId",
+    "limit": 100
+  },
+  "output": "{\"total\":0,\"entities\":[]}",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:30:29.577Z",
+  "model": "claude-haiku-4-5"
+}

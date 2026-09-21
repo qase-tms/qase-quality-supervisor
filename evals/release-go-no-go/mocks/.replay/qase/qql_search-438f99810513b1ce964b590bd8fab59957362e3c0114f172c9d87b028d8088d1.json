@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"case\" and project = \"DEMO\" and is_flaky = true"
+  },
+  "output": "{\"total\":0,\"entities\":[]}",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:35:36.659Z",
+  "model": "claude-haiku-4-5"
+}

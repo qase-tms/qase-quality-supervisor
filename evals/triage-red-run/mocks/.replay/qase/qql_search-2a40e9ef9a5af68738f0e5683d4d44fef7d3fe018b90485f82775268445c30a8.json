@@ -1,0 +1,10 @@
+{
+  "input": {
+    "query": "entity = \"case\" and project = \"DEMO\" ORDER BY id ASC",
+    "limit": 20
+  },
+  "output": "```json\n{\"total\":0,\"entities\":[]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:34:03.188Z",
+  "model": "claude-haiku-4-5"
+}
