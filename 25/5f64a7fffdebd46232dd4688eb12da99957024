@@ -1,0 +1,19 @@
+evals/pulse-weekly-card/graders/pulse-conclusions.md
+  s_9c272d5542e4be::t_2e8f2c0b598d3f 5-7,9-11,13-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "255f64a7fffdebd46232dd4688eb12da99957024",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "unknown"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
