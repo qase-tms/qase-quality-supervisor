@@ -1,0 +1,23 @@
+evals/automation-share/graders/reports-the-split.md
+  s_9c272d5542e4be::t_2bded94d5ebf8a 1-11
+evals/flaky-or-broken/graders/tells-them-apart.md
+  s_9c272d5542e4be::t_33023adb462890 1-12
+evals/milestone-done/graders/answers-done-or-not.md
+  s_9c272d5542e4be::t_441d2a9bb41f9e 1-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "846c8c6c4ccc8eebd3acb43292c5a0b744e56920",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "unknown"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
