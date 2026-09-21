@@ -36,4 +36,15 @@ Update dates, which a staleness query will ask for: cases 11 and 12 were last up
 two weeks, between 2026-09-08 and 2026-09-17. A query for cases untouched in six months
 returns 11 and 12 and nothing else.
 
+Execution and defect state, so that row queries over runs, results and defects are
+answerable rather than empty:
+
+- 7 runs exist, ids 4870, 4877, 4881, 4888, 4894, 4899 and 4902, all status "complete".
+- 4 defects exist and are all open: 301 "Promo code not applied to cart total" (blocker),
+  302 "CSV export writes to a missing path" (critical), 303 "Search returns stale results
+  after tag edit" (normal), 305 "Avatar upload rejects PNG over 2MB" (minor).
+- Every case except 10, 11 and 12 has been executed at least once in the last week.
+  Cases 10, 11 and 12 have never been executed at all — that is the gap the caller is
+  looking for.
+
 Answer consistently: the same query asked twice gets the same numbers.
