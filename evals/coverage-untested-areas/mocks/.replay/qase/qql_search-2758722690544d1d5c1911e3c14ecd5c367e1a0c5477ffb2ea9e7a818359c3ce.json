@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "SELECT (suite_id, COUNT(*)) entity = \"case\" and project = \"DEMO\" GROUP BY suite_id"
+  },
+  "output": "```json\n{\"total\":4,\"entities\":[{\"suite_id\":1,\"count_all\":5},{\"suite_id\":2,\"count_all\":3},{\"suite_id\":3,\"count_all\":4},{\"suite_id\":4,\"count_all\":0}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:52:44.191Z",
+  "model": "claude-haiku-4-5"
+}
