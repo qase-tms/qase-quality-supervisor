@@ -1,9 +1,0 @@
-{
-  "input": {
-    "query": "entity = \"case\" and project = \"DEMO\" and suite is empty"
-  },
-  "output": "```json\n{\"total\":1,\"entities\":[{\"id\":null,\"title\":null,\"suite_id\":4,\"automation\":null,\"priority\":null,\"created\":null,\"updated\":null}]}\n```",
-  "verdict": "ok",
-  "recordedAt": "2026-09-21T07:51:58.680Z",
-  "model": "claude-haiku-4-5"
-}

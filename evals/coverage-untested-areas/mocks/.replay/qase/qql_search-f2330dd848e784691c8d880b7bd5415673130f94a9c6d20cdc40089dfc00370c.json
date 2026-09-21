@@ -1,10 +1,9 @@
 {
   "input": {
-    "query": "entity = \"run\"",
-    "limit": 3
+    "query": "entity = \"case\" and project = \"DEMO\" and suite is empty"
   },
   "output": "```json\n{\"total\":0,\"entities\":[]}\n```",
   "verdict": "ok",
-  "recordedAt": "2026-09-21T07:32:00.567Z",
+  "recordedAt": "2026-09-21T11:41:48.222Z",
   "model": "claude-haiku-4-5"
 }

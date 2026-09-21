@@ -1,9 +1,0 @@
-{
-  "input": {
-    "query": "SELECT (automation, COUNT(*)) entity = \"case\" and project = \"DEMO\" and priority = \"High\" GROUP BY automation"
-  },
-  "output": "```json\n{\"total\":2,\"entities\":[{\"automation\":0,\"count_all\":2}]}\n```",
-  "verdict": "ok",
-  "recordedAt": "2026-09-21T07:32:40.198Z",
-  "model": "claude-haiku-4-5"
-}

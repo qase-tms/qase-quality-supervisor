@@ -97,3 +97,40 @@ The plugin's hooks do not fire against mocked tools: a mock is registered as
 `mcp__plugin_quality-supervisor_qase__*`, while `hooks.json` matches
 `mcp__qase__.*`. Attribution and the destructive-call guards are covered by
 `tests/e2e/wire-check.sh` instead.
+
+## What a full sweep measured
+
+A full sweep on 2026-09-21, Claude Code CLI 2.1.276, agent model
+`claude-sonnet-5`, judge `claude-haiku-4-5`, three runs per arm:
+
+| case | with | without | Δ |
+|---|---|---|---|
+| pulse-weekly-card | 1.00 | 0.00 | +1.00 |
+| impact-branch-checklist | 0.92 | 0.00 | +0.92 |
+| automation-share | 1.00 | 0.50 | +0.50 |
+| coverage-untested-areas | 1.00 | 0.50 | +0.50 |
+| flakiness-unstable-tests | 1.00 | 0.50 | +0.50 |
+| flaky-or-broken | 1.00 | 0.50 | +0.50 |
+| milestone-done | 1.00 | 0.50 | +0.50 |
+| release-go-no-go | 1.00 | 0.50 | +0.50 |
+| triage-red-run | 1.00 | 0.50 | +0.50 |
+| unrelated-request | 1.00 | 1.00 | 0.00 |
+
+Mean Δ about +0.54.
+
+The two report cases lead the table because without the plugin Claude produces
+no HTML card at all, so the baseline scores zero; every other case at least
+answers the question, just without Qase evidence behind it. `unrelated-request`
+scoring 1.00 in both arms with Δ 0.00 is the intended result, not a gap — it
+shows the plugin stays out of a request that is none of its business.
+
+A whole sweep of these ten cases cost about $11 and took roughly an hour and
+three quarters of wall clock. The per-PR smoke slice is a fraction of that:
+eight cases, one run each, a single arm.
+
+A delta is comparable only against the same models and around the same date.
+Two things move it: pinning a different agent or judge model, and the passage
+of time — the fixtures pin a "today", so once the real clock moves past it a
+skill's chosen window shifts and it legitimately reports different totals.
+That is why the judged rubrics check the shape of an answer rather than exact
+figures.

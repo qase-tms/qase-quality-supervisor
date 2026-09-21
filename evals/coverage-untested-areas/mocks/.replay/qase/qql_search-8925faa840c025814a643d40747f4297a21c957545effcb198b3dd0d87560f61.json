@@ -1,0 +1,10 @@
+{
+  "input": {
+    "query": "entity = \"case\" and project = \"DEMO\"",
+    "limit": 1
+  },
+  "output": "```json\n{\"total\":12,\"entities\":[{\"id\":1,\"title\":\"Checkout: add to cart\",\"suite_id\":1,\"automation\":2,\"priority\":0,\"created\":\"2026-09-08\",\"updated\":\"2026-09-17\"}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T11:41:42.179Z",
+  "model": "claude-haiku-4-5"
+}
