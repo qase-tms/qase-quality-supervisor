@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "SELECT (caseId, AVG(time_spent_ms), MIN(time_spent_ms), MAX(time_spent_ms), COUNT(*)) entity = \"result\" and project = \"DEMO\" and caseId in (2, 4, 7, 9) and ended >= now(\"-14d\") GROUP BY caseId"
+  },
+  "output": "```json\n{\"total\":4,\"entities\":[{\"caseId\":2,\"avg_time_spent_ms\":2400,\"min_time_spent_ms\":2000,\"max_time_spent_ms\":3000,\"count_all\":41},{\"caseId\":4,\"avg_time_spent_ms\":1800,\"min_time_spent_ms\":1200,\"max_time_spent_ms\":2500,\"count_all\":41},{\"caseId\":7,\"avg_time_spent_ms\":1600,\"min_time_spent_ms\":800,\"max_time_spent_ms\":2200,\"count_all\":41},{\"caseId\":9,\"avg_time_spent_ms\":2100,\"min_time_spent_ms\":1500,\"max_time_spent_ms\":2800,\"count_all\":41}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:51:03.094Z",
+  "model": "claude-haiku-4-5"
+}

@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "SELECT (id, title, is_flaky, suite_id) entity = \"case\" and project = \"DEMO\" and id in (2, 4, 7, 9)"
+  },
+  "output": "```json\n{\"total\":4,\"entities\":[{\"id\":2,\"title\":\"Login: SSO redirect\",\"is_flaky\":0,\"suite_id\":1},{\"id\":4,\"title\":\"Checkout: apply promo code\",\"is_flaky\":0,\"suite_id\":2},{\"id\":7,\"title\":\"Search: filter by tag\",\"is_flaky\":0,\"suite_id\":3},{\"id\":9,\"title\":\"Export: CSV download\",\"is_flaky\":0,\"suite_id\":1}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T07:51:01.140Z",
+  "model": "claude-haiku-4-5"
+}
