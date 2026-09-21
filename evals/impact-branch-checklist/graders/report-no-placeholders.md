@@ -1,6 +1,6 @@
 ---
 type: regex
-focus:
+target:
   source: file
   path: 'impact-analysis.html'
 pattern: '\{\{|TODO|Lorem|PLACEHOLDER'
