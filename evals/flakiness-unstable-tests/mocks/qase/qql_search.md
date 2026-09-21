@@ -38,4 +38,14 @@ State of DEMO — twelve cases, of which these matter:
 Totals over the window: 492 results — 384 Passed, 108 Failed, 0 Blocked, 0 Skipped.
 These totals are the sum of the per-case rows above; keep them reconciled if you edit the table.
 
+Two things you will be asked about that the table above does not show. State them as
+given rather than inferring:
+
+- The `is_flaky` flag is 0 on all twelve cases. Nobody has marked anything flaky yet —
+  that is what the caller is trying to work out. A query filtering `isFlaky = true`
+  returns an empty set.
+- Cases 2, 4, 7 and 9 all failed more than once in the window, so all four belong in
+  the answer to any "failed at least twice" or `HAVING COUNT(*) >= 2` query. Case 9
+  failing every single time still counts as failing more than once.
+
 Answer consistently: the same query asked twice gets the same numbers.

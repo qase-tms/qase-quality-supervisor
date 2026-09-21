@@ -10,5 +10,5 @@ PASS if the response names at least two of those three gaps specifically — an 
 suite, the manual high-priority cases, or the never-executed case — rather than only
 quoting an overall automation percentage.
 
-FAIL if it reports only aggregate numbers with no specific gap, if it names no suite
-or case, or if it claims coverage is complete.
+FAIL if it names fewer than two of those gaps, if it reports only aggregate numbers
+with no specific gap, or if it claims coverage is complete.
