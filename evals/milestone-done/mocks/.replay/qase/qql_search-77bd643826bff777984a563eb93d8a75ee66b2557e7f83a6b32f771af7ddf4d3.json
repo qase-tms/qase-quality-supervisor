@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"run\" and project = \"DEMO\" and id in (4870, 4881, 4899, 4902)"
+  },
+  "output": "```json\n{\"total\":4,\"entities\":[{\"id\":4870,\"title\":\"Run 4870\",\"status\":\"in_progress\",\"milestone_id\":11,\"started\":\"2026-09-16T08:00:00Z\",\"ended\":null},{\"id\":4881,\"title\":\"Run 4881\",\"status\":\"completed\",\"milestone_id\":11,\"started\":\"2026-09-16T10:30:00Z\",\"ended\":\"2026-09-16T12:45:00Z\"},{\"id\":4899,\"title\":\"Run 4899\",\"status\":\"completed\",\"milestone_id\":11,\"started\":\"2026-09-17T09:00:00Z\",\"ended\":\"2026-09-17T11:20:00Z\"},{\"id\":4902,\"title\":\"Run 4902\",\"status\":\"completed\",\"milestone_id\":11,\"started\":\"2026-09-18T08:15:00Z\",\"ended\":\"2026-09-18T10:30:00Z\"}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T08:05:11.462Z",
+  "model": "claude-haiku-4-5"
+}

@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "SELECT (case_id, COUNT(*)) entity = \"result\" and project = \"DEMO\" and status = \"failed\" and ended >= now(\"-30d\") GROUP BY case_id HAVING COUNT(*) >= 2"
+  },
+  "output": "```json\n{\"total\":4,\"entities\":[{\"case_id\":2,\"count_all\":41},{\"case_id\":4,\"count_all\":18},{\"case_id\":7,\"count_all\":8},{\"case_id\":9,\"count_all\":41}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T08:02:42.519Z",
+  "model": "claude-haiku-4-5"
+}

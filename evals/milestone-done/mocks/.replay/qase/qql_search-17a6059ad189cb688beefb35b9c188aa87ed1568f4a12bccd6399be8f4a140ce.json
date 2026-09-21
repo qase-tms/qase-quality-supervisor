@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "SELECT (status, COUNT(*)) entity = \"result\" and project = \"DEMO\" and run_id = 4902 GROUP BY status"
+  },
+  "output": "```json\n{\"total\":3,\"entities\":[{\"status\":1,\"count_all\":1},{\"status\":2,\"count_all\":1},{\"status\":5,\"count_all\":2}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T08:05:38.245Z",
+  "model": "claude-haiku-4-5"
+}

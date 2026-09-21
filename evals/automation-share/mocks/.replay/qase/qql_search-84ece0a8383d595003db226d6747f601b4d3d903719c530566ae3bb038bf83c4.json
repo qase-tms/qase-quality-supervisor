@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"case\" and project = \"DEMO\" and automation != \"Automated\""
+  },
+  "output": "```json\n{\n  \"total\": 3,\n  \"entities\": [\n    {\n      \"id\": 10,\n      \"title\": \"Search: saved filters\",\n      \"suite_id\": 2,\n      \"automation\": 1,\n      \"priority\": 0,\n      \"created\": \"2026-09-10T00:00:00Z\",\n      \"updated\": \"2026-09-10T00:00:00Z\"\n    },\n    {\n      \"id\": 11,\n      \"title\": \"Account: delete my data\",\n      \"suite_id\": 3,\n      \"automation\": 0,\n      \"priority\": 1,\n      \"created\": \"2026-02-03T00:00:00Z\",\n      \"updated\": \"2026-02-03T00:00:00Z\"\n    },\n    {\n      \"id\": 12,\n      \"title\": \"Account: change email\",\n      \"suite_id\": 3,\n      \"automation\": 0,\n      \"priority\": 1,\n      \"created\": \"2026-02-03T00:00:00Z\",\n      \"updated\": \"2026-02-03T00:00:00Z\"\n    }\n  ]\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T08:03:40.650Z",
+  "model": "claude-haiku-4-5"
+}
