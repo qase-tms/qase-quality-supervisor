@@ -1,9 +1,0 @@
-{
-  "input": {
-    "query": "entity = \"case\" and project = \"DEMO\" and created >= \"2026-09-14\""
-  },
-  "output": "```json\n{\n  \"total\": 2,\n  \"entities\": [\n    {\n      \"id\": 11,\n      \"title\": \"Case 11\",\n      \"suite_id\": 1,\n      \"automation\": 0,\n      \"created\": \"2026-09-14T09:30:00+00:00\",\n      \"updated\": \"2026-09-14T09:30:00+00:00\"\n    },\n    {\n      \"id\": 12,\n      \"title\": \"Case 12\",\n      \"suite_id\": 1,\n      \"automation\": 1,\n      \"created\": \"2026-09-16T14:20:00+00:00\",\n      \"updated\": \"2026-09-16T14:20:00+00:00\"\n    }\n  ]\n}\n```",
-  "verdict": "ok",
-  "recordedAt": "2026-09-21T12:04:40.014Z",
-  "model": "claude-haiku-4-5"
-}

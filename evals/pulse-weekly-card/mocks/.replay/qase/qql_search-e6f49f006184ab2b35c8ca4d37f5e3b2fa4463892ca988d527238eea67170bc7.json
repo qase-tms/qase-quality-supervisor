@@ -1,9 +1,0 @@
-{
-  "input": {
-    "query": "entity = \"defect\" and project = \"DEMO\""
-  },
-  "output": "```json\n{\"total\":4,\"entities\":[{\"id\":301,\"title\":\"Promo code not applied to cart total\",\"severity\":\"blocker\",\"status\":\"open\",\"created\":\"2026-09-12\"},{\"id\":302,\"title\":\"CSV export writes to a missing path\",\"severity\":\"critical\",\"status\":\"open\",\"created\":\"2026-09-14\"},{\"id\":303,\"title\":\"Search returns stale results after tag edit\",\"severity\":\"normal\",\"status\":\"open\",\"created\":\"2026-09-15\"},{\"id\":305,\"title\":\"Avatar upload rejects PNG over 2MB\",\"severity\":\"minor\",\"status\":\"open\",\"created\":\"2026-09-16\"}]}\n```",
-  "verdict": "ok",
-  "recordedAt": "2026-09-21T12:02:16.890Z",
-  "model": "claude-haiku-4-5"
-}

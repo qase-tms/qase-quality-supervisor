@@ -14,5 +14,5 @@ evals/results/
 # real project data — defect counts, and in the pulse card the names of the people
 # who were active. Ignored so a run inside any checkout cannot commit them by
 # accident. The templates under skills/*/assets/ are tracked; these outputs are not.
-quality-pulse-*.html
-impact-analysis-*.html
+quality-pulse*.html
+impact-analysis*.html

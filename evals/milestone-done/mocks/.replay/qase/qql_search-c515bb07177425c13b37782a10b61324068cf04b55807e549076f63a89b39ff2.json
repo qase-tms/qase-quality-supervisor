@@ -1,9 +1,0 @@
-{
-  "input": {
-    "query": "entity = \"case\" and project = \"DEMO\""
-  },
-  "output": "```json\n{\"total\":12,\"entities\":[]}\n```",
-  "verdict": "ok",
-  "recordedAt": "2026-09-21T08:05:28.383Z",
-  "model": "claude-haiku-4-5"
-}

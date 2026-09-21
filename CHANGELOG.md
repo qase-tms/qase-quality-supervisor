@@ -10,8 +10,9 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - A behaviour eval suite under `evals/`, run with `scripts/run-evals.sh` and on
   every pull request. Ten cases check that a natural request reaches the right
   skill, that neighbouring skills stay out of it, and that the two HTML reports
-  carry the fixture's real numbers. Qase is answered by mocks, so the suite runs
-  anywhere without a token.
+  get written, name the project and the changed scope, and carry no template
+  placeholders. Qase is answered by mocks, so the suite runs anywhere without a
+  token.
 
 ## [0.3.3] - 2026-09-02
 

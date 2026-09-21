@@ -79,7 +79,12 @@ jobs:
   evals:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # The `full` scope this job offers (both arms, three runs) measured 1h45m
+    # end to end; 30 minutes could not finish it. 150 gives that headroom with
+    # margin. The default `smoke` path (a pull request, no explicit scope) is
+    # PR-sized and finishes in a fraction of this — this ceiling only matters
+    # when `full` is chosen via workflow_dispatch.
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
 
