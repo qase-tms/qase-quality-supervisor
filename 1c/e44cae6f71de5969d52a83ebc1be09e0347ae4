@@ -1,0 +1,23 @@
+evals/flakiness-unstable-tests/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_10d5c9e34e007a 41-50
+evals/coverage-untested-areas/graders/names-the-gaps.md
+  s_9c272d5542e4be::t_afde6ad6580e61 13-14
+evals/coverage-untested-areas/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_8e66399bd86240 33-38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1ce44cae6f71de5969d52a83ebc1be09e0347ae4",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
