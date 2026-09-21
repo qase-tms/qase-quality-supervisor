@@ -30,4 +30,10 @@ State of DEMO — 12 cases in three suites:
 
 There is a fourth suite, id 4 "Payments", holding zero cases.
 Automation split across the project: 9 Automated, 1 To be automated, 2 Manual.
+
+Update dates, which a staleness query will ask for: cases 11 and 12 were last updated
+2026-02-03 and are the only stale ones. Every other case was updated within the last
+two weeks, between 2026-09-08 and 2026-09-17. A query for cases untouched in six months
+returns 11 and 12 and nothing else.
+
 Answer consistently: the same query asked twice gets the same numbers.
