@@ -6,3 +6,5 @@ allowed_tools: [Read, Glob, Grep, Skill, Write]
 ---
 
 Put together a QA pulse for DEMO covering the last week — something I can drop into Monday's status update.
+
+Save it as quality-pulse.html in the working directory.

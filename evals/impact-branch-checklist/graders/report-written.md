@@ -1,4 +1,4 @@
 ---
 type: file_exists
-path: 'impact-analysis-*.html'
+path: 'impact-analysis.html'
 ---

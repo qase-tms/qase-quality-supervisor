@@ -2,7 +2,7 @@
 type: llm
 focus:
   source: file
-  path: 'impact-analysis-*.html'
+  path: 'impact-analysis.html'
 ---
 
 The branch changes cart total calculation and adds promo code lookup, where an unknown
