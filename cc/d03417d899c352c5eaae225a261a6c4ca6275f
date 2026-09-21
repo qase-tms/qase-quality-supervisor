@@ -1,0 +1,47 @@
+evals/impact-branch-checklist/fixture.sh
+  s_9c272d5542e4be::t_dfdf67a29fb569 1-43
+evals/impact-branch-checklist/graders/skill-fired.md
+  s_9c272d5542e4be::t_5775c4456b188f 1-5
+evals/pulse-weekly-card/prompt.md
+  s_9c272d5542e4be::t_29e2280d16f93c 1-8
+evals/impact-branch-checklist/graders/report-content.md
+  s_9c272d5542e4be::t_5775c4456b188f 1-21
+evals/impact-branch-checklist/graders/report-written.md
+  s_9c272d5542e4be::t_5775c4456b188f 1-4
+evals/impact-branch-checklist/prompt.md
+  s_9c272d5542e4be::t_2bead6d984e362 1-8
+evals/pulse-weekly-card/graders/report-written.md
+  s_9c272d5542e4be::t_891762a8c35328 1-4
+scripts/run-evals.sh
+  s_9c272d5542e4be::t_1e6933e44b0f5a 52-54
+evals/pulse-weekly-card/graders/asked-about-demo.md
+  s_9c272d5542e4be::t_50ed0b92ae7b5b 1-5
+evals/impact-branch-checklist/case.yaml
+  s_9c272d5542e4be::t_2bead6d984e362 1-5
+evals/impact-branch-checklist/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_3dc946e5c614eb 1-39
+evals/pulse-weekly-card/graders/report-content.md
+  s_9c272d5542e4be::t_e94dcd5479ba2f 1-18
+evals/impact-branch-checklist/graders/asked-about-demo.md
+  s_9c272d5542e4be::t_5775c4456b188f 1-5
+evals/pulse-weekly-card/graders/skill-fired.md
+  s_9c272d5542e4be::t_52c4ac58b66118 1-5
+evals/pulse-weekly-card/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_29e4cc097943c9 1-34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ccd03417d899c352c5eaae225a261a6c4ca6275f",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
