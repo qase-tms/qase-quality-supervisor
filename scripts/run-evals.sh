@@ -49,6 +49,9 @@ if [ "$SMOKE" = true ]; then
 else
   # The full sweep: both arms, three runs each, so the delta means something.
   args+=(--ablation with-without --runs 3 --threshold 0.8 --max-cost-usd 40 --scaffold)
+  # Only the full sweep needs it: the two report-writing cases are tagged
+  # `full` precisely because they call Write, and the runner only grants it here.
+  args+=(--allow-tools Write)
 fi
 
 [ -n "$CASE_GLOB" ] && args+=(--case "$CASE_GLOB")
