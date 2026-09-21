@@ -1,0 +1,63 @@
+evals/flaky-or-broken/prompt.md
+  s_9c272d5542e4be::t_25a609248582f7 1-8
+evals/unrelated-request/graders/no-triage-skill.md
+  s_9c272d5542e4be::t_ce3ce43770e22d 1-8
+evals/flaky-or-broken/graders/skill-fired.md
+  s_9c272d5542e4be::t_18057b2951eec2 1-5
+evals/unrelated-request/graders/no-coverage-skill.md
+  s_9c272d5542e4be::t_765555bc68a92a 1-8
+evals/unrelated-request/graders/no-release-skill.md
+  s_9c272d5542e4be::t_c3c21d699e3f8d 1-8
+evals/unrelated-request/graders/no-pulse-skill.md
+  s_9c272d5542e4be::t_dbc8fe0b1e76f6 1-8
+evals/flaky-or-broken/graders/no-triage-skill.md
+  s_9c272d5542e4be::t_5c206b1e5a2cf1 1-8
+evals/milestone-done/graders/skill-fired.md
+  s_9c272d5542e4be::t_4ddbf532a42323 1-5
+evals/milestone-done/graders/asked-about-demo.md
+  s_9c272d5542e4be::t_f6d5aafd3ce6fa 1-5
+evals/unrelated-request/prompt.md
+  s_9c272d5542e4be::t_c4e5dfef39ee6f 1-12
+evals/unrelated-request/graders/no-impact-skill.md
+  s_9c272d5542e4be::t_8e9db387007b5e 1-8
+evals/unrelated-request/graders/answers-the-question.md
+  s_9c272d5542e4be::t_858115d29df5a2 1-11
+evals/flaky-or-broken/graders/asked-about-demo.md
+  s_9c272d5542e4be::t_d5f9ed9959f8a7 1-5
+evals/automation-share/prompt.md
+  s_9c272d5542e4be::t_f92e46e43eb9d2 1-8
+evals/automation-share/graders/no-pulse-skill.md
+  s_9c272d5542e4be::t_1bf418859314aa 1-8
+evals/flaky-or-broken/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_6ed26e79f554ed 1-51
+evals/automation-share/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_6ed26e79f554ed 1-39
+evals/unrelated-request/graders/no-flakiness-skill.md
+  s_9c272d5542e4be::t_2d53a2d65301b1 1-8
+evals/milestone-done/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_6ed26e79f554ed 1-40
+evals/automation-share/graders/skill-fired.md
+  s_9c272d5542e4be::t_439afb566f3e24 1-5
+evals/automation-share/graders/asked-about-demo.md
+  s_9c272d5542e4be::t_fb20e70647ee4a 1-5
+evals/milestone-done/prompt.md
+  s_9c272d5542e4be::t_66fc462593cc02 1-8
+evals/milestone-done/graders/no-pulse-skill.md
+  s_9c272d5542e4be::t_b76d093f5c4268 1-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "376fde889c69ed84c230c362acd9a361ebea8abf",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
