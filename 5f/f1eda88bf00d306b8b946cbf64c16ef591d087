@@ -1,0 +1,59 @@
+evals/flaky-or-broken/mocks/.replay/qase/qql_search-1ae7118f520bd87afc3987b7cf38cf2dc5209f9ef2d159f48f8e7169f42f88ce.json
+  s_9c272d5542e4be::t_fabd12745e39c0 1-9
+evals/flaky-or-broken/mocks/.replay/qase/qql_search-1fab24ae74bd16b5859890620f5498525dc6f7de02f7e7538f4a27033eba8fd9.json
+  s_9c272d5542e4be::t_fabd12745e39c0 1-9
+evals/automation-share/mocks/.replay/qase/qql_search-84ece0a8383d595003db226d6747f601b4d3d903719c530566ae3bb038bf83c4.json
+  s_9c272d5542e4be::t_36ed50ac135379 1-9
+evals/flaky-or-broken/mocks/.replay/qase/qql_search-d03b555a6789040b4cdf864a38a67a0ed258a326268dab79cf004deceabfdca8.json
+  s_9c272d5542e4be::t_fabd12745e39c0 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-0eb065afe753756009ebf8be5d5f2e0e6e97e0fe828deb98b6045a5e2014b17d.json
+  s_9c272d5542e4be::t_75cf6dedb57bde 1-9
+evals/flaky-or-broken/mocks/.replay/qase/qql_search-6579318a3e4812ee126f9a626844551649a1cdfb52251bd460ca1599f4b4ab74.json
+  s_9c272d5542e4be::t_fabd12745e39c0 1-9
+evals/automation-share/mocks/.replay/qase/qql_search-ccfb612f52f1f91f3940ab48180f81f907b41728028ad3b65490a396aa6fa7ec.json
+  s_9c272d5542e4be::t_36ed50ac135379 1-9
+evals/automation-share/mocks/.replay/qase/qql_search-496b7bab53ebe208a1536aef1093fd7f4119749ad5cf7aa62e9947a8967c5ed6.json
+  s_9c272d5542e4be::t_36ed50ac135379 1-10
+evals/flaky-or-broken/mocks/.replay/qase/qql_search-2328e8801fe1b2a6c5e5a16114aa7c50f316c692a68ecfa4a12634f6cfcfa9a4.json
+  s_9c272d5542e4be::t_fabd12745e39c0 1-9
+evals/flaky-or-broken/mocks/.replay/qase/qql_search-62d1e3d04db59159578b814af5da69c7e855d6654b25a933aca4cf6a522e7097.json
+  s_9c272d5542e4be::t_fabd12745e39c0 1-9
+evals/flaky-or-broken/mocks/.replay/qase/qql_search-c66d258325c283e39a498142b87cbbac8ba50d0d8fa3788790297f22833bf07b.json
+  s_9c272d5542e4be::t_fabd12745e39c0 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-17776671745afbadc202cfcb05ee71ed10ef102b024bc3fa5d7a446499cb1baa.json
+  s_9c272d5542e4be::t_0be459e729d0f8 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-17a6059ad189cb688beefb35b9c188aa87ed1568f4a12bccd6399be8f4a140ce.json
+  s_9c272d5542e4be::t_4d436b26a6601d 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-3f6fd610cc38c9924b4b9fa3d0e24837c052e67aff2a2eade695d18f26867e66.json
+  s_9c272d5542e4be::t_b967fcb0e03137 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-5f610e63978edb470d4e93ae19ebccfae7d8bcc97d1f496d0f1a98ed7ccb57f6.json
+  s_9c272d5542e4be::t_25c2a97f0e772f 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-77bd643826bff777984a563eb93d8a75ee66b2557e7f83a6b32f771af7ddf4d3.json
+  s_9c272d5542e4be::t_35ddbc2298d0cb 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-87bf718495e58fb2d3a02d71a2504a2350e1bba5ff3896e95ed6a38d4933fb1e.json
+  s_9c272d5542e4be::t_3a9ef328ecd983 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-9b97f3cd195b9a3f79163cfc6e081fb0e0f3f3e04991e86351d87dfdc857b9d6.json
+  s_9c272d5542e4be::t_0c31b82c5a21b1 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-c161692fa1e01fa6f981ea6b778bd495333481582435c4533a04607126df26d8.json
+  s_9c272d5542e4be::t_635ba4983fe736 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-c515bb07177425c13b37782a10b61324068cf04b55807e549076f63a89b39ff2.json
+  s_9c272d5542e4be::t_0513a71864e2d4 1-9
+evals/milestone-done/mocks/.replay/qase/qql_search-dcb0897073533a3ee01c20ae6fe0dde67d8cea91192f663b6a92f8a1b2af7e7a.json
+  s_9c272d5542e4be::t_601b38f022c19d 1-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "5ff1eda88bf00d306b8b946cbf64c16ef591d087",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
