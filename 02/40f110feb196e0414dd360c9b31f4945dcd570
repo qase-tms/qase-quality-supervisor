@@ -1,0 +1,62 @@
+tests/test-eval-suite.sh
+  s_951372a63dfe1a::t_0af9985978f347 64-103,105-112
+  s_951372a63dfe1a::t_85e50cd3882d3b 104
+evals/impact-branch-checklist/graders/report-mentions-scope.md
+  s_951372a63dfe1a::t_00dbc592032761 6
+CHANGELOG.md
+  s_951372a63dfe1a::t_76d982ee9786e5 13-15
+evals/automation-share/graders/asked-about-demo.md
+  s_951372a63dfe1a::t_014eb9596a3856 4
+evals/release-go-no-go/graders/asked-about-demo.md
+  s_951372a63dfe1a::t_014eb9596a3856 4
+evals/flakiness-unstable-tests/graders/asked-about-demo.md
+  s_951372a63dfe1a::t_014eb9596a3856 4
+evals/impact-branch-checklist/graders/asked-about-demo.md
+  s_951372a63dfe1a::t_014eb9596a3856 4
+evals/triage-red-run/graders/asked-about-demo.md
+  s_951372a63dfe1a::t_014eb9596a3856 4
+docs/evals.md
+  s_951372a63dfe1a::t_3c50d8710a24cf 77-84
+evals/pulse-weekly-card/graders/asked-about-demo.md
+  s_951372a63dfe1a::t_014eb9596a3856 4
+evals/mocks/qase/qase_project_context.md
+  s_951372a63dfe1a::t_59cd62ebb7ec5f 6
+evals/pulse-weekly-card/graders/report-numbers.md
+  s_951372a63dfe1a::t_e312187df5e4f4 6
+evals/flaky-or-broken/graders/asked-about-demo.md
+  s_951372a63dfe1a::t_014eb9596a3856 4
+evals/coverage-untested-areas/graders/asked-about-demo.md
+  s_951372a63dfe1a::t_014eb9596a3856 4
+evals/mocks/qase/qase_get.md
+  s_951372a63dfe1a::t_2959201634a523 1-48
+evals/milestone-done/graders/asked-about-demo.md
+  s_951372a63dfe1a::t_014eb9596a3856 4
+.github/workflows/validate.yml
+  s_951372a63dfe1a::t_ec81af56938601 82-87
+.gitignore
+  s_c20cd7512b4e20::t_1eca566027ae45 17-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "0240f110feb196e0414dd360c9b31f4945dcd570",
+  "prompts": {},
+  "sessions": {
+    "s_951372a63dfe1a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0da053b8-2752-49f5-a5ab-1f215e4081fe",
+        "model": "unknown"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    },
+    "s_c20cd7512b4e20": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "23139fb4-aa69-408a-90b2-fc9e5e348fbe",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
