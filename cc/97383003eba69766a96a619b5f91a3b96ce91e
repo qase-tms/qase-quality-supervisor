@@ -1,0 +1,29 @@
+evals/pulse-weekly-card/graders/pulse-conclusions.md
+  s_9c272d5542e4be::t_206296f57d83e1 1-13
+evals/pulse-weekly-card/graders/report-numbers.md
+  s_9c272d5542e4be::t_c93984339f9f80 1-7
+evals/impact-branch-checklist/graders/impact-conclusions.md
+  s_9c272d5542e4be::t_206296f57d83e1 1-15
+evals/impact-branch-checklist/graders/report-mentions-scope.md
+  s_9c272d5542e4be::t_206296f57d83e1 1-8
+evals/impact-branch-checklist/graders/report-no-placeholders.md
+  s_9c272d5542e4be::t_206296f57d83e1 1-8
+evals/pulse-weekly-card/graders/report-no-placeholders.md
+  s_9c272d5542e4be::t_206296f57d83e1 1-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "cc97383003eba69766a96a619b5f91a3b96ce91e",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
