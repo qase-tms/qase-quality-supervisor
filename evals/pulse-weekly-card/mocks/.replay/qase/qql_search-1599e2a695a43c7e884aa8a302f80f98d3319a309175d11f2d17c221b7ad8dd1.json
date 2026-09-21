@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"case\" and project = \"DEMO\" and updated >= \"2026-09-14\""
+  },
+  "output": "```json\n{\"total\":5,\"entities\":[{\"id\":10,\"title\":\"New test case 10\",\"suite_id\":1,\"automation\":0,\"created\":\"2026-09-14T08:30:00+00:00\",\"updated\":\"2026-09-14T08:30:00+00:00\"},{\"id\":11,\"title\":\"New test case 11\",\"suite_id\":1,\"automation\":1,\"created\":\"2026-09-15T10:15:00+00:00\",\"updated\":\"2026-09-15T10:15:00+00:00\"},{\"id\":12,\"title\":\"New test case 12\",\"suite_id\":2,\"automation\":0,\"created\":\"2026-09-16T14:45:00+00:00\",\"updated\":\"2026-09-16T14:45:00+00:00\"},{\"id\":13,\"title\":\"Updated test case 13\",\"suite_id\":1,\"automation\":1,\"created\":\"2026-09-10T09:00:00+00:00\",\"updated\":\"2026-09-14T11:20:00+00:00\"},{\"id\":14,\"title\":\"Updated test case 14\",\"suite_id\":2,\"automation\":0,\"created\":\"2026-09-12T16:30:00+00:00\",\"updated\":\"2026-09-17T13:45:00+00:00\"}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T12:02:23.743Z",
+  "model": "claude-haiku-4-5"
+}

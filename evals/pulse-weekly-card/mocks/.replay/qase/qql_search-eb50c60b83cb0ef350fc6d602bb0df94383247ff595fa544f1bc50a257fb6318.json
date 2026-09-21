@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"result\" and project = \"DEMO\" and ended >= \"2026-09-14\""
+  },
+  "output": "```json\n{\n  \"total\": 180,\n  \"entities\": [\n    {\n      \"id\": 1,\n      \"case_id\": 1,\n      \"run_id\": 4881,\n      \"status\": 1,\n      \"created\": \"2026-09-14T10:05:00+00:00\",\n      \"updated\": \"2026-09-14T11:12:00+00:00\"\n    },\n    {\n      \"id\": 2,\n      \"case_id\": 2,\n      \"run_id\": 4881,\n      \"status\": 1,\n      \"created\": \"2026-09-14T10:06:00+00:00\",\n      \"updated\": \"2026-09-14T11:12:00+00:00\"\n    },\n    {\n      \"id\": 3,\n      \"case_id\": 3,\n      \"run_id\": 4881,\n      \"status\": 2,\n      \"created\": \"2026-09-14T10:07:00+00:00\",\n      \"updated\": \"2026-09-14T11:12:00+00:00\"\n    },\n    {\n      \"id\": 4,\n      \"case_id\": 4,\n      \"run_id\": 4888,\n      \"status\": 1,\n      \"created\": \"2026-09-15T23:10:00+00:00\",\n      \"updated\": \"2026-09-15T23:44:00+00:00\"\n    },\n    {\n      \"id\": 5,\n      \"case_id\": 5,\n      \"run_id\": 4888,\n      \"status\": 1,\n      \"created\": \"2026-09-15T23:11:00+00:00\",\n      \"updated\": \"2026-09-15T23:44:00+00:00\"\n    },\n    {\n      \"id\": 6,\n      \"case_id\": 6,\n      \"run_id\": 4894,\n      \"status\": 1,\n      \"created\": \"2026-09-16T23:15:00+00:00\",\n      \"updated\": \"2026-09-16T23:39:00+00:00\"\n    },\n    {\n      \"id\": 7,\n      \"case_id\": 7,\n      \"run_id\": 4899,\n      \"status\": 2,\n      \"created\": \"2026-09-17T23:20:00+00:00\",\n      \"updated\": \"2026-09-17T23:47:00+00:00\"\n    },\n    {\n      \"id\": 8,\n      \"case_id\": 8,\n      \"run_id\": 4902,\n      \"status\": 1,\n      \"created\": \"2026-09-18T23:25:00+00:00\",\n      \"updated\": \"2026-09-18T23:52:00+00:00\"\n    }\n  ]\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T12:04:36.087Z",
+  "model": "claude-haiku-4-5"
+}

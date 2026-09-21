@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"run\" and project = \"DEMO\""
+  },
+  "output": "```json\n{\"total\":7,\"entities\":[{\"id\":4870,\"title\":\"Nightly 2026-09-11\",\"status\":\"complete\",\"started\":\"2026-09-11T23:00:00+00:00\",\"ended\":\"2026-09-11T23:41:00+00:00\"},{\"id\":4877,\"title\":\"Nightly 2026-09-12\",\"status\":\"complete\",\"started\":\"2026-09-12T23:00:00+00:00\",\"ended\":\"2026-09-12T23:38:00+00:00\"},{\"id\":4881,\"title\":\"Regression 2026-09-14\",\"status\":\"complete\",\"started\":\"2026-09-14T10:00:00+00:00\",\"ended\":\"2026-09-14T11:12:00+00:00\"},{\"id\":4888,\"title\":\"Nightly 2026-09-15\",\"status\":\"complete\",\"started\":\"2026-09-15T23:00:00+00:00\",\"ended\":\"2026-09-15T23:44:00+00:00\"},{\"id\":4894,\"title\":\"Nightly 2026-09-16\",\"status\":\"complete\",\"started\":\"2026-09-16T23:00:00+00:00\",\"ended\":\"2026-09-16T23:39:00+00:00\"},{\"id\":4899,\"title\":\"Nightly 2026-09-17\",\"status\":\"complete\",\"started\":\"2026-09-17T23:00:00+00:00\",\"ended\":\"2026-09-17T23:47:00+00:00\"},{\"id\":4902,\"title\":\"Nightly 2026-09-18\",\"status\":\"complete\",\"started\":\"2026-09-18T23:00:00+00:00\",\"ended\":\"2026-09-18T23:52:00+00:00\"}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T12:02:37.401Z",
+  "model": "claude-haiku-4-5"
+}

@@ -4,6 +4,6 @@
   },
   "output": "```json\n{\"total\":2,\"entities\":[{\"priority\":0,\"count_all\":10},{\"priority\":1,\"count_all\":2}]}\n```",
   "verdict": "ok",
-  "recordedAt": "2026-09-21T07:31:34.572Z",
+  "recordedAt": "2026-09-21T11:42:41.627Z",
   "model": "claude-haiku-4-5"
 }

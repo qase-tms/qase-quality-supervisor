@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"case\" and project = \"DEMO\" and updated >= \"2026-09-14\""
+  },
+  "output": "```json\n{\n  \"total\": 5,\n  \"entities\": [\n    {\n      \"id\": 11,\n      \"title\": \"Case 11\",\n      \"suite_id\": 1,\n      \"automation\": 0,\n      \"created\": \"2026-09-14T09:30:00+00:00\",\n      \"updated\": \"2026-09-14T09:30:00+00:00\"\n    },\n    {\n      \"id\": 12,\n      \"title\": \"Case 12\",\n      \"suite_id\": 1,\n      \"automation\": 1,\n      \"created\": \"2026-09-16T14:20:00+00:00\",\n      \"updated\": \"2026-09-16T14:20:00+00:00\"\n    },\n    {\n      \"id\": 1,\n      \"title\": \"Case 1\",\n      \"suite_id\": 1,\n      \"automation\": 1,\n      \"created\": \"2026-09-10T08:00:00+00:00\",\n      \"updated\": \"2026-09-14T10:15:00+00:00\"\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Case 2\",\n      \"suite_id\": 1,\n      \"automation\": 0,\n      \"created\": \"2026-09-11T12:00:00+00:00\",\n      \"updated\": \"2026-09-15T14:30:00+00:00\"\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Case 3\",\n      \"suite_id\": 1,\n      \"automation\": 2,\n      \"created\": \"2026-09-12T16:00:00+00:00\",\n      \"updated\": \"2026-09-17T11:45:00+00:00\"\n    }\n  ]\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T12:04:42.537Z",
+  "model": "claude-haiku-4-5"
+}

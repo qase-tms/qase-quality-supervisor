@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"defect\" and project = \"DEMO\" and created >= \"2026-09-14\""
+  },
+  "output": "```json\n{\n  \"total\": 3,\n  \"entities\": [\n    {\n      \"id\": 302,\n      \"title\": \"CSV export writes to a missing path\",\n      \"severity\": \"critical\",\n      \"status\": \"open\",\n      \"created\": \"2026-09-14\"\n    },\n    {\n      \"id\": 303,\n      \"title\": \"Search returns stale results after tag edit\",\n      \"severity\": \"normal\",\n      \"status\": \"open\",\n      \"created\": \"2026-09-15\"\n    },\n    {\n      \"id\": 305,\n      \"title\": \"Avatar upload rejects PNG over 2MB\",\n      \"severity\": \"minor\",\n      \"status\": \"open\",\n      \"created\": \"2026-09-16\"\n    }\n  ]\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-09-21T12:04:58.729Z",
+  "model": "claude-haiku-4-5"
+}
