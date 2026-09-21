@@ -1,0 +1,32 @@
+evals/pulse-weekly-card/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_65396aee32c0d1 31,34-59
+  s_c20cd7512b4e20::t_d4657b666b3486 60
+evals/coverage-untested-areas/mocks/qase/qql_search.md
+  s_9c272d5542e4be::t_fe69224cd7b16d 39-49
+evals/mocks/qase/qase_project_context.md
+  s_9c272d5542e4be::t_db5caf53dc4b82 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "36f20e95d8c24340ccd21e135295dae3c18e6ed5",
+  "prompts": {},
+  "sessions": {
+    "s_9c272d5542e4be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8724a57e-96e1-4e07-a0f5-ede10bdfbf44",
+        "model": "unknown"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    },
+    "s_c20cd7512b4e20": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "23139fb4-aa69-408a-90b2-fc9e5e348fbe",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
