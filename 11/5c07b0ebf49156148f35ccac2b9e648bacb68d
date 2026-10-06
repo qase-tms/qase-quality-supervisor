@@ -1,0 +1,23 @@
+references/qql.md
+  s_505f7d8723d921::t_353ff0afd63037 103-107,111-122
+  s_505f7d8723d921::t_53c38ce3f2988e 25
+  s_505f7d8723d921::t_2400270661ff96 123
+CHANGELOG.md
+  s_505f7d8723d921::t_db8e9a7001a4c5 6-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "115c07b0ebf49156148f35ccac2b9e648bacb68d",
+  "prompts": {},
+  "sessions": {
+    "s_505f7d8723d921": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a00dd156-1e2b-4a87-af78-2adc0914ac51",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Artem Frolov <afrolov@qase.io>"
+    }
+  }
+}
