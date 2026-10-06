@@ -6,10 +6,12 @@ checks live in `scripts/verify-plugin.sh`; this is the other half.
 
 ## Running them
 
-The command needs Claude Code 2.1.269 or later. The stable channel is behind, so
-install one beside your own CLI and point the runner at it:
+The command needs Claude Code 2.1.269 or later, which the stable channel now
+carries — the CLI on your PATH is usually enough, and the runner takes it from
+there. If yours is older, upgrade it, or install a newer build beside it and
+point the runner at that:
 
-    npm install --prefix /tmp/eval-cli @anthropic-ai/claude-code@2.1.276
+    npm install --prefix /tmp/eval-cli @anthropic-ai/claude-code@latest
     export CLAUDE_EVAL_BIN=/tmp/eval-cli/node_modules/.bin/claude
 
     bash scripts/run-evals.sh --smoke          # what CI runs on every PR

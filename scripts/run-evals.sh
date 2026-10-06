@@ -3,8 +3,10 @@
 # skill and finish the analysis. Separate from verify-plugin.sh, which checks
 # that the plugin is well-formed rather than that it works.
 #
-# The CLI is taken from CLAUDE_EVAL_BIN because `plugin eval` needs 2.1.269+,
-# and the stable channel is still below that.
+# The CLI comes from CLAUDE_EVAL_BIN when that is set, otherwise from PATH.
+# `plugin eval` needs 2.1.269+; the stable channel has since caught up, so the
+# override is an escape hatch for running against a particular build rather than
+# the normal way in.
 set -uo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -34,8 +36,9 @@ version="$("$CLI" --version 2>/dev/null | cut -d' ' -f1)"
 lowest="$(printf '%s\n%s\n' "$MIN_VERSION" "$version" | sort -V | head -1)"
 if [ "$lowest" != "$MIN_VERSION" ]; then
   echo "FAIL: 'claude plugin eval' needs $MIN_VERSION or later; '$CLI' is $version." >&2
-  echo "The stable channel is behind. Install it beside your own CLI and point CLAUDE_EVAL_BIN at it:" >&2
-  echo "  npm install --prefix /tmp/eval-cli @anthropic-ai/claude-code@2.1.276" >&2
+  echo "Upgrade it (npm install -g @anthropic-ai/claude-code@latest), or install a" >&2
+  echo "newer build beside your own and point CLAUDE_EVAL_BIN at that:" >&2
+  echo "  npm install --prefix /tmp/eval-cli @anthropic-ai/claude-code@latest" >&2
   echo "  export CLAUDE_EVAL_BIN=/tmp/eval-cli/node_modules/.bin/claude" >&2
   exit 1
 fi
