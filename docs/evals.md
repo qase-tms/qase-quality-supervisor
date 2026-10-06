@@ -134,9 +134,9 @@ answers the question, just without Qase evidence behind it. `unrelated-request`
 scoring 1.00 in both arms with Δ 0.00 is the intended result, not a gap — it
 shows the plugin stays out of a request that is none of its business.
 
-A whole sweep of these ten cases cost about $11 and took roughly an hour and
-three quarters of wall clock. The per-PR smoke slice is a fraction of that:
-eight cases, one run each, a single arm.
+A whole sweep is heavy — ten cases, two arms, three runs each — which is why it
+is a `workflow_dispatch` choice rather than something a pull request triggers.
+The smoke slice is a small fraction of it: eight cases, one run each, one arm.
 
 A delta is comparable only against the same models and around the same date.
 Two things move it: pinning a different agent or judge model, and the passage
