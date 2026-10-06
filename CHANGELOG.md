@@ -3,6 +3,16 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Fixed
+- **The QQL reference said results have no run-ID field.** QQL filters results by
+  `runId`, the run number from the run URL: `/run/DEMO/dashboard/42` is
+  `runId = 42`. `references/qql.md` now lists it, with the caveat that matters —
+  run numbers restart in every project, so `runId` needs `project = "CODE"`, or it
+  matches that number in every project. The result fields also gain `isManual`,
+  with the titles it takes.
+
 ## [0.3.3] - 2026-09-02
 
 ### Added
