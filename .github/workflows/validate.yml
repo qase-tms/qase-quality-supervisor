@@ -127,6 +127,12 @@ jobs:
       (github.event_name == 'workflow_dispatch' ||
        github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
+    # Only this job writes, and only to a pull request's comments, to report what
+    # the suite found. The workflow-wide default stays read-only for everything
+    # else. Forks never reach here, so the token always has the write it needs.
+    permissions:
+      contents: read
+      pull-requests: write
     # The `full` scope this job offers (both arms, three runs) measured 1h45m
     # end to end; 30 minutes could not finish it. 150 gives that headroom with
     # margin. The default `smoke` path (a pull request, no explicit scope) is
@@ -153,6 +159,35 @@ jobs:
             bash scripts/run-evals.sh
           else
             bash scripts/run-evals.sh --smoke
+          fi
+
+      # A red check says the suite failed; this says which case fell over and
+      # which grader said so, in the pull request itself. It runs even when the
+      # suite died, because that is when a reviewer most needs to be told
+      # something — and it never fails the job, since a run that cannot report
+      # its own failure reports nothing at all.
+      - name: Report back to the pull request
+        if: always() && github.event_name == 'pull_request'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          agg="$(ls -t evals/results/*/aggregate-result.json 2>/dev/null | head -1)"
+          bash scripts/eval-comment.sh "$agg" "$RUN_URL" > comment.md
+          cat comment.md
+
+          # One comment per pull request, edited in place: a sweep runs on every
+          # behaviour change, and a fresh comment each time would bury the thread.
+          existing="$(gh api "repos/$REPO/issues/$PR/comments" --paginate \
+            --jq 'map(select(.body | startswith("<!-- eval-report -->"))) | .[0].id // empty')"
+
+          if [ -n "$existing" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$existing" -F body=@comment.md >/dev/null
+          else
+            gh api -X POST "repos/$REPO/issues/$PR/comments" -F body=@comment.md >/dev/null
           fi
 
       - name: Keep the report
