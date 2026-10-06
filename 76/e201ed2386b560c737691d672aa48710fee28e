@@ -1,0 +1,19 @@
+evals/release-go-no-go/mocks/.replay/qase/qql_search-1e7349cf3c6d36c74ee0d331ecbc483f1d93ceb4350009de965506e2cb7edcdf.json
+  s_7e14af370178d4::t_fe2393c9aeb957 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "76e201ed2386b560c737691d672aa48710fee28e",
+  "prompts": {},
+  "sessions": {
+    "s_7e14af370178d4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9cf3d697-7150-4182-a300-74bf20f9090b",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
