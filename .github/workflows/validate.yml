@@ -73,10 +73,10 @@ jobs:
       - name: Full verification (install + component inventory)
         run: bash scripts/verify-plugin.sh
 
-  # The eval suite bills real money on every run — the smoke slice measured about
-  # $1.70 — and a change to the README, the changelog or a shell test cannot move
-  # a single grader. This job decides whether the pull request touches anything
-  # that could, so documentation-only work stops paying for a sweep.
+  # The eval suite bills real money on every run, and a change to the README, the
+  # changelog or a shell test cannot move a single grader. This job decides whether
+  # the pull request touches anything that could, so documentation-only work stops
+  # paying for a sweep.
   #
   # The list below is deliberately wide. A path missing from it buys a silent gap
   # in behaviour coverage; a path that did not need to be on it costs one run.
