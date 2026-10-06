@@ -14,7 +14,7 @@ point the runner at that:
     npm install --prefix /tmp/eval-cli @anthropic-ai/claude-code@latest
     export CLAUDE_EVAL_BIN=/tmp/eval-cli/node_modules/.bin/claude
 
-    bash scripts/run-evals.sh --smoke          # what CI runs on every PR
+    bash scripts/run-evals.sh --smoke          # what CI runs on a behaviour change
     bash scripts/run-evals.sh                  # both arms, three runs, the HTML cases
     bash scripts/run-evals.sh --case 'triage-*'
 

@@ -47,7 +47,8 @@ args=(plugin eval "$REPO_ROOT" --trust-plugin --no-publish
       --model claude-sonnet-5 --judge-model claude-haiku-4-5)
 
 if [ "$SMOKE" = true ]; then
-  # What runs on every PR: no baseline arm, one run per case, hard pass bar.
+  # What CI runs on a pull request that touches behaviour: no baseline arm, one
+  # run per case, hard pass bar.
   args+=(--tag smoke --ablation none --runs 1 --threshold 1.0 --max-cost-usd 5)
 else
   # The full sweep: both arms, three runs each, so the delta means something.
