@@ -3,17 +3,6 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
-
-### Added
-
-- A behaviour eval suite under `evals/`, run with `scripts/run-evals.sh` and on
-  every pull request. Ten cases check that a natural request reaches the right
-  skill, that neighbouring skills stay out of it, and that the two HTML reports
-  get written, name the project and the changed scope, and carry no template
-  placeholders. Qase is answered by mocks, so the suite runs anywhere without a
-  token.
-
 ## [0.3.3] - 2026-09-02
 
 ### Added
@@ -35,6 +24,13 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   It is also fail-open — a machine with no Node, an unreadable temp directory, or any
   internal error leaves the call untouched and simply unattributed. Requires **MCP
   server 2.3.0 or newer**; older servers ignore the fields.
+
+- **A behaviour eval suite under `evals/`.** Run it with `scripts/run-evals.sh`; in
+  CI it runs on the pull requests that touch the plugin's behaviour. Ten cases check
+  that a natural request reaches the right skill, that neighbouring skills stay out
+  of it, and that the two HTML reports get written, name the project and the changed
+  scope, and carry no template placeholders. Qase is answered by mocks, so the suite
+  runs anywhere without a token.
 
 ### Changed
 - **`.mcp.json` no longer declares `X-Qase-Integration`.** A header on the MCP
