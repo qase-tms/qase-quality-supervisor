@@ -38,6 +38,20 @@ function ourAgentName(payload) {
 // Which part of the plugin is driving, when a skill is activated. A run started
 // by our command or our agent keeps that entrypoint: the skill is how the work
 // is done, the entrypoint is how the user asked for it.
+// Codex has no skill event — openai/codex#17132 is still open — and loads a skill
+// by shelling out to read its SKILL.md. That read is the only signal there is, so
+// in Codex mode it is what opens a run. The path must sit under this plugin's own
+// root, or another plugin's skill would be counted as ours.
+const CODEX_MODE = process.argv.includes('--codex');
+const PLUGIN_ROOT = path.join(__dirname, '..');
+
+function skillFromShellCommand(payload) {
+  const cmd = (payload.tool_input || {}).command;
+  if (typeof cmd !== 'string' || !cmd.includes(PLUGIN_ROOT)) return null;
+  const m = cmd.match(/\/skills\/([a-z0-9][a-z0-9-]*)\/SKILL\.md/);
+  return m ? m[1] : null;
+}
+
 function entrypointFor(payload, existing) {
   if (existing && existing.entrypoint === 'command') return 'command';
   if (ourAgentName(payload)) return 'agent';
@@ -88,11 +102,15 @@ function statePath(payload) {
 }
 
 function emitUpdatedInput(toolInput) {
-  process.stdout.write(
-    JSON.stringify({
-      hookSpecificOutput: { hookEventName: 'PreToolUse', updatedInput: toolInput },
-    }),
-  );
+  // Codex drops updatedInput unless the same hook also approves the call, so in
+  // that mode the marker costs an approval. It is scoped by the matchers in
+  // hooks.codex.json to the four read-only Qase tools, which cannot mutate
+  // anything and never overlap the destructive guards. Claude Code needs no
+  // decision and must not receive one: approving here would silently remove a
+  // permission prompt the user still has.
+  const out = { hookEventName: 'PreToolUse', updatedInput: toolInput };
+  if (CODEX_MODE) out.permissionDecision = 'allow';
+  process.stdout.write(JSON.stringify({ hookSpecificOutput: out }));
 }
 
 function main() {
@@ -129,6 +147,18 @@ function main() {
       });
     }
     return;
+  }
+
+  if (CODEX_MODE) {
+    const shellSkill = skillFromShellCommand(payload);
+    if (shellSkill) {
+      writeState(file, {
+        producer: shellSkill,
+        entrypoint: entrypointFor(payload, readState(file)),
+        seq: 0,
+      });
+      return;
+    }
   }
 
   if (!QASE_TOOL.test(payload.tool_name || '')) return;

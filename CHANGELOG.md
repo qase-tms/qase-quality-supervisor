@@ -3,6 +3,70 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.4] - 2026-09-04
+
+### Added
+- **The plugin installs in Codex.** `.codex-plugin/plugin.json` declares the skills,
+  the MCP server and the hooks for Codex's plugin system, so the same repository is
+  a marketplace for both hosts:
+
+  ```
+  codex plugin marketplace add qase-tms/qase-quality-supervisor
+  codex plugin add quality-supervisor@quality-supervisor
+  ```
+
+  Verified end to end: all six skills load, namespaced `quality-supervisor:<skill>`
+  exactly as in Claude Code, and the Qase MCP server is registered from `.mcp.json`
+  without further configuration.
+
+  The destructive-call guards work there too. Codex expands
+  `${CLAUDE_PLUGIN_ROOT}`, honours a hook's `matcher`, names MCP tools
+  `mcp__qase__*` as Claude Code does, sends the same PreToolUse payload, and
+  accepts the same deny response — each verified separately against Codex CLI
+  0.149.1.
+
+  Codex gets its own hook file, `hooks/hooks.codex.json`. It differs from
+  `hooks.json` in form — Codex ignores the `command` + `args` form, so entries
+  written that way silently never run — and in two behaviours that took measuring
+  to find.
+
+  Codex has no event for skill activation
+  ([openai/codex#17132](https://github.com/openai/codex/issues/17132) is open), so
+  a run is opened by watching for the shell read of a `SKILL.md` under this
+  plugin's own root. And Codex discards a hook's rewritten arguments unless the
+  same hook approves the call, so the attribution hook returns one. That is scoped
+  to the four read-only Qase tools — `qase_get`, `qase_project_context`,
+  `qql_search`, `qql_help`, all under the server's `read/` and `qql/` operations
+  and none using a write verb. They never overlap the destructive matchers, so an
+  approval can never land beside a block on the same call, and writes are not in
+  the list. In practice Codex still shows its own approval prompt for MCP tools, so
+  the hook's approval removes no gate that was there before. The flag comes from
+  the hook registration rather than from sniffing the host, so Claude Code runs the
+  same script and never receives an approval — a test asserts it.
+
+  Not yet confirmed: whether the marker reaches Qase from Codex end to end. The
+  hook runs and records the skill — caught live mid-run — but the last hop was
+  measured only on a shell tool, and MCP tools have since proved to behave
+  differently. Claude Code is unaffected either way.
+
+  The PowerShell twins are absent from that file: on unix Codex reports the
+  missing interpreter as `hook exited with code 127` next to a guard that worked,
+  which reads as a broken guard. The cost is that Windows without Git Bash under
+  Codex has no guard at all; `README.md` and `SECURITY.md` say so and point at
+  `disabled_tools` as the replacement that needs no hook.
+
+  `tests/test-hook-parity.sh` keeps the two files honest: it fails if they ever
+  guard different calls, or if the Codex file grows an entry in the form Codex
+  ignores.
+
+  Codex also will not run a plugin's hooks until the user accepts a prompt to trust
+  them, on the first interactive run. Until then they are skipped silently, so a
+  fresh install has the skills and the MCP server but not yet the guards.
+
+  The version tooling now covers three manifests instead of two: the two plugin
+  manifests are never read by the same tool, so a stale Codex version would have
+  gone unnoticed by everything except the check that now catches it.
+
 ## [0.3.3] - 2026-09-02
 
 ### Added

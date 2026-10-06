@@ -2,8 +2,9 @@
 #
 # Sets the plugin version everywhere it appears, in one command.
 #
-# The version lives in two places — the plugin manifest and the marketplace
-# manifest — because neither can read the other. It used to live in four: the
+# The version lives in three places — the Claude Code plugin manifest, the Codex
+# plugin manifest, and the marketplace manifest — because none of them can read
+# the others. It used to live in four: the
 # X-Qase-Integration marker in .mcp.json and the self-run example in README.md
 # are gone, since hooks/mark-run.js reads the manifest at runtime and puts the
 # version on the wire itself. This script is still the single entry point, and
@@ -60,6 +61,7 @@ set_manifest_version() {
 echo "==> Setting version to $NEW_VERSION"
 set_manifest_version .claude-plugin/plugin.json
 set_manifest_version .claude-plugin/marketplace.json
+set_manifest_version .codex-plugin/plugin.json
 
 echo "==> Verifying"
 bash "$SCRIPT_DIR/check-version-sync.sh" "$REPO_ROOT"
