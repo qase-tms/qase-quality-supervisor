@@ -1,0 +1,24 @@
+scripts/eval-comment.sh
+  s_7e14af370178d4::t_f3f979265bb4f1 1-67
+.github/workflows/validate.yml
+  s_7e14af370178d4::t_bf24c8a86cadfd 130-135
+  s_7e14af370178d4::t_ceef0ade33301a 164-192
+tests/test-eval-comment.sh
+  s_7e14af370178d4::t_449df29efa3790 1-107
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ba2a0b29d04cb807bb61146348b597912ecdd587",
+  "prompts": {},
+  "sessions": {
+    "s_7e14af370178d4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9cf3d697-7150-4182-a300-74bf20f9090b",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
