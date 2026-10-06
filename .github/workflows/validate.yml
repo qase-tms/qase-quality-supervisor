@@ -73,11 +73,59 @@ jobs:
       - name: Full verification (install + component inventory)
         run: bash scripts/verify-plugin.sh
 
+  # The eval suite bills real money on every run — the smoke slice measured about
+  # $1.70 — and a change to the README, the changelog or a shell test cannot move
+  # a single grader. This job decides whether the pull request touches anything
+  # that could, so documentation-only work stops paying for a sweep.
+  #
+  # The list below is deliberately wide. A path missing from it buys a silent gap
+  # in behaviour coverage; a path that did not need to be on it costs one run.
+  behaviour-changed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      any: ${{ steps.filter.outputs.any }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The comparison needs both ends of the pull request, not just its tip.
+          fetch-depth: 0
+
+      - id: filter
+        name: Can this change how the plugin behaves?
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # Anything that is not a pull request — a manual dispatch above all —
+          # asked for the suite in so many words and gets it.
+          if [ "$EVENT" != "pull_request" ]; then
+            echo "any=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          changed="$(git diff --name-only "$BASE...$HEAD")"
+          printf 'Changed in this pull request:\n%s\n\n' "$changed"
+
+          if printf '%s\n' "$changed" | grep -qE '^(skills|commands|agents|hooks|evals|references)/|^\.claude-plugin/|^\.mcp\.json$|^scripts/run-evals\.sh$|^\.github/workflows/validate\.yml$'; then
+            echo "any=true" >> "$GITHUB_OUTPUT"
+            echo "A behaviour-relevant path changed; the eval suite will run."
+          else
+            echo "any=false" >> "$GITHUB_OUTPUT"
+            echo "Nothing here can change how the plugin behaves; skipping the eval suite."
+          fi
+
   # Behaviour, not shape: does the plugin route a natural request to the right
   # skill and finish the analysis. Needs an authenticated CLI, so it is skipped
-  # for pull requests from forks, which have no access to the secret.
+  # for pull requests from forks, which have no access to the secret, and for
+  # pull requests that change nothing the suite could measure.
   evals:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    needs: behaviour-changed
+    if: >-
+      needs.behaviour-changed.outputs.any == 'true' &&
+      (github.event_name == 'workflow_dispatch' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     # The `full` scope this job offers (both arms, three runs) measured 1h45m
     # end to end; 30 minutes could not finish it. 150 gives that headroom with
