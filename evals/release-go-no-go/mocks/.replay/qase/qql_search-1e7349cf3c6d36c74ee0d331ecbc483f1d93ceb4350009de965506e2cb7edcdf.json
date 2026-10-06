@@ -2,7 +2,7 @@
   "input": {
     "query": "entity = \"result\" and project = \"DEMO\" and run in (\"Run 4870\", \"Run 4881\", \"Run 4899\", \"Run 4902\") and status = \"failed\""
   },
-  "output": "```json\n{\"total\":3,\"entities\":[{\"hash\":\"a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0\",\"run_id\":4870,\"case_id\":4,\"status\":\"Failed\",\"comment\":\"Promo code not applied to cart total\",\"end_time\":\"2026-09-16T09:15:00Z\"},{\"hash\":\"b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0a1\",\"run_id\":4881,\"case_id\":9,\"status\":\"Failed\",\"comment\":\"CSV export writes to a missing path\",\"end_time\":\"2026-09-17T11:00:00Z\"},{\"hash\":\"c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0a1b2\",\"run_id\":4899,\"case_id\":5,\"status\":\"Failed\",\"comment\":\"Test step assertion failed\",\"end_time\":\"2026-09-18T08:30:00Z\"}]}\n```",
+  "output": "```json\n{\"total\":3,\"entities\":[{\"hash\":\"a1b2c3d4e5f607a8b9c0d1e2f3a4b5c6d7e8f9a0\",\"run_id\":4870,\"case_id\":4,\"status\":\"Failed\",\"comment\":\"Promo code not applied to cart total\",\"end_time\":\"2026-09-16T09:15:00Z\"},{\"hash\":\"b2c3d4e5f607a8b9c0d1e2f3a4b5c6d7e8f9a0a1\",\"run_id\":4881,\"case_id\":9,\"status\":\"Failed\",\"comment\":\"CSV export writes to a missing path\",\"end_time\":\"2026-09-17T11:00:00Z\"},{\"hash\":\"c3d4e5f607a8b9c0d1e2f3a4b5c6d7e8f9a0a1b2\",\"run_id\":4899,\"case_id\":5,\"status\":\"Failed\",\"comment\":\"Test step assertion failed\",\"end_time\":\"2026-09-18T08:30:00Z\"}]}\n```",
   "verdict": "ok",
   "recordedAt": "2026-09-21T07:36:08.334Z",
   "model": "claude-haiku-4-5"
