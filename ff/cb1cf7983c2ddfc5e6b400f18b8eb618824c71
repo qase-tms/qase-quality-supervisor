@@ -1,0 +1,21 @@
+scripts/run-evals.sh
+  s_7e14af370178d4::t_c0a4c6d1570961 50-51
+docs/evals.md
+  s_7e14af370178d4::t_b09f8184f79ccf 17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ffcb1cf7983c2ddfc5e6b400f18b8eb618824c71",
+  "prompts": {},
+  "sessions": {
+    "s_7e14af370178d4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9cf3d697-7150-4182-a300-74bf20f9090b",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
