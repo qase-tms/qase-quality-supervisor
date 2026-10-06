@@ -1,0 +1,19 @@
+.github/workflows/validate.yml
+  s_7e14af370178d4::t_d70ff13efc1c85 76-118,121-122,124-128
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "d8012ea399c3ef311a998efee405dea5649ce232",
+  "prompts": {},
+  "sessions": {
+    "s_7e14af370178d4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9cf3d697-7150-4182-a300-74bf20f9090b",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
