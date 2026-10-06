@@ -1,0 +1,21 @@
+.github/workflows/release.yml
+  s_7e14af370178d4::t_3092ff83073a79 23
+.github/workflows/validate.yml
+  s_7e14af370178d4::t_3092ff83073a79 29,44,64,66,89,143,145,195
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "2fe69bb90e35cf9b01626936905f1c119735a375",
+  "prompts": {},
+  "sessions": {
+    "s_7e14af370178d4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9cf3d697-7150-4182-a300-74bf20f9090b",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
