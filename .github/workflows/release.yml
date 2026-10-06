@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # A tag can be pushed at any commit, including one whose manifests say a
       # different version. Publishing v0.4.0 from a tree that still reports 0.3.0
