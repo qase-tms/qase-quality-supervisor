@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/deny-destructive.sh"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/deny-destructive.sh\""
           },
           {
             "type": "command",
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/deny-destructive-api.sh"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/deny-destructive-api.sh\""
           },
           {
             "type": "command",
