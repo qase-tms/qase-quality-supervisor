@@ -22,7 +22,7 @@ the data itself. That is the last section here, and it still applies.
 - **Query forms** — filtering and aggregating; the two rules that make `SELECT` work
 - **Timestamp fields** — the names differ per entity, and guessing wrong is a hard error
 - **Fields per entity** — case, run, result, defect, plan, requirement
-- **Field quirks that produce hard errors** — suite titles vs IDs, no run-ID on results
+- **Field quirks that produce hard errors** — suite titles vs IDs, no environment on results
 - **Enum values** — the real options, and the ones that don't exist
 - **Enum integers in aggregated responses** — aggregates return codes, not labels
 - **Limits** — 100 rows per call, 10,000 matchable, 2,000-character queries
@@ -100,12 +100,26 @@ Time functions: `now("-30d")` (`d`/`w`/`m` offsets), `startOfDay`, `endOfDay`,
 `isAutotest`, `isScheduledRun`, `hash`, `type`, `tags`, `project`, `author`,
 `createdBy`, `deleted`, `isDeleted`, `cf["…"]`.
 
-**`result`** — `id`, `caseId`, `case` (case title), `run` (run title),
-`status`, `priority`, `severity`, `type`, `layer`, `suite`, `tags`, `comment`,
-`timeSpent`, `ended`, `isEnded`, `deleted`, `isDeleted`, `milestone`,
-`project`, `author`, `createdBy`, `assignee`.
+**`result`** — `id`, `caseId`, `case` (case title), `runId` (run number),
+`run` (run title), `status`, `priority`, `severity`, `type`, `layer`,
+`isManual`, `suite`, `tags`, `comment`, `timeSpent`, `ended`, `isEnded`,
+`deleted`, `isDeleted`, `milestone`, `project`, `author`, `createdBy`,
+`assignee`.
 `priority`/`severity`/`type`/`layer`/`tags` are inherited from the case, so you
 can filter results by case attributes in a single query — no join needed.
+
+`runId` is the number in the run's URL — `/run/DEMO/dashboard/42` is
+`runId = 42` — so it scopes results to one run exactly, where `run` matches a
+title that autotest runs repeat. Run numbers restart in every project, so
+**always pair `runId` with `project = "CODE"`**: without it, `runId = 42`
+matches run 42 of every project, and `GROUP BY runId` merges them into one
+group. `caseId` works the same way.
+
+`isManual` on results is the case's flag, with the same trap — see the
+`isManual` section below. Its titles work where the boolean does not:
+`isManual = "Manual"` selects automation 0 and 1, `"Automated"` selects 2, with
+`=` or `!=` only. Unlike the rest of this section, the title form comes from the
+backend code rather than a live check.
 
 **`defect`** — `id`, `title`, `actual_result`, `status`, `severity`,
 `resolved`, `isResolved`, `milestone`, `tags`, `project`, `author`,
