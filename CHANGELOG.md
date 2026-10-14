@@ -67,6 +67,14 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   manifests are never read by the same tool, so a stale Codex version would have
   gone unnoticed by everything except the check that now catches it.
 
+### Fixed
+- **The QQL reference said results have no run-ID field.** QQL filters results by
+  `runId`, the run number from the run URL: `/run/DEMO/dashboard/42` is
+  `runId = 42`. `references/qql.md` now lists it, with the caveat that matters —
+  run numbers restart in every project, so `runId` needs `project = "CODE"`, or it
+  matches that number in every project. The result fields also gain `isManual`,
+  with the titles it takes.
+
 ## [0.3.3] - 2026-09-02
 
 ### Added
