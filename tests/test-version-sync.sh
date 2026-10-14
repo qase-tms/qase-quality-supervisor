@@ -7,7 +7,8 @@
 # asserting on the real repository could only ever confirm the happy path, and the
 # whole point of the check is what it does when the version strings drift.
 #
-# The version used to live in four places; two of them — the X-Qase-Integration
+# The version lives in three manifests: one per harness plus the marketplace.
+# It used to live in four places; two of them — the X-Qase-Integration
 # marker in .mcp.json and the self-run example in README.md — are gone, because
 # hooks/mark-run.js now reads .claude-plugin/plugin.json at runtime and puts the
 # version on the wire itself. What remains are the two manifests, which genuinely
@@ -28,7 +29,7 @@ fail() { echo "FAIL: $1" >&2; failures=$((failures + 1)); }
 make_fixture() {
   local version="$1" root
   root="$(mktemp -d)"
-  mkdir -p "$root/.claude-plugin"
+  mkdir -p "$root/.claude-plugin" "$root/.codex-plugin"
   cat > "$root/.claude-plugin/plugin.json" <<EOJ
 {
   "name": "quality-supervisor",
@@ -42,6 +43,14 @@ EOJ
   "metadata": {
     "version": "$version"
   }
+}
+EOJ
+  cat > "$root/.codex-plugin/plugin.json" <<EOJ
+{
+  "name": "quality-supervisor",
+  "version": "$version",
+  "description": "fixture",
+  "skills": "./skills/"
 }
 EOJ
   echo "$root"
@@ -71,6 +80,20 @@ else
 fi
 rm -rf "$root"
 
+# --- check: a drifting Codex manifest is caught -----------------------------
+#
+# The two plugin manifests are never read by the same tool, so nothing but this
+# check would notice a Codex manifest left behind at the previous version.
+
+root="$(make_fixture 0.1.0)"
+sed -i.bak 's|"version": "0.1.0"|"version": "0.2.5"|' "$root/.codex-plugin/plugin.json"
+if bash "$CHECK" "$root" >/dev/null 2>&1; then
+  fail "check-version-sync missed a stale .codex-plugin/plugin.json"
+else
+  pass "check-version-sync catches a stale Codex manifest"
+fi
+rm -rf "$root"
+
 # --- check: an unreadable plugin version is a failure, not a pass ----------
 
 root="$(make_fixture 0.1.0)"
@@ -87,8 +110,9 @@ rm -rf "$root"
 root="$(make_fixture 0.1.0)"
 if bash "$SET_VERSION" 0.2.0 "$root" >/dev/null 2>&1 && bash "$CHECK" "$root" >/dev/null 2>&1; then
   if grep -q '"version": "0.2.0"' "$root/.claude-plugin/plugin.json" &&
-    grep -q '"version": "0.2.0"' "$root/.claude-plugin/marketplace.json"; then
-    pass "set-version bumps both manifests"
+    grep -q '"version": "0.2.0"' "$root/.claude-plugin/marketplace.json" &&
+    grep -q '"version": "0.2.0"' "$root/.codex-plugin/plugin.json"; then
+    pass "set-version bumps all three manifests"
   else
     fail "set-version left a copy behind"
   fi

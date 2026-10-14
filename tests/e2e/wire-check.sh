@@ -17,20 +17,8 @@ cat > "$WORK/mcp.json" <<JSON
 { "mcpServers": { "qase": { "command": "node", "args": ["$SCRIPT_DIR/spike-server.mjs"], "env": { "WIRE_LOG": "$WIRE_LOG" } } } }
 JSON
 
-# The plugin's own hooks, with CLAUDE_PLUGIN_ROOT resolved to this repo.
-cat > "$WORK/settings.json" <<JSON
-{
-  "permissions": { "allow": ["mcp__qase__qase_qql", "Skill"] },
-  "hooks": {
-    "UserPromptSubmit": [ { "hooks": [ { "type": "command", "command": "node", "args": ["$REPO_ROOT/hooks/mark-run.js"] } ] } ],
-    "Stop":             [ { "hooks": [ { "type": "command", "command": "node", "args": ["$REPO_ROOT/hooks/mark-run.js"] } ] } ],
-    "PreToolUse": [
-      { "matcher": "Skill",         "hooks": [ { "type": "command", "command": "node", "args": ["$REPO_ROOT/hooks/mark-run.js"] } ] },
-      { "matcher": "mcp__qase__.*", "hooks": [ { "type": "command", "command": "node", "args": ["$REPO_ROOT/hooks/mark-run.js"] } ] }
-    ]
-  }
-}
-JSON
+# The plugin's own hooks, read from hooks/hooks.json rather than restated here.
+/usr/bin/python3 "$SCRIPT_DIR/settings-from-hooks.py" "$REPO_ROOT" "$WORK/settings.json"
 
 run_claude() {
   claude -p "$1" --mcp-config "$WORK/mcp.json" --strict-mcp-config \

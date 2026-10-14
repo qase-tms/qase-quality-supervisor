@@ -1,0 +1,63 @@
+{
+  "description": "Codex variant of hooks.json. It differs in form — Codex ignores the command + args form, so every entry is a single command string — and in substance. Codex has no skill event (openai/codex#17132), so a run is opened by watching for the shell read of a SKILL.md under this plugin's root; and it drops updatedInput unless the hook also approves the call, so the marker is attached only on the four read-only Qase tools, where approving cannot mutate anything and never meets the destructive guards. Writes stay behind whatever approval the user has configured. The PowerShell twins are absent: on unix Codex reports the missing interpreter as a visible error beside a guard that worked. tests/test-hook-parity.sh keeps the guards in the two files identical.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__qase__.*delete.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/deny-destructive.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__qase__qase_api",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/deny-destructive-api.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/mark-run.js --codex"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__qase__(qase_get|qase_project_context|qql_search|qql_help)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/mark-run.js --codex"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/mark-run.js --codex"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/mark-run.js --codex"
+          }
+        ]
+      }
+    ]
+  }
+}
