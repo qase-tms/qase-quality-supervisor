@@ -3,7 +3,7 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [0.3.4] - 2026-09-04
+## [0.3.4] - 2026-10-14
 
 ### Added
 - **The plugin installs in Codex.** `.codex-plugin/plugin.json` declares the skills,
