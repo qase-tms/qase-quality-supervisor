@@ -1,0 +1,75 @@
+evals/link-propose-pytest/graders/code-untouched.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 6
+evals/link-propose-pytest/graders/no-state-written.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-6
+evals/flaky-or-broken/graders/no-case-upsert.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/link-propose-pytest/graders/no-bulk-create.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/flaky-or-broken/graders/no-bulk-create.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/link-propose-pytest/graders/wrong-id-kept.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-8
+evals/flakiness-unstable-tests/graders/no-case-upsert.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/flakiness-unstable-tests/graders/no-bulk-create.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/coverage-untested-areas/graders/no-bulk-create.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/coverage-untested-areas/graders/no-case-upsert.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/link-apply-review/prompt.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 3
+evals/link-propose-pytest/graders/correct-id-kept.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-8
+evals/link-apply-review/graders/rejected-row-untouched.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 6
+evals/link-apply-review/graders/no-bulk-create.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/link-apply-review/mocks/.replay/qase/qase_get-0daa9bc7a82ba6da0714f6f48bd65247252712e7ba43d55f9556f16839f3c4d2.json
+  s_1f77c0f6a4bfac::t_6765000c3d2ecc 1-17
+evals/link-apply-review/mocks/.replay/qase/qase_get-1fec678351bedcb816dd9798ab94e187f8e552f0274a8434e02e6be27734bed8.json
+  s_1f77c0f6a4bfac::t_f9622018910f0f 1-17
+evals/link-apply-review/mocks/.replay/qase/qase_get-3534ed12d039cdfd30f3ec4a64ff27164c9c2523af0e3c6fda4868020acefc27.json
+  s_1f77c0f6a4bfac::t_c2e1dc2ee69bcd 1-11
+evals/link-apply-review/mocks/.replay/qase/qase_get-3a0fb3c7e28cb354d3ab35e3b835eba2e8e6d627df9a2aa7ef68b84f0b5a862d.json
+  s_1f77c0f6a4bfac::t_1bed2fc6eeb0b3 1-17
+evals/link-apply-review/mocks/.replay/qase/qase_get-40851c5f79af350fbbaa4cc7f729f308e6170e9878bf507ceac7130c46a01073.json
+  s_1f77c0f6a4bfac::t_5b4a540fcec9c4 1-17
+evals/link-apply-review/mocks/.replay/qase/qase_get-96989505c85894a24d26033b3f117067fc6ca8d152d72fe5fab03c8555ea7403.json
+  s_1f77c0f6a4bfac::t_e0f4b91f7086ea 1-17
+evals/link-apply-review/mocks/.replay/qase/qase_get-b01f8bb34911ecb97e34bd7b4f8563a8557fc8dce5c10a4ca83d39b82125923a.json
+  s_1f77c0f6a4bfac::t_2eb991f580201f 1-11
+evals/link-apply-review/mocks/.replay/qase/qase_get-d2204d128b6078e32bf47c3b4d729d03618ca8277f9d201a43e6340c55fe83ca.json
+  s_1f77c0f6a4bfac::t_183a9ce183926c 1-17
+evals/link-apply-review/mocks/.replay/qase/qase_get-f5b00478db98684a91fecf20510f24bd1ebdd0080d67726d601fdb015ad10525.json
+  s_1f77c0f6a4bfac::t_ae0b5743af44ef 1-11
+evals/link-apply-review/mocks/.replay/qase/qase_get-fe88a1da419e4cf110ae3ded73cfc93937fdd3aaccb77de8d9d56bd0d93859a1.json
+  s_1f77c0f6a4bfac::t_99bc9142fd20a8 1-11
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-43fa68009765bd1aaf6efe6cb7ce52775ae2e0eca97c51b7eea583c4dd70af98.json
+  s_1f77c0f6a4bfac::t_f88fd6acf2b887 1-11
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-96d47449fee0811fe1cc326992122345023fb068a50d3e77cd73477323378d96.json
+  s_1f77c0f6a4bfac::t_1bb470b11df7a1 1-11
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-bc2f56b78add82b9957c999dc578692392378068e01d7dbf1f8f9472ac531702.json
+  s_1f77c0f6a4bfac::t_99153b2f673fdd 1-11
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-de4e094bc8e2c25d6002f13d280d25d3829a8ee527abc90e3b86668c57851e9d.json
+  s_1f77c0f6a4bfac::t_d832d33c883a52 1-11
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-f3babd9663a92b356c89a2c9ebaf7195bee0e62bc24b7dac41939afbb401774e.json
+  s_1f77c0f6a4bfac::t_7573fa05101ba0 1-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1bd73a4ddb431da775aa10165bdb110dc3293ca1",
+  "prompts": {},
+  "sessions": {
+    "s_1f77c0f6a4bfac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "70e4769f-79ef-4354-aaa8-9148214aa099",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
