@@ -1,0 +1,23 @@
+CHANGELOG.md
+  s_1f77c0f6a4bfac::t_254ebf53273da5 17
+README.md
+  s_1f77c0f6a4bfac::t_4807374e937d6d 86
+agents/quality-supervisor.md
+  s_1f77c0f6a4bfac::t_f3675a65301101 83,100-101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7a4cd28e088507af62555118820999e1f00c385d",
+  "prompts": {},
+  "sessions": {
+    "s_1f77c0f6a4bfac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "70e4769f-79ef-4354-aaa8-9148214aa099",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
