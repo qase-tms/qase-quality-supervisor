@@ -1,0 +1,162 @@
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-3fc0d469be992878e490a2cd33614bb43c628053b79a3de89e03ff342baf31d9.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+evals/link-apply-review/mocks/.replay/qase/qase_get-76531132c4761993340a1c88412f1a226e979656ed378ea73a0f55052cd17b94.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+evals/link-apply-review/graders/unknown-id-not-written.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-8
+evals/link-apply-review/mocks/.replay/qase/qase_get-3782435340576a114df17a5e73d4d1e78e7ce7b4870afa919bee5f747f363878.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/link-apply-review/mocks/.replay/qase/qase_get-de767e8877d04b29212888fb647b2c4d8e0628e53df7e9213b26fba0f9a1f170.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/link-propose-pytest/mocks/qase/qase_project_context.md
+  s_1f77c0f6a4bfac::t_73d1e944af58d2 1-6
+evals/mocks/qase/qase_case_upsert.md
+  s_1f77c0f6a4bfac::t_dce49cb9ae3f3b 1-18
+evals/link-propose-pytest/graders/review-proposes-3.md
+  s_1f77c0f6a4bfac::t_db139569352844 1-7
+evals/link-apply-review/mocks/qase/qase_get.md
+  s_1f77c0f6a4bfac::t_ff21e44c991793 1-40
+evals/link-apply-review/mocks/.replay/qase/qase_get-6c2568f757ee7c8558c0f0ccee29e781be7a5bb42efbd1715b3462b9e85db3c9.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-18
+evals/link-apply-review/graders/vitest-syntax-import.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-8
+evals/link-propose-pytest/graders/code-untouched.md
+  s_1f77c0f6a4bfac::t_db139569352844 1-8
+evals/link-propose-pytest/graders/review-file-written.md
+  s_1f77c0f6a4bfac::t_db139569352844 1-4
+evals/link-apply-review/graders/cucumber-multi-id.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-7
+evals/link-apply-review/mocks/.replay/qase/qase_get-4e434029229219ec7dcb0987d271f28b4fb9e90fc3f07518b5b2b78351d73b35.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-18
+evals/link-apply-review/mocks/.replay/qase/qase_get-8e3256e357d77df7c5310560ca24041faede6bc2354f26e3299142192c9c52f9.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-18
+evals/link-apply-review/graders/vitest-no-qase-call.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-8
+evals/link-apply-review/case.yaml
+  s_1f77c0f6a4bfac::t_fb184d290d8a7f 1-5
+evals/link-propose-pytest/mocks/qase/qql_search.md
+  s_1f77c0f6a4bfac::t_80028cf3a3e03c 1-40
+evals/link-apply-review/mocks/qase/qase_project_context.md
+  s_1f77c0f6a4bfac::t_ff21e44c991793 1-6
+evals/link-propose-pytest/graders/review-proposes-4.md
+  s_1f77c0f6a4bfac::t_db139569352844 1-7
+evals/link-propose-pytest/mocks/qase/qase_get.md
+  s_1f77c0f6a4bfac::t_93c9d1d17d5408 1-40
+evals/link-apply-review/graders/existing-id-once.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-8
+evals/link-apply-review/mocks/.replay/qase/qase_get-2c3ad0611f2a5047c35460049c4f508a83bf1e1116093a879fca2484f06c504e.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+evals/link-apply-review/mocks/.replay/qase/qase_get-6d184ff6b63d6238fe6799e812532dab6c51ba2b7e13af57960ce006eb3a318d.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/impact-branch-checklist/graders/no-linking-skill.md
+  s_1f77c0f6a4bfac::t_56d7fc99031626 1-8
+evals/link-apply-review/mocks/.replay/qase/qase_get-d598375731912face93acb59b3e9728cfd245035e3edb55cc01c58f76b3d00a3.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/link-apply-review/mocks/.replay/qase/qase_get-3e25b0e8f33fd8f9096482abffc08d30c2e32fbc2b5a16304c4d69e6878b0dcf.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-95aa13005c5a6fc115ae16350f0eaa8f0114401f0e6ca53da805996b8d38d5c1.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/link-propose-pytest/graders/skill-fired.md
+  s_1f77c0f6a4bfac::t_db139569352844 1-5
+evals/link-propose-pytest/graders/asked-about-demo.md
+  s_1f77c0f6a4bfac::t_db139569352844 1-5
+evals/link-apply-review/graders/apply-summary.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-16
+evals/link-apply-review/graders/no-double-marker.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-8
+evals/link-apply-review/graders/no-marker-without-reporter.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-8
+evals/link-apply-review/graders/rejected-row-untouched.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-8
+evals/link-apply-review/graders/vitest-syntax-marker.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-7
+evals/link-apply-review/fixture.sh
+  s_1f77c0f6a4bfac::t_9665a7b8d579c6 1-50,52-154
+  s_1f77c0f6a4bfac::t_f471b6172f7a85 51
+evals/link-apply-review/mocks/.replay/qase/qase_get-f34387484b30c31ffd65f20332c084b79e121a21ede04b590904a616c4e21590.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-18
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-ae64abcfde7fc82b44efa228ea42997cd7ce7194fbb28b9c5324fc0ced764fb0.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-e0b3c8696284408c6802b527e90e6e6ba52da1f7594f5fb43890f83457c79750.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+evals/mocks/qase/qase_case_bulk_create.md
+  s_1f77c0f6a4bfac::t_dce49cb9ae3f3b 1-17
+evals/link-apply-review/graders/skill-fired.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-5
+evals/link-propose-pytest/graders/proposal-quality.md
+  s_1f77c0f6a4bfac::t_7dc773eb98998a 15-18
+  s_1f77c0f6a4bfac::t_db139569352844 1-14,19
+evals/link-propose-pytest/mocks/.replay/qase/qql_search-42984f4b8aadfd6977d89836bc8796e624cc0b2f8b828d576ec1d5cf9c834004.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-10
+evals/link-apply-review/mocks/qase/qql_search.md
+  s_1f77c0f6a4bfac::t_ff21e44c991793 1-40
+evals/mocks/qase/_tools.json
+  s_1f77c0f6a4bfac::t_50f5aa37f11f1a 55-68,70-98,100-103
+  s_1f77c0f6a4bfac::t_fce58985286de6 69,99
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-86552d96cdfcf6b6667c5715db90548b92dbaa773ab973c0c8c6c6e18b2c9b6d.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-900f385453830985242cbff9beded3d98a36bf318aefab1ec1bfe0fec255223f.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+scripts/run-evals.sh
+  s_1f77c0f6a4bfac::t_fc6255f818fd83 56-59
+evals/link-propose-pytest/fixture.sh
+  s_1f77c0f6a4bfac::t_69057a2e925387 1-88
+evals/link-apply-review/mocks/.replay/qase/qase_get-5ad5c548d6cd6f2e00c17ce55b0240b8d09ce0206d346de6579f2368b5b358e6.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+evals/link-apply-review/mocks/.replay/qase/qase_get-34d93d79ad0df0c69216a369441e136ea33fd63d2b2fac360692a3f01670b731.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-18
+evals/link-apply-review/mocks/.replay/qase/qase_get-df816fc9ab3da6ff94b29ced8c5f9ebb62e32bdbdace74b5f2283ef8ea87353b.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/link-apply-review/mocks/.replay/qase/qase_get-e684140bf855fee51840d2237fe5166e6b003b0edd6eedf1b65cd294ea95b358.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-18
+evals/link-propose-pytest/prompt.md
+  s_1f77c0f6a4bfac::t_10f8eccea5c86f 1-8
+evals/link-apply-review/graders/pending-recorded.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-7
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-08a39c0da513ee75f22292512513d5b7a852533d86a45aaa1f92fb1ce876c6c6.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/link-apply-review/graders/no-case-upsert.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-7
+evals/link-apply-review/mocks/.replay/qase/qase_get-b4a214d01834b2bad71feae8c8775d072626cb03533ad58eea746726ad8074be.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-377b6f37234ed050cbd7fab11bfbaeb961ba20539fd389c89aa7a97b3bb14194.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+evals/link-propose-pytest/graders/no-case-upsert.md
+  s_1f77c0f6a4bfac::t_db139569352844 1-7
+evals/link-apply-review/mocks/.replay/qase/qase_get-871dd008741e72d63e93b3feab0fe57aae1c72d9c1d970dabdca657c3a0c26ef.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-298eb672bbf6514376d30b660da61b818f2295da8e0ebe16dd5c194a8082218a.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/link-propose-pytest/graders/no-impact-skill.md
+  s_1f77c0f6a4bfac::t_db139569352844 1-8
+evals/link-apply-review/mocks/.replay/qase/qql_search-207c3ce2a3a3ae753cfd11b0547e1c0c2c9eb037c8868d474886dbcfffb5fc7c.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-9
+evals/link-propose-pytest/mocks/.replay/qase/qase_get-1460802bbece3612cfaaa364e5a2b12f788fc6eefdd755c9e10995a0e322a3be.json
+  s_1f77c0f6a4bfac::t_53ed9d013ef1f0 1-14
+evals/link-apply-review/prompt.md
+  s_1f77c0f6a4bfac::t_7baa5962c4202d 1-8
+evals/link-propose-pytest/case.yaml
+  s_1f77c0f6a4bfac::t_d45e231bbdef04 1-5
+evals/link-apply-review/graders/cucumber-no-singular-multi-id.md
+  s_1f77c0f6a4bfac::t_8e20dabe395955 1-8
+evals/unrelated-request/graders/no-linking-skill.md
+  s_1f77c0f6a4bfac::t_56d7fc99031626 1-8
+evals/link-apply-review/mocks/.replay/qase/qase_get-7c88f71aec37eb20e98632883a3a8d6614fac977a19d3f30f13e8aa69c3859cc.json
+  s_1f77c0f6a4bfac::t_14d3b8955db45f 1-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5b131387c5d512e642ce20c8f02c374db4ede860",
+  "prompts": {},
+  "sessions": {
+    "s_1f77c0f6a4bfac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "70e4769f-79ef-4354-aaa8-9148214aa099",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
