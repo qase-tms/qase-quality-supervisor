@@ -22,6 +22,7 @@ add it once and install (and update) `quality-supervisor` from it.
 | Skill | `assessing-release-readiness` | Five-dimension go / no-go quality gate for a milestone, plan, or release. |
 | Skill | `reporting-quality-pulse` | Visual HTML report card for any period — execution, pass rate, defect backlog, case activity, active users. |
 | Skill | `analyzing-change-impact` | Diff a branch, trace what it reaches, and produce a QA impact analysis + regression/new checklist grounded in existing cases. |
+| Skill | `linking-test-cases` | Match a repo's autotests to Qase cases by meaning and, after you confirm, write the case IDs into the tests and mark the cases Automated. |
 | Agent | `quality-supervisor` | Orchestrator that routes a quality question to the right skill(s) and rolls up results. |
 | Command | `/quality-supervisor:quality-report` | Read-only consolidated sweep: coverage + flakiness + triage + readiness. |
 
@@ -37,9 +38,9 @@ In Claude Code:
 /plugin install quality-supervisor@quality-supervisor
 ```
 
-After a restart, `/plugin` reports the inventory as **7 skills, 1 agent, 1
-PreToolUse hook**. Seven because the CLI counts the `quality-report` command under
-`Skills`; six skills plus one command is what actually ships.
+After a restart, `/plugin` reports the inventory as **8 skills, 1 agent, 1
+PreToolUse hook**. Eight because the CLI counts the `quality-report` command under
+`Skills`; seven skills plus one command is what actually ships.
 
 In Codex:
 
@@ -48,7 +49,7 @@ codex plugin marketplace add qase-tms/qase-quality-supervisor
 codex plugin add quality-supervisor@quality-supervisor
 ```
 
-The six skills arrive namespaced as `quality-supervisor:<skill>` — invoke one with
+The seven skills arrive namespaced as `quality-supervisor:<skill>` — invoke one with
 `$quality-supervisor:analyzing-test-coverage`, or just describe the problem and let
 Codex route to it. The Qase MCP server is registered from `.mcp.json`
 automatically; authenticate it once with `codex mcp login qase`.
@@ -82,9 +83,12 @@ marketplace if your build supports it.
   never enter the repo.
 - A Qase **project code** to target.
 - For `analyzing-change-impact` only: a **git repository** checked out on a branch
-  that differs from its default branch — it is the one skill that reads code. An
+  that differs from its default branch — it is the one skill that reads a branch diff. An
   issue-tracker MCP is optional; without one it skips acceptance-criteria checks, and
   it never posts anywhere unless you ask it to.
+- For `linking-test-cases` only: a **git repository** with autotests in it, checked out
+  locally — it reads the test code and edits the test files, and nothing in the code or
+  in Qase changes until you confirm its mapping.
 - **Plan:** the hosted endpoint requires an **Enterprise** subscription, and the
   skills' analysis relies on QQL, which requires **Teams or Enterprise**. On
   a Teams plan, use the local server instead (below).
@@ -156,6 +160,7 @@ Ask in your own words — the skills pick themselves up from the question:
 - "Are we ready to ship milestone 2.3?" · "What's blocking the release?"
 - "Give me a quality pulse for WEB for the last two weeks." · "QA report card for August."
 - "What should QA test for the changes on this branch?" · "Impact analysis before I merge."
+- "Link our autotests to their Qase cases." · "Add Qase IDs to the tests in this repo."
 
 ### When you want a guarantee, use the command
 
@@ -185,6 +190,7 @@ way the command does:
 /quality-supervisor:assessing-release-readiness
 /quality-supervisor:reporting-quality-pulse
 /quality-supervisor:analyzing-change-impact
+/quality-supervisor:linking-test-cases
 ```
 
 Use these when you want one specific analysis rather than the whole sweep, and
@@ -244,7 +250,8 @@ which is the part that degrades.
 │   ├── analyzing-test-flakiness/
 │   ├── assessing-release-readiness/
 │   ├── reporting-quality-pulse/         # + assets/pulse-template.html
-│   └── analyzing-change-impact/         # + assets/impact-template.html
+│   ├── analyzing-change-impact/         # + assets/impact-template.html
+│   └── linking-test-cases/              # + references/ (one reporter-syntax file per ecosystem)
 ├── tests/
 │   ├── test-branding.sh
 │   ├── test-hook-coverage.sh

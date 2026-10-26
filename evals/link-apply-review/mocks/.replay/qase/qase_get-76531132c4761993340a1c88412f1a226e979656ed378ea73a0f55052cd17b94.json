@@ -1,0 +1,11 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 2
+  },
+  "output": "```json\n{\"status\":true,\"result\":{\"id\":2,\"title\":\"Checkout: promo code reduces total\",\"suite_id\":1,\"automation\":1,\"priority\":1,\"preconditions\":\"Cart holds items worth 30.00\",\"description\":\"\",\"steps\":[{\"position\":1,\"action\":\"Apply promo code WELCOME10\",\"expected_result\":\"The code is accepted\"},{\"position\":2,\"action\":\"Open the cart total\",\"expected_result\":\"The total drops by 10\"}],\"created\":\"2026-09-01T09:00:00Z\",\"updated\":\"2026-10-01T09:00:00Z\"}}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T10:03:07.208Z",
+  "model": "claude-haiku-4-5"
+}

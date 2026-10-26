@@ -1,0 +1,14 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 4,
+    "fields": [
+      "*"
+    ]
+  },
+  "output": "```json\n{\n  \"status\": true,\n  \"result\": {\n    \"id\": 4,\n    \"title\": \"Checkout: empty cart total is zero\",\n    \"suite_id\": 1,\n    \"automation\": 0,\n    \"priority\": 3,\n    \"preconditions\": \"none\",\n    \"description\": \"\",\n    \"steps\": [\n      {\n        \"position\": 1,\n        \"action\": \"Open an empty cart\",\n        \"expected_result\": \"The cart shows no items\"\n      },\n      {\n        \"position\": 2,\n        \"action\": \"Read the total\",\n        \"expected_result\": \"The total is 0\"\n      }\n    ],\n    \"created\": \"2026-09-01T09:00:00Z\",\n    \"updated\": \"2026-10-01T09:00:00Z\"\n  }\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T09:47:06.615Z",
+  "model": "claude-haiku-4-5"
+}

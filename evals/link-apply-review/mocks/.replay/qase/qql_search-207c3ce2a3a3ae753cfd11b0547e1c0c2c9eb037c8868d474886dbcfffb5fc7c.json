@@ -1,0 +1,9 @@
+{
+  "input": {
+    "query": "entity = \"case\" and project = \"DEMO\" and id in (1,2,3,4,7,999)"
+  },
+  "output": "```json\n{\"total\":5,\"entities\":[{\"id\":1,\"title\":\"Checkout: cart totals\",\"suite_id\":1,\"suite\":\"Checkout\",\"automation\":1,\"priority\":1,\"is_flaky\":0,\"created\":\"2026-09-01T09:00:00Z\",\"updated\":\"2026-10-01T09:00:00Z\"},{\"id\":2,\"title\":\"Checkout: promo code reduces total\",\"suite_id\":1,\"suite\":\"Checkout\",\"automation\":1,\"priority\":1,\"is_flaky\":0,\"created\":\"2026-09-01T09:00:00Z\",\"updated\":\"2026-10-01T09:00:00Z\"},{\"id\":3,\"title\":\"Checkout: unknown promo code is ignored\",\"suite_id\":1,\"suite\":\"Checkout\",\"automation\":1,\"priority\":2,\"is_flaky\":0,\"created\":\"2026-09-01T09:00:00Z\",\"updated\":\"2026-10-01T09:00:00Z\"},{\"id\":4,\"title\":\"Checkout: empty cart total is zero\",\"suite_id\":1,\"suite\":\"Checkout\",\"automation\":0,\"priority\":3,\"is_flaky\":0,\"created\":\"2026-09-01T09:00:00Z\",\"updated\":\"2026-10-01T09:00:00Z\"},{\"id\":7,\"title\":\"Search: filter by tag\",\"suite_id\":2,\"suite\":\"Search\",\"automation\":2,\"priority\":2,\"is_flaky\":0,\"created\":\"2026-09-01T09:00:00Z\",\"updated\":\"2026-10-01T09:00:00Z\"}]}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T10:07:06.865Z",
+  "model": "claude-haiku-4-5"
+}

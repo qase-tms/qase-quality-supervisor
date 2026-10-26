@@ -129,8 +129,8 @@ echo "==> Checking component inventory"
 details="$(claude plugin details quality-supervisor)"
 echo "$details"
 
-if ! echo "$details" | grep -qE 'Skills \(7\)'; then
-  echo "FAIL: expected 7 skills (analyzing-test-coverage, triaging-test-failures, analyzing-test-flakiness, assessing-release-readiness, reporting-quality-pulse, analyzing-change-impact, quality-report), got:" >&2
+if ! echo "$details" | grep -qE 'Skills \(8\)'; then
+  echo "FAIL: expected 8 skills (analyzing-test-coverage, triaging-test-failures, analyzing-test-flakiness, assessing-release-readiness, reporting-quality-pulse, analyzing-change-impact, linking-test-cases, quality-report), got:" >&2
   echo "$details" | grep 'Skills' >&2 || true
   exit 1
 fi
@@ -142,6 +142,7 @@ expected_skills=(
   assessing-release-readiness
   reporting-quality-pulse
   analyzing-change-impact
+  linking-test-cases
   quality-report
 )
 for skill in "${expected_skills[@]}"; do

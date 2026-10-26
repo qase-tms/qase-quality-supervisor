@@ -1,0 +1,11 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 1
+  },
+  "output": "```json\n{\n  \"status\": true,\n  \"result\": {\n    \"id\": 1,\n    \"title\": \"Checkout: cart totals\",\n    \"suite_id\": 1,\n    \"automation\": 1,\n    \"priority\": 1,\n    \"preconditions\": \"Cart is empty\",\n    \"description\": \"\",\n    \"steps\": [\n      {\n        \"position\": 1,\n        \"action\": \"Add two items to the cart\",\n        \"expected_result\": \"Both items are listed\"\n      },\n      {\n        \"position\": 2,\n        \"action\": \"Open the cart total\",\n        \"expected_result\": \"The total equals the sum of the two prices\"\n      }\n    ],\n    \"created\": \"2026-09-01T09:00:00Z\",\n    \"updated\": \"2026-10-01T09:00:00Z\"\n  }\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T10:32:22.948Z",
+  "model": "claude-haiku-4-5"
+}

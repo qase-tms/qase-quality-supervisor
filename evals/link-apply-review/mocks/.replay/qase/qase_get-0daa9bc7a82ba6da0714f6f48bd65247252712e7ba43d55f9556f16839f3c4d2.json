@@ -1,0 +1,17 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 7,
+    "fields": [
+      "id",
+      "title",
+      "automation",
+      "updated"
+    ]
+  },
+  "output": "```json\n{\n  \"status\": true,\n  \"result\": {\n    \"id\": 7,\n    \"title\": \"Search: filter by tag\",\n    \"automation\": 2,\n    \"updated\": \"2026-10-01T09:00:00Z\"\n  }\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T11:25:34.324Z",
+  "model": "claude-haiku-4-5"
+}

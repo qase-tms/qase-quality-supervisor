@@ -45,7 +45,8 @@ expect_signature() {
 # Skills whose output is a markdown report printed in chat: the pair lives in the
 # report template inside SKILL.md.
 for skill in analyzing-test-coverage analyzing-test-flakiness \
-             assessing-release-readiness triaging-test-failures; do
+             assessing-release-readiness triaging-test-failures \
+             linking-test-cases; do
   expect_signature "skills/$skill/SKILL.md" "$skill skill" 2
 done
 

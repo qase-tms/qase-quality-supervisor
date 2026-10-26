@@ -1,0 +1,14 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 3,
+    "fields": [
+      "*"
+    ]
+  },
+  "output": "```json\n{\n  \"status\": true,\n  \"result\": {\n    \"id\": 3,\n    \"title\": \"Checkout: unknown promo code is ignored\",\n    \"suite_id\": 1,\n    \"automation\": 1,\n    \"priority\": 2,\n    \"preconditions\": \"Cart holds items worth 30.00\",\n    \"description\": \"\",\n    \"steps\": [\n      {\n        \"position\": 1,\n        \"action\": \"Apply promo code BOGUS\",\n        \"expected_result\": \"No discount is applied\"\n      },\n      {\n        \"position\": 2,\n        \"action\": \"Open the cart total\",\n        \"expected_result\": \"The total is unchanged\"\n      }\n    ],\n    \"created\": \"2026-09-01T09:00:00Z\",\n    \"updated\": \"2026-10-01T09:00:00Z\"\n  }\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T09:47:04.493Z",
+  "model": "claude-haiku-4-5"
+}

@@ -52,6 +52,55 @@
         },
         "required": ["entity"]
       }
+    },
+    {
+      "name": "qase_case_upsert",
+      "description": "Create or update a single test case: with `id` it updates, without it creates. Enum fields accept a label such as \"high\" or the project's numeric ID. Writing more than one case? Use qase_case_bulk_create — one request instead of one per case. If the project has \"Test case review\" enabled, writes may need a review — run qase_discover_tools with \"review\". Cost: one API call, about 0.6s to create, 0.4s to update.",
+      "inputSchema": {
+        "type": "object",
+        "$defs": {
+          "step": { "properties": { "action": { "description": "Step action (classic steps). Not needed when `shared` is set.", "type": "string" }, "attachments": { "description": "Hashes from qase_attachment_upload", "items": { "type": "string" }, "type": "array" }, "data": { "description": "Test data", "type": "string" }, "expected_result": { "description": "Expected result", "type": "string" }, "shared": { "description": "Hash from `qase_shared_step_upsert` to reuse here; then `action` is not needed.", "type": "string" }, "shared_step_hash": { "description": "Alias for `shared`, the spelling a case reads back.", "type": "string" }, "steps": { "description": "Nested substeps, nesting further if needed.", "items": { "$ref": "#/$defs/step" }, "type": "array" }, "value": { "description": "Gherkin scenario text (when steps_type is \"gherkin\")", "type": "string" } }, "type": "object" }
+        },
+        "properties": {
+          "attachments": { "description": "Hashes from qase_attachment_upload", "items": { "type": "string" }, "type": "array" },
+          "automation": { "description": "Automation: 0=Manual, 1=To be automated, 2=Automated (label or ID)", "type": "string" },
+          "behavior": { "description": "Behavior label or numeric ID", "type": "string" },
+          "code": { "description": "Project code, e.g. DEMO", "maxLength": 10, "minLength": 2, "pattern": "^[A-Z0-9_]+$", "type": "string" },
+          "custom_field": { "additionalProperties": {}, "description": "Custom fields by ID, e.g. { \"12\": \"value\" }", "propertyNames": { "type": "string" }, "type": "object" },
+          "description": { "description": "Free-form description of what the case covers", "type": "string" },
+          "id": { "description": "Case ID — if provided, updates the case; if omitted, creates a new one", "exclusiveMinimum": 0, "type": "integer" },
+          "is_flaky": { "description": "Is flaky: 0=No, 1=Yes; a boolean works too.", "type": "string" },
+          "layer": { "description": "Layer label or numeric ID", "type": "string" },
+          "milestone_id": { "description": "ID of the milestone the case belongs to", "exclusiveMinimum": 0, "type": "integer" },
+          "postconditions": { "description": "State to restore or verify after the steps run", "type": "string" },
+          "preconditions": { "description": "State the system must be in before the steps run", "type": "string" },
+          "priority": { "description": "Priority label or numeric ID (0=not set, 1=high, 2=medium, 3=low)", "type": "string" },
+          "severity": { "description": "Severity label or numeric ID", "type": "string" },
+          "status": { "description": "Status label or numeric ID", "type": "string" },
+          "steps": { "description": "Ordered test steps; omit for a case without steps", "items": { "$ref": "#/$defs/step" }, "type": "array" },
+          "steps_type": { "description": "Step style: \"classic\" action/expected, or \"gherkin\" scenario text", "enum": ["classic", "gherkin"], "type": "string" },
+          "suite_id": { "description": "ID of the suite that holds the case", "exclusiveMinimum": 0, "type": "integer" },
+          "tags": { "description": "Tag names, e.g. [\"smoke\", \"billing\"]", "items": { "type": "string" }, "type": "array" },
+          "title": { "description": "Test case title", "maxLength": 255, "minLength": 1, "type": "string" },
+          "type": { "description": "Type label or numeric ID", "type": "string" }
+        },
+        "required": ["code", "title"]
+      }
+    },
+    {
+      "name": "qase_case_bulk_create",
+      "description": "Create up to 100 test cases in one request — the batch form of qase_case_upsert, and the right tool whenever more than one case is being written. Same fields and enum handling as qase_case_upsert; creates only, update through qase_case_upsert with `id`. Cost: one API call regardless of batch size — ten cases measured 1.2s against 5.6s as ten separate calls.",
+      "inputSchema": {
+        "type": "object",
+        "$defs": {
+          "step": { "properties": { "action": { "description": "Step action (classic steps). Not needed when `shared` is set.", "type": "string" }, "attachments": { "description": "Hashes from qase_attachment_upload", "items": { "type": "string" }, "type": "array" }, "data": { "description": "Test data", "type": "string" }, "expected_result": { "description": "Expected result", "type": "string" }, "shared": { "description": "Hash from `qase_shared_step_upsert` to reuse here; then `action` is not needed.", "type": "string" }, "shared_step_hash": { "description": "Alias for `shared`, the spelling a case reads back.", "type": "string" }, "steps": { "description": "Nested substeps, nesting further if needed.", "items": { "$ref": "#/$defs/step" }, "type": "array" }, "value": { "description": "Gherkin scenario text (when steps_type is \"gherkin\")", "type": "string" } }, "type": "object" }
+        },
+        "properties": {
+          "cases": { "description": "Test cases to create, 1 to 100 per call", "items": { "properties": { "attachments": { "description": "Hashes from qase_attachment_upload", "items": { "type": "string" }, "type": "array" }, "automation": { "description": "Automation: 0=Manual, 1=To be automated, 2=Automated (label or ID)", "type": "string" }, "behavior": { "description": "Behavior label or numeric ID", "type": "string" }, "custom_field": { "additionalProperties": {}, "description": "Custom fields by ID, e.g. { \"12\": \"value\" }", "propertyNames": { "type": "string" }, "type": "object" }, "description": { "description": "Free-form description of what the case covers", "type": "string" }, "is_flaky": { "description": "Is flaky: 0=No, 1=Yes; a boolean works too.", "type": "string" }, "layer": { "description": "Layer label or numeric ID", "type": "string" }, "milestone_id": { "description": "ID of the milestone the case belongs to", "exclusiveMinimum": 0, "type": "integer" }, "postconditions": { "description": "State to restore or verify after the steps run", "type": "string" }, "preconditions": { "description": "State the system must be in before the steps run", "type": "string" }, "priority": { "description": "Priority label or numeric ID (0=not set, 1=high, 2=medium, 3=low)", "type": "string" }, "severity": { "description": "Severity label or numeric ID", "type": "string" }, "status": { "description": "Status label or numeric ID", "type": "string" }, "steps": { "description": "Ordered test steps; omit for a case without steps", "items": { "$ref": "#/$defs/step" }, "type": "array" }, "steps_type": { "description": "Step style: \"classic\" action/expected, or \"gherkin\" scenario text", "enum": ["classic", "gherkin"], "type": "string" }, "suite_id": { "description": "ID of the suite that holds the case", "exclusiveMinimum": 0, "type": "integer" }, "tags": { "description": "Tag names, e.g. [\"smoke\", \"billing\"]", "items": { "type": "string" }, "type": "array" }, "title": { "description": "Test case title", "maxLength": 255, "minLength": 1, "type": "string" }, "type": { "description": "Type label or numeric ID", "type": "string" } }, "required": ["title"], "type": "object" }, "maxItems": 100, "minItems": 1, "type": "array" },
+          "code": { "description": "Project code, e.g. DEMO", "maxLength": 10, "minLength": 2, "pattern": "^[A-Z0-9_]+$", "type": "string" }
+        },
+        "required": ["code", "cases"]
+      }
     }
   ]
 }

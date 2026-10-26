@@ -1,0 +1,10 @@
+{
+  "input": {
+    "query": "entity = \"case\" and project = \"DEMO\"",
+    "limit": 100
+  },
+  "output": "```json\n{\n  \"total\": 5,\n  \"entities\": [\n    {\n      \"id\": 1,\n      \"title\": \"Checkout: cart totals\",\n      \"suite_id\": 1,\n      \"suite\": \"Checkout\",\n      \"automation\": 1,\n      \"priority\": 1,\n      \"is_flaky\": 0,\n      \"created\": \"2026-09-01T09:00:00Z\",\n      \"updated\": \"2026-10-01T09:00:00Z\"\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Checkout: promo code reduces total\",\n      \"suite_id\": 1,\n      \"suite\": \"Checkout\",\n      \"automation\": 1,\n      \"priority\": 1,\n      \"is_flaky\": 0,\n      \"created\": \"2026-09-01T09:00:00Z\",\n      \"updated\": \"2026-10-01T09:00:00Z\"\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Checkout: unknown promo code is ignored\",\n      \"suite_id\": 1,\n      \"suite\": \"Checkout\",\n      \"automation\": 1,\n      \"priority\": 2,\n      \"is_flaky\": 0,\n      \"created\": \"2026-09-01T09:00:00Z\",\n      \"updated\": \"2026-10-01T09:00:00Z\"\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Checkout: empty cart total is zero\",\n      \"suite_id\": 1,\n      \"suite\": \"Checkout\",\n      \"automation\": 0,\n      \"priority\": 3,\n      \"is_flaky\": 0,\n      \"created\": \"2026-09-01T09:00:00Z\",\n      \"updated\": \"2026-10-01T09:00:00Z\"\n    },\n    {\n      \"id\": 7,\n      \"title\": \"Search: filter by tag\",\n      \"suite_id\": 2,\n      \"suite\": \"Search\",\n      \"automation\": 2,\n      \"priority\": 2,\n      \"is_flaky\": 0,\n      \"created\": \"2026-09-01T09:00:00Z\",\n      \"updated\": \"2026-10-01T09:00:00Z\"\n    }\n  ]\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T09:46:49.778Z",
+  "model": "claude-haiku-4-5"
+}

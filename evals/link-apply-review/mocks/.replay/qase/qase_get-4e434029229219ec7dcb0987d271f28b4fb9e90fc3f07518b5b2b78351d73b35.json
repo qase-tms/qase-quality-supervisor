@@ -1,0 +1,18 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 7,
+    "fields": [
+      "id",
+      "title",
+      "automation",
+      "updated",
+      "suite"
+    ]
+  },
+  "output": "```json\n{\"status\":true,\"result\":{\"id\":7,\"title\":\"Search: filter by tag\",\"automation\":2,\"updated\":\"2026-10-01T09:00:00Z\",\"suite\":{\"id\":2,\"title\":\"Search\",\"parent_id\":null,\"cases_count\":1}}}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T09:38:26.293Z",
+  "model": "claude-haiku-4-5"
+}

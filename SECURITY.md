@@ -14,7 +14,7 @@ untested.
 
 | Component | Count | Can it act? |
 |---|---|---|
-| Skills | 4 | instructions only — no code executes |
+| Skills | 7 | instructions only — no code executes |
 | Agent | 1 | instructions only |
 | Command | 1 | instructions only |
 | Hooks | 2 scripts | **yes** — they run on every matching tool call |
@@ -60,23 +60,38 @@ endpoints the typed tools don't cover.
 titles, and the ids on runs, defects, and cases) to name who was active in the
 period, and those names appear in the HTML card it writes.
 
-`analyzing-change-impact` is the only skill that reads something other than Qase: it
-reads the **local git repository** — the diff against the default branch, and the
-source files it has to trace through to decide which surfaces a change reaches. That
-stays on the machine. What it sends to Qase is the same read-only queries as every
-other skill; the code itself is never uploaded anywhere.
+`analyzing-change-impact` and `linking-test-cases` read something other than Qase: the
+**local git repository** — the diff against the default branch and the source files
+traced from it, or the repository's autotests. That stays on the machine. What
+`analyzing-change-impact` sends to Qase is read-only queries; the code itself is never
+uploaded anywhere. `linking-test-cases` is covered separately below, because it also
+writes.
 
 The plugin contacts no service of its own, and Qase is the only destination it
 reaches on its own initiative — the one exception is a tracker comment the user
 explicitly asks for, described below.
 
-**Two skills write a file.** `reporting-quality-pulse` and
+**`linking-test-cases` reads test code and writes more than any other skill.** It
+reads the local repository's autotests and matches them to the project's cases by
+meaning. Before anything is confirmed it writes only `.qase/link-review.md` (always
+gitignored) and appends to `.gitignore`; `.qase/links.json`, the mapping it keeps for
+later runs, is committed or kept local (gitignored) at the user's choice. Only after
+the user confirms the mapping does it edit test files — adding the case-ID marker and
+its import, nothing else — and, each asked about first, create cases
+(`qase_case_bulk_create`) and set a linked case's `automation` to Automated
+(`qase_case_upsert`). It never deletes, installs a reporter, runs the tests, or
+commits. The code stays on the machine: the only code-derived text that reaches Qase
+is the title and steps of a case the user chose to create from a test. These gates
+are prompt-level, like the other write gates; the destructive-call guards below
+still apply to it.
+
+**Two other skills write a file.** `reporting-quality-pulse` and
 `analyzing-change-impact` render their reports as self-contained HTML —
 `quality-pulse-<CODE>-<date>.html` and `impact-analysis-<branch>-<date>.html` — in the
-working directory, or wherever the user asks. Those are the plugin's only writes to
-disk, they stay local, and they go nowhere on their own. Both skills are instructed
-not to write outside that directory and to ask before overwriting. Every other skill
-writes nothing.
+working directory, or wherever the user asks. Those reports stay local and go
+nowhere on their own. Both skills are instructed not to write outside that directory
+and to ask before overwriting. Apart from `linking-test-cases` above, no other skill
+writes to disk.
 
 **One skill can reach outside Qase, and only when told to.**
 `analyzing-change-impact` will post its report as a comment on an issue tracker

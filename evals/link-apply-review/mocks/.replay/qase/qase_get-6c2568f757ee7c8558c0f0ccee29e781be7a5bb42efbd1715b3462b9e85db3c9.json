@@ -1,0 +1,18 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 1,
+    "fields": [
+      "id",
+      "title",
+      "automation",
+      "updated",
+      "suite"
+    ]
+  },
+  "output": "```json\n{\"status\":true,\"result\":{\"id\":1,\"title\":\"Checkout: cart totals\",\"automation\":1,\"updated\":\"2026-10-01T09:00:00Z\",\"suite\":{\"id\":1,\"title\":\"Checkout\",\"parent_id\":null,\"cases_count\":4}}}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T09:38:21.908Z",
+  "model": "claude-haiku-4-5"
+}
