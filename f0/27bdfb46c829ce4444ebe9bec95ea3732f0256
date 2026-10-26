@@ -1,0 +1,45 @@
+evals/coverage-untested-areas/graders/no-case-upsert.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/link-propose-pytest/graders/no-state-written.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-6
+evals/link-propose-pytest/graders/code-untouched.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 6
+evals/link-apply-review/prompt.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 3
+evals/flakiness-unstable-tests/graders/no-bulk-create.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/flakiness-unstable-tests/graders/no-case-upsert.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/flaky-or-broken/graders/no-case-upsert.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/link-propose-pytest/graders/no-bulk-create.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/coverage-untested-areas/graders/no-bulk-create.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/link-propose-pytest/graders/correct-id-kept.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-8
+evals/link-apply-review/graders/rejected-row-untouched.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 6
+evals/link-apply-review/graders/no-bulk-create.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+evals/link-propose-pytest/graders/wrong-id-kept.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-8
+evals/flaky-or-broken/graders/no-bulk-create.md
+  s_1f77c0f6a4bfac::t_b474917dedbc5a 1-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f027bdfb46c829ce4444ebe9bec95ea3732f0256",
+  "prompts": {},
+  "sessions": {
+    "s_1f77c0f6a4bfac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "70e4769f-79ef-4354-aaa8-9148214aa099",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
