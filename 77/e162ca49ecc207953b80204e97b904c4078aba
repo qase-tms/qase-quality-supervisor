@@ -1,0 +1,20 @@
+skills/linking-test-cases/SKILL.md
+  s_1f77c0f6a4bfac::t_3e4bd5d3926e80 160-161,483-485
+  s_1f77c0f6a4bfac::t_45a0566e3b4b10 24-25,73-75,175-176,185-189,385-386,391-395,414-415,426-427
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "77e162ca49ecc207953b80204e97b904c4078aba",
+  "prompts": {},
+  "sessions": {
+    "s_1f77c0f6a4bfac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "70e4769f-79ef-4354-aaa8-9148214aa099",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
