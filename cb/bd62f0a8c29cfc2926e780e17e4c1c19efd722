@@ -1,0 +1,32 @@
+skills/linking-test-cases/references/go.md
+  s_1f77c0f6a4bfac::t_fd467b2c8492de 1-13
+skills/linking-test-cases/references/dotnet.md
+  s_1f77c0f6a4bfac::t_fd467b2c8492de 1-55
+skills/linking-test-cases/references/php.md
+  s_1f77c0f6a4bfac::t_fd467b2c8492de 1-33
+skills/linking-test-cases/references/python.md
+  s_1f77c0f6a4bfac::t_fd467b2c8492de 1-53
+skills/linking-test-cases/references/javascript.md
+  s_1f77c0f6a4bfac::t_fd467b2c8492de 1-123
+skills/linking-test-cases/references/jvm.md
+  s_1f77c0f6a4bfac::t_fd467b2c8492de 1-63
+tests/test-linking-references.sh
+  s_1f77c0f6a4bfac::t_7c42bece730409 1-18,30-35,37-99
+  s_1f77c0f6a4bfac::t_be575b1436ef7d 19-29,36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cbbd62f0a8c29cfc2926e780e17e4c1c19efd722",
+  "prompts": {},
+  "sessions": {
+    "s_1f77c0f6a4bfac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "70e4769f-79ef-4354-aaa8-9148214aa099",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
