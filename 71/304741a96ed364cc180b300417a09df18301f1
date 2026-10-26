@@ -1,0 +1,23 @@
+tests/test-branding.sh
+  s_1f77c0f6a4bfac::t_065eb822c7fbc2 48-49
+skills/linking-test-cases/SKILL.md
+  s_1f77c0f6a4bfac::t_60ea98ca85717a 418-424
+  s_1f77c0f6a4bfac::t_69761abf284f08 261,270,276,282,288,307,309-317
+  s_1f77c0f6a4bfac::t_dbb7589d9f7490 1-260,262-269,271-275,277-281,283-287,289-306,308,318-417,425-476
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "71304741a96ed364cc180b300417a09df18301f1",
+  "prompts": {},
+  "sessions": {
+    "s_1f77c0f6a4bfac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "70e4769f-79ef-4354-aaa8-9148214aa099",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
