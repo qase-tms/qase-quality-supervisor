@@ -105,8 +105,8 @@ has no case, or if a grader names a skill that no longer exists.
 
 The plugin's hooks do not fire against mocked tools: a mock is registered as
 `mcp__plugin_quality-supervisor_qase__*`, while `hooks.json` matches
-`mcp__qase__.*`. Attribution and the destructive-call guards are covered by
-`tests/e2e/wire-check.sh` instead.
+`mcp__qase__.*`. The destructive-call guards are covered by
+`tests/test-deny-destructive.sh` instead.
 
 ## What a full sweep measured
 

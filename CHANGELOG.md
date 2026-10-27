@@ -24,6 +24,14 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   references, not from reporter docs, several of which show markers the reporter
   silently ignores. `SECURITY.md` and the supervisor agent's routing cover it.
 
+### Removed
+- **Usage attribution.** `hooks/mark-run.js` no longer adds `_qase_integration` and
+  `_qase_producer` to Qase MCP calls; the hook, its tests and the end-to-end wire
+  check are gone. The plugin directory flags any hook that changes a tool call's
+  input or approves it, and this one did both (the approval in Codex only). The
+  plugin now ships only the destructive-call guards, which can only block a call,
+  and Node is no longer needed on PATH.
+
 ### Changed
 - The plugin manifest now names an icon (`assets/icon.svg`, the Qase logo) and
   links Qase's privacy policy (`privacyPolicyUrl`), which the plugin directory

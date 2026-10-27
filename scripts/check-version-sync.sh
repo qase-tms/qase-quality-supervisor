@@ -3,13 +3,7 @@
 # Asserts that every place carrying this plugin's version agrees with
 # .claude-plugin/plugin.json, which is the single source of truth.
 #
-# Three manifests repeat the version, and they are all that is left to check. The
-# X-Qase-Integration marker in .mcp.json and the self-run example in README.md
-# used to be here too, and the argument for checking them was that nothing could
-# build them from the manifest at runtime. hooks/mark-run.js does exactly that —
-# it reads .claude-plugin/plugin.json on each call and puts the version on the
-# wire itself — so the duplication this script existed to police is gone rather
-# than merely unguarded.
+# Three manifests repeat the version, because none of them can read the others.
 #
 # Called by scripts/verify-plugin.sh (so CI enforces it on every push) and by
 # .githooks/pre-commit (so a release bump is caught before the push). Both share

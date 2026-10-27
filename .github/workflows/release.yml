@@ -24,9 +24,8 @@ jobs:
 
       # A tag can be pushed at any commit, including one whose manifests say a
       # different version. Publishing v0.4.0 from a tree that still reports 0.3.0
-      # would ship an installable plugin that disagrees with its own release — and
-      # the integration marker sent to Qase analytics would report the stale value
-      # too. Fail here instead.
+      # would ship an installable plugin that disagrees with its own release. Fail
+      # here instead.
       - name: Tag matches the version in the manifests
         run: |
           tag_version="${GITHUB_REF_NAME#v}"

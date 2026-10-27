@@ -1,8 +1,7 @@
 #!/bin/bash
 #
-# Blocks a commit whose version strings disagree — most importantly the
-# X-Qase-Integration marker in .mcp.json, which is reported to Qase analytics and
-# fails silently when stale (see scripts/check-version-sync.sh).
+# Blocks a commit whose version strings disagree across the manifests (see
+# scripts/check-version-sync.sh).
 #
 # CI runs the same check on every push, so this hook only buys earlier feedback.
 # It is opt-in, because this repository has no install step that could place it:

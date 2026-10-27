@@ -54,13 +54,12 @@ The seven skills arrive namespaced as `quality-supervisor:<skill>` — invoke on
 Codex route to it. The Qase MCP server is registered from `.mcp.json`
 automatically; authenticate it once with `codex mcp login qase`.
 
-The destructive-call guards and usage attribution both work here. Codex will not
+The destructive-call guards work here too. Codex will not
 run a plugin's hooks until you accept its prompt to **trust** them, on the first
 interactive run after install; until you do they are skipped silently, so a fresh
 install has the skills and the MCP server but not yet the guards. `codex exec`
 never prompts, so in non-interactive use they stay inert unless trust was granted
-earlier. What the attribution sends, and the one permission it changes, are in
-[SECURITY.md](SECURITY.md).
+earlier.
 
 On Windows **without Git Bash** the guards do not run at all: Codex has no
 interpreter for the shell scripts, and the PowerShell twins are not registered for
@@ -115,12 +114,6 @@ reachable. Replace `.mcp.json` with:
 Then set `QASE_API_TOKEN` in your environment (create one at `app.qase.io` →
 API tokens). Keep the server name `qase` — the bundled guard hooks match tool
 names by that prefix, and renaming it silently disables them.
-
-Nothing else to set for attribution: the plugin names itself on each call from a
-hook, hosted and self-run alike, so both configurations are counted the same way
-— see [SECURITY.md](SECURITY.md). Attribution needs **MCP server 2.3.0 or
-newer** and Node on your PATH; without either, the calls simply go unattributed
-and everything else works.
 
 The skills expect **MCP server 2.1.1 or newer**. Earlier versions ship broken QQL
 examples in the tool schema — which the model copies and the API rejects — and,
@@ -232,9 +225,8 @@ which is the part that degrades.
 │   └── superpowers/        # design specs and plans behind each iteration
 ├── evals/                  # Behaviour eval cases and their Qase mocks — see docs/evals.md
 ├── hooks/
-│   ├── hooks.json          # Claude Code: guards + usage attribution
+│   ├── hooks.json          # Claude Code: destructive-call guards
 │   ├── hooks.codex.json    # Codex: guards only (see Install)
-│   ├── mark-run.js         # attributes each Qase call to the part that made it
 │   ├── deny-destructive.sh     # + .ps1 twin, so the guard runs on Windows too
 │   └── deny-destructive-api.sh # + .ps1 twin
 ├── references/
@@ -256,11 +248,9 @@ which is the part that degrades.
 │   ├── test-branding.sh
 │   ├── test-hook-coverage.sh
 │   ├── test-hook-parity.sh
-│   ├── test-mark-run.sh
 │   ├── test-deny-destructive.sh
 │   ├── test-release-notes.sh
-│   ├── test-version-sync.sh
-│   └── e2e/                    # wire check; needs `claude`, run before a release
+│   └── test-version-sync.sh
 ├── CHANGELOG.md
 ├── LICENSE
 ├── QUICKSTART.md           # install -> first report

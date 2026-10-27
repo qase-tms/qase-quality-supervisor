@@ -156,21 +156,12 @@ if ! echo "$details" | grep -qE 'Agents \(1\)'; then
   echo "FAIL: expected 1 agent (quality-supervisor)." >&2
   exit 1
 fi
-# The CLI counts hook EVENTS, not matcher entries: both guards and the telemetry
-# stamp live under PreToolUse, so that event is reported once however many
-# matchers are declared. The matchers themselves are asserted directly against
-# hooks.json below.
-#
-# All three events are required, not just PreToolUse. Stop and UserPromptSubmit
-# are what close a run: without them mark-run.js would keep stamping, but would
-# attribute every later call to whichever skill happened to run last — a failure
-# that produces plausible numbers rather than an obvious break.
-for event in PreToolUse Stop UserPromptSubmit; do
-  if ! echo "$details" | grep -qE "Hooks \([0-9]+\).*${event}"; then
-    echo "FAIL: expected a registered ${event} hook." >&2
-    echo "$details" | grep 'Hooks' >&2 || true
-    exit 1
-  fi
-done
+# The CLI counts hook EVENTS, not matcher entries: both guards live under
+# PreToolUse, so that event is reported once however many matchers are declared.
+if ! echo "$details" | grep -qE 'Hooks \([0-9]+\).*PreToolUse'; then
+  echo "FAIL: expected a registered PreToolUse hook." >&2
+  echo "$details" | grep 'Hooks' >&2 || true
+  exit 1
+fi
 
 echo "==> All checks passed"
