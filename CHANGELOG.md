@@ -24,6 +24,11 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   references, not from reporter docs, several of which show markers the reporter
   silently ignores. `SECURITY.md` and the supervisor agent's routing cover it.
 
+### Changed
+- The plugin manifest now names an icon (`assets/icon.svg`, the Qase logo) and
+  links Qase's privacy policy (`privacyPolicyUrl`), which the plugin directory
+  asks of any plugin that talks to a remote MCP server.
+
 ## [0.3.4] - 2026-10-14
 
 ### Added

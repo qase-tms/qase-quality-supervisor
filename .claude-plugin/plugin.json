@@ -10,7 +10,9 @@
   },
   "homepage": "https://github.com/qase-tms/qase-quality-supervisor#readme",
   "repository": "https://github.com/qase-tms/qase-quality-supervisor",
+  "privacyPolicyUrl": "https://qase.io/privacy",
   "license": "MIT",
+  "icon": "./assets/icon.svg",
   "keywords": [
     "qase",
     "qa",
