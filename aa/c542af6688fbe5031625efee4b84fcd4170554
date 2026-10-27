@@ -1,0 +1,23 @@
+assets/icon.svg
+  s_1f77c0f6a4bfac::t_b6b7c8cab11bc4 1-11
+CHANGELOG.md
+  s_1f77c0f6a4bfac::t_cd9808dc093b67 27-31
+.claude-plugin/plugin.json
+  s_1f77c0f6a4bfac::t_b6b7c8cab11bc4 13,15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "aac542af6688fbe5031625efee4b84fcd4170554",
+  "prompts": {},
+  "sessions": {
+    "s_1f77c0f6a4bfac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "70e4769f-79ef-4354-aaa8-9148214aa099",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
