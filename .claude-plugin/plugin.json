@@ -2,15 +2,17 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "quality-supervisor",
   "displayName": "Quality Supervisor",
-  "version": "0.3.4",
-  "description": "Agentic QA quality-intelligence for Qase: coverage gaps, failure triage and root-cause, flakiness vs. regression, release-readiness gating, a visual quality pulse for any period, and branch impact analysis with a regression checklist — driven through the Qase MCP server, with Qase as the system of record.",
+  "version": "0.4.0",
+  "description": "Agentic QA quality-intelligence for Qase: coverage gaps, failure triage and root-cause, flakiness vs. regression, release-readiness gating, a visual quality pulse for any period, branch impact analysis with a regression checklist, and linking autotests to Qase cases by meaning — driven through the Qase MCP server, with Qase as the system of record.",
   "author": {
     "name": "Qase",
     "url": "https://github.com/qase-tms"
   },
   "homepage": "https://github.com/qase-tms/qase-quality-supervisor#readme",
   "repository": "https://github.com/qase-tms/qase-quality-supervisor",
+  "privacyPolicyUrl": "https://qase.io/privacy",
   "license": "MIT",
+  "icon": "./assets/icon.svg",
   "keywords": [
     "qase",
     "qa",

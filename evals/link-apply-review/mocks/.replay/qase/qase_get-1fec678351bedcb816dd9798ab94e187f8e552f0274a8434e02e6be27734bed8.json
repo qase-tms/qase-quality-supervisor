@@ -1,0 +1,17 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 999,
+    "fields": [
+      "id",
+      "title",
+      "automation",
+      "updated"
+    ]
+  },
+  "output": "```json\n{\"status\":false,\"error\":\"not found\"}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T11:25:35.035Z",
+  "model": "claude-haiku-4-5"
+}

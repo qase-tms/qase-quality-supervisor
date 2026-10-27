@@ -2,9 +2,8 @@
 #
 # The plugin ships two hook files: hooks.json for Claude Code and
 # hooks.codex.json for Codex. They differ on purpose — Codex takes a single
-# command string rather than command + args, rejects the usage-attribution hook's
-# updatedInput, and surfaces the missing PowerShell interpreter as a visible error
-# on unix. What they must never differ on is which calls are guarded: a matcher
+# command string rather than command + args, and surfaces the missing PowerShell
+# interpreter as a visible error on unix. What they must never differ on is which calls are guarded: a matcher
 # added to one file and forgotten in the other leaves one host unprotected, and
 # nothing else would notice.
 set -uo pipefail
@@ -61,15 +60,6 @@ else
   pass "the Codex manifest points at the Codex hook file"
 fi
 
-
-# The Codex attribution hook approves the calls it marks, so the blast radius of
-# that approval is the whole risk of the design. Checked against the server's full
-# tool list, not a sample.
-if /usr/bin/python3 "$SCRIPT_DIR/check-marker-scope.py" "$ROOT"; then
-  :
-else
-  fail "the attribution hook's approval reaches the wrong tools"
-fi
 
 if [ "$failures" -gt 0 ]; then exit 1; fi
 echo "Hook parity checks passed."

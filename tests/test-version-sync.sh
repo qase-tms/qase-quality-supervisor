@@ -7,12 +7,8 @@
 # asserting on the real repository could only ever confirm the happy path, and the
 # whole point of the check is what it does when the version strings drift.
 #
-# The version lives in three manifests: one per harness plus the marketplace.
-# It used to live in four places; two of them — the X-Qase-Integration
-# marker in .mcp.json and the self-run example in README.md — are gone, because
-# hooks/mark-run.js now reads .claude-plugin/plugin.json at runtime and puts the
-# version on the wire itself. What remains are the two manifests, which genuinely
-# cannot read each other.
+# The version lives in three manifests: one per harness plus the marketplace,
+# which cannot read each other.
 
 set -uo pipefail
 
@@ -69,7 +65,7 @@ rm -rf "$root"
 # --- check: a drifting marketplace manifest is caught ----------------------
 #
 # A marketplace whose version trails the plugin's misreports what installers are
-# offered, which is the one drift that survives the marker's removal.
+# offered.
 
 root="$(make_fixture 0.1.0)"
 sed -i.bak 's|"version": "0.1.0"|"version": "0.3.0"|' "$root/.claude-plugin/marketplace.json"
@@ -130,12 +126,7 @@ else
 fi
 rm -rf "$root"
 
-# --- set-version: rejects a version the MCP server would drop -------------
-#
-# The server validates the marker version against ^[\w.\-+]{1,32}$ and silently
-# keeps the name while dropping a bad version, so garbage must be refused here.
-# The version now reaches the server from the hook rather than from .mcp.json,
-# but it is the same field on the far end and the same silent degradation.
+# --- set-version: rejects a non-semver version ----------------------------
 
 root="$(make_fixture 0.1.0)"
 if bash "$SET_VERSION" "not a version" "$root" >/dev/null 2>&1; then

@@ -14,7 +14,7 @@ untested.
 
 | Component | Count | Can it act? |
 |---|---|---|
-| Skills | 4 | instructions only — no code executes |
+| Skills | 7 | instructions only — no code executes |
 | Agent | 1 | instructions only |
 | Command | 1 | instructions only |
 | Hooks | 2 scripts | **yes** — they run on every matching tool call |
@@ -60,23 +60,38 @@ endpoints the typed tools don't cover.
 titles, and the ids on runs, defects, and cases) to name who was active in the
 period, and those names appear in the HTML card it writes.
 
-`analyzing-change-impact` is the only skill that reads something other than Qase: it
-reads the **local git repository** — the diff against the default branch, and the
-source files it has to trace through to decide which surfaces a change reaches. That
-stays on the machine. What it sends to Qase is the same read-only queries as every
-other skill; the code itself is never uploaded anywhere.
+`analyzing-change-impact` and `linking-test-cases` read something other than Qase: the
+**local git repository** — the diff against the default branch and the source files
+traced from it, or the repository's autotests. That stays on the machine. What
+`analyzing-change-impact` sends to Qase is read-only queries; the code itself is never
+uploaded anywhere. `linking-test-cases` is covered separately below, because it also
+writes.
 
 The plugin contacts no service of its own, and Qase is the only destination it
 reaches on its own initiative — the one exception is a tracker comment the user
 explicitly asks for, described below.
 
-**Two skills write a file.** `reporting-quality-pulse` and
+**`linking-test-cases` reads test code and writes more than any other skill.** It
+reads the local repository's autotests and matches them to the project's cases by
+meaning. Before anything is confirmed it writes only `.qase/link-review.md` (always
+gitignored) and appends to `.gitignore`; `.qase/links.json`, the mapping it keeps for
+later runs, is committed or kept local (gitignored) at the user's choice. Only after
+the user confirms the mapping does it edit test files — adding the case-ID marker and
+its import, nothing else — and, each asked about first, create cases
+(`qase_case_bulk_create`) and set a linked case's `automation` to Automated
+(`qase_case_upsert`). It never deletes, installs a reporter, runs the tests, or
+commits. The code stays on the machine: the only code-derived text that reaches Qase
+is the title and steps of a case the user chose to create from a test. These gates
+are prompt-level, like the other write gates; the destructive-call guards below
+still apply to it.
+
+**Two other skills write a file.** `reporting-quality-pulse` and
 `analyzing-change-impact` render their reports as self-contained HTML —
 `quality-pulse-<CODE>-<date>.html` and `impact-analysis-<branch>-<date>.html` — in the
-working directory, or wherever the user asks. Those are the plugin's only writes to
-disk, they stay local, and they go nowhere on their own. Both skills are instructed
-not to write outside that directory and to ask before overwriting. Every other skill
-writes nothing.
+working directory, or wherever the user asks. Those reports stay local and go
+nowhere on their own. Both skills are instructed not to write outside that directory
+and to ask before overwriting. Apart from `linking-test-cases` above, no other skill
+writes to disk.
 
 **One skill can reach outside Qase, and only when told to.**
 `analyzing-change-impact` will post its report as a comment on an issue tracker
@@ -89,41 +104,10 @@ prompt-level constraint, like the other write gates: the plugin ships no tracker
 credentials and no tracker MCP, so the capability exists only if the user has already
 connected one.
 
-**It does name itself on those requests.** A bundled hook, `hooks/mark-run.js`,
-adds two hidden fields to the arguments of each Qase MCP call: `_qase_integration`,
-this plugin's name and version, and — when a skill, the `/quality-report` command,
-or the agent is running — `_qase_producer`, naming which of them made the call, its
-position in that run, and whether it was reached as a skill, a command, or the
-agent. The Qase MCP server turns them into `X-MCP-Integration-*` headers on the API
-calls it was already going to make. Qase records them to count which teams use this
-plugin, which parts of it, and on which version.
-
-Every value is a constant drawn from this plugin's own namespace: skill names, a
-call counter, one of three entrypoint words. Not your identity, your prompts, your
-project code, your queries, your branch or file names, your test data, or anything
-derived from them. The hook adds no request of its own — the marker travels to Qase
-only, only on calls your client was already sending, and the plugin never learns the
-result.
-
-To switch it off, remove the `mark-run.js` entries from `hooks/hooks.json`, or run
-without Node on your PATH. Either way the calls still work; only the counting
-stops. The same applies on any host that does not run hooks, or whose hooks you
-have not trusted: nothing is sent and nothing is counted, without any action on
-your part.
-
-**In Codex the hook returns an approval, on four tools only.** That host discards a
-hook's rewritten arguments unless the same hook also approves the call, so on
-`qase_get`, `qase_project_context`, `qql_search` and `qql_help` the attribution
-hook returns one. None of the four can change anything in Qase — they are the read
-and QQL operations — and they never overlap the destructive guards, so an approval
-here can never override a block. Writes are not in that list.
-
-Observed, and worth stating because it contradicts what this document said in an
-earlier draft: Codex still shows **its own** approval prompt for MCP tools, so the
-hook's approval does not remove a gate you would otherwise have had. Whether the
-marker itself reaches Qase from Codex has not been confirmed end to end. Removing
-the two `mark-run.js` entries from `hooks/hooks.codex.json` drops the approval and
-the attribution together, and leaves the guards untouched.
+**No telemetry.** The plugin adds nothing to the requests it makes: no hook
+rewrites a tool call's arguments, approves a call, or tags it with the plugin's
+name or version. The only hooks it ships are the destructive-call guards below,
+and they can only block a call.
 
 **Access control is Qase's.** The plugin holds no privileges; the MCP server
 forwards the user's credential and Qase applies its own RBAC. A user cannot see

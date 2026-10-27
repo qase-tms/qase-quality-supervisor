@@ -53,9 +53,10 @@ if [ "$SMOKE" = true ]; then
 else
   # The full sweep: both arms, three runs each, so the delta means something.
   args+=(--ablation with-without --runs 3 --threshold 0.8 --max-cost-usd 40 --scaffold)
-  # Only the full sweep needs it: the two report-writing cases are tagged
-  # `full` precisely because they call Write, and the runner only grants it here.
-  args+=(--allow-tools Write)
+  # Only the full sweep needs these: the cases that write files are tagged `full`
+  # precisely because they call Write, and the linking cases also need Edit for
+  # the marker edits and Bash for the sha256 fingerprints in .qase/links.json.
+  args+=(--allow-tools Write Edit Bash)
 fi
 
 [ -n "$CASE_GLOB" ] && args+=(--case "$CASE_GLOB")

@@ -63,6 +63,7 @@ Delegate to the matching Quality Supervisor skill and follow its workflow:
 - "Ready to ship" / go-no-go / quality gate → **assessing-release-readiness**
 - A pulse / report card over a period → **reporting-quality-pulse**
 - What to test for a branch / PR, blast radius of a change → **analyzing-change-impact**
+- Link autotests to cases / add Qase IDs to tests / why results land as new cases → **linking-test-cases**
 
 Two of these hand off to each other, and getting it wrong inverts the advice:
 
@@ -79,17 +80,25 @@ up. Add assessing-release-readiness only when the user names a scope — a miles
 or run. It cannot assess "the project" as a whole; if no scope is given, ask
 which one defines the release rather than inventing one.
 
-analyzing-change-impact is the only skill that reads **code**. It answers "what does
+analyzing-change-impact is the only skill that reads a **branch diff**. It answers "what does
 this branch touch and what should QA verify" from a git diff, and grounds regression in
 existing manual cases. Route to it when the subject is a branch, a PR, or a change —
 not when the subject is the state of the project. "What should we test before merging"
 is impact; "what isn't covered" is analyzing-test-coverage.
 
+linking-test-cases is the only skill that **writes code**. It reads the repository's
+autotests, matches them to Qase cases by meaning, and — after the user confirms the
+mapping — puts the case IDs into the test files in each Qase reporter's syntax, marks
+the linked cases Automated, and can create cases for tests that have none. Route to it
+when the subject is IDs in test code. "Which cases aren't automated yet" or "where are
+the coverage gaps" is a question about Qase and stays with analyzing-test-coverage;
+"what should we test for this branch" stays with analyzing-change-impact.
+
 reporting-quality-pulse and assessing-release-readiness sound alike and are not.
 The pulse describes a **window of time** and grades it; readiness judges a **named scope**
 against a gate and answers go/no-go. "How did the last two weeks look" is a pulse;
-"can we ship 2.3" is readiness. The pulse is also the only skill here that writes
-a file — route to it when the user wants something visual to share, not when they
+"can we ship 2.3" is readiness. The pulse is also the skill that renders a shareable
+HTML card — route to it when the user wants something visual to share, not when they
 want a decision.
 
 ## Tools (Qase MCP)

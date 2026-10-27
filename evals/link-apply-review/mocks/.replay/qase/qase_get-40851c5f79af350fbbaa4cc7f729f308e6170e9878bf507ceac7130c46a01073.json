@@ -1,0 +1,17 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 2,
+    "fields": [
+      "id",
+      "title",
+      "automation",
+      "updated"
+    ]
+  },
+  "output": "```json\n{\n  \"status\": true,\n  \"result\": {\n    \"id\": 2,\n    \"title\": \"Checkout: promo code reduces total\",\n    \"automation\": 1,\n    \"updated\": \"2026-10-01T09:00:00Z\"\n  }\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T11:25:31.157Z",
+  "model": "claude-haiku-4-5"
+}

@@ -2,41 +2,18 @@
 
 For maintainers. Users of the plugin need nothing here.
 
-## Before a release: the end-to-end wire check
-
-```bash
-./tests/e2e/wire-check.sh
-```
-
-Starts real Claude Code sessions against a stand-in MCP server that logs the wire,
-and asserts that attribution survives the whole path — including the boundary that
-matters most: a call in a new prompt must not be credited to the skill that ran in
-the previous one.
-
-Deliberately outside the `tests/test-*.sh` glob that `verify-plugin.sh` sweeps: it
-needs the `claude` binary, starts real sessions and costs tokens, so it belongs to
-the release checklist rather than to every commit. It skips itself if `claude` is
-not on PATH.
-
 ## Bump the version with the script, not by hand
 
-The version appears in two places:
+The version appears in three places:
 
 | File | Why it carries the version |
 |------|----------------------------|
 | `.claude-plugin/plugin.json` | The source of truth. |
 | `.claude-plugin/marketplace.json` | What the marketplace offers. |
+| `.codex-plugin/plugin.json` | The Codex manifest. |
 
-It is repeated rather than interpolated because neither manifest can read the
-other. Two further copies used to exist — the `X-Qase-Integration` marker in
-`.mcp.json` and the self-run example in `README.md` — and they are gone:
-`hooks/mark-run.js` reads `.claude-plugin/plugin.json` at runtime and puts the
-version on the wire itself, which is precisely what nothing could do before.
-
-The version still reaches Qase, so a malformed one still degrades quietly: the
-MCP server validates it and drops a bad value while keeping the name, leaving the
-call counted without a version. `set-version.sh` refuses non-semver for that
-reason.
+It is repeated rather than interpolated because no manifest can read the
+others.
 
 So bump in one command:
 
@@ -44,7 +21,7 @@ So bump in one command:
 scripts/set-version.sh 0.2.0
 ```
 
-It rewrites all four, refuses a non-semver argument, and re-runs the consistency
+It rewrites all three, refuses a non-semver argument, and re-runs the consistency
 check. It rewrites by pattern rather than by the current value, so it also repairs
 a repository that has already drifted.
 
@@ -73,24 +50,17 @@ Two things worth knowing:
 - **The tag is the trigger and the decision.** Nothing decides *whether* to release;
   pushing the tag does. So push it only from a commit you intend to ship.
 - **A mismatched tag fails rather than publishing.** Tagging `v0.4.0` at a tree whose
-  manifests still say `0.3.0` would ship a plugin that disagrees with its own release,
-  and its integration marker would report the stale version into Qase analytics. The
-  workflow refuses instead. Fix with `scripts/set-version.sh`, commit, delete the bad
+  manifests still say `0.3.0` would ship a plugin that disagrees with its own release.
+  The workflow refuses instead. Fix with `scripts/set-version.sh`, commit, delete the bad
   tag (`git tag -d` and `git push origin :refs/tags/v0.4.0`), and re-tag.
 
 `claude plugin tag` also exists and validates the same manifest agreement, but it
 names tags `quality-supervisor--v<version>`. This repository uses the plain `v<version>`
 form its earlier tags and releases already use.
 
-## Why a stale version is worse than a broken one
+## What guards the version
 
-A wrong-but-well-formed version passes the MCP server's validation exactly as
-well as a correct one. Nothing errors, nothing is dropped: the calls keep being
-attributed to this plugin, filed under a version nobody is running. That is the
-failure this tooling exists to prevent — it is invisible in every log and only
-shows up as a confusing analytics chart weeks later.
-
-Two layers guard it:
+Two layers:
 
 - **CI** — `.github/workflows/validate.yml` runs `verify-plugin.sh`, which calls
   `scripts/check-version-sync.sh` on every push and pull request. This is the gate.
@@ -128,14 +98,3 @@ first two commands and by CI.
 The full run installs and uninstalls `quality-supervisor@quality-supervisor`
 through the `claude` CLI and removes that marketplace registration on exit —
 including one you added by hand. Expect to re-add it afterwards.
-
-Attribution itself cannot be verified from this repository: it needs an
-authenticated call from an installed plugin, and then a check in Qase's internal
-analytics that the call is credited to this plugin — its name and version, and
-the component that produced it — with the server and AI-host identities
-unchanged. That last step belongs to the Qase side; the specific fields are
-documented there rather than here, since this is a public repository.
-
-`tests/e2e/wire-check.sh` covers everything up to that boundary: it proves the
-marker leaves the machine correctly attached to the right component, which is the
-part this repository owns.

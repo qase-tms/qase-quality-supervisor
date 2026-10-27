@@ -28,14 +28,14 @@ Check it took:
 /plugin
 ```
 
-You should see `quality-supervisor` enabled, with **7 skills, 1 agent and 1
+You should see `quality-supervisor` enabled, with **8 skills, 1 agent and 1
 PreToolUse hook**.
 
-Seven, not six: the CLI counts the `quality-report` command under `Skills` — there
+Eight, not seven: the CLI counts the `quality-report` command under `Skills` — there
 is no separate Commands row in its output. So the expected inventory is
 `analyzing-change-impact`, `analyzing-test-coverage`, `analyzing-test-flakiness`,
-`assessing-release-readiness`, `quality-report`, `reporting-quality-pulse`,
-`triaging-test-failures`. Six skills plus a command is what ships; seven is what the
+`assessing-release-readiness`, `linking-test-cases`, `quality-report`, `reporting-quality-pulse`,
+`triaging-test-failures`. Seven skills plus a command is what ships; eight is what the
 inventory prints.
 
 ## 2. Connect to Qase

@@ -4,10 +4,7 @@
 #
 # The version lives in three places — the Claude Code plugin manifest, the Codex
 # plugin manifest, and the marketplace manifest — because none of them can read
-# the others. It used to live in four: the
-# X-Qase-Integration marker in .mcp.json and the self-run example in README.md
-# are gone, since hooks/mark-run.js reads the manifest at runtime and puts the
-# version on the wire itself. This script is still the single entry point, and
+# the others. This script is the single entry point, and
 # scripts/check-version-sync.sh is the net under it.
 #
 # Deliberately rewrites by pattern rather than by the current value, so it also
@@ -31,9 +28,7 @@ REPO_ROOT="${2:-$(cd "$SCRIPT_DIR/.." && pwd)}"
 cd "$REPO_ROOT"
 
 
-# Semver only. The MCP server validates the marker's version against
-# ^[\w.\-+]{1,32}$ and silently drops anything else — keeping the name but losing
-# the version — so a malformed value here would degrade metrics rather than fail.
+# Semver only: the manifests and the release tag are compared as versions.
 if ! printf '%s' "$NEW_VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$'; then
   echo "FAIL: '$NEW_VERSION' is not a semver version (expected e.g. 0.2.0 or 0.2.0-rc.1)." >&2
   exit 1

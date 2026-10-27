@@ -1,0 +1,11 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 2
+  },
+  "output": "```json\n{\n  \"status\": true,\n  \"result\": {\n    \"id\": 2,\n    \"title\": \"Checkout: promo code reduces total\",\n    \"suite_id\": 1,\n    \"automation\": 1,\n    \"priority\": 1,\n    \"preconditions\": \"Cart holds items worth 30.00\",\n    \"description\": \"\",\n    \"steps\": [\n      {\n        \"position\": 1,\n        \"action\": \"Apply promo code WELCOME10\",\n        \"expected_result\": \"The code is accepted\"\n      },\n      {\n        \"position\": 2,\n        \"action\": \"Open the cart total\",\n        \"expected_result\": \"The total drops by 10\"\n      }\n    ],\n    \"created\": \"2026-09-01T09:00:00Z\",\n    \"updated\": \"2026-10-01T09:00:00Z\"\n  }\n}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T10:32:17.416Z",
+  "model": "claude-haiku-4-5"
+}

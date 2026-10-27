@@ -1,0 +1,11 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 7
+  },
+  "output": "```json\n{\"status\":true,\"result\":{\"id\":7,\"title\":\"Search: filter by tag\",\"suite_id\":2,\"automation\":2,\"priority\":2,\"preconditions\":\"Catalogue has items tagged \\\"sale\\\" and untagged items\",\"description\":\"\",\"steps\":[{\"position\":1,\"action\":\"Filter the catalogue by tag \\\"sale\\\"\",\"expected_result\":\"Only items tagged \\\"sale\\\" are shown\"}],\"created\":\"2026-09-01T09:00:00Z\",\"updated\":\"2026-10-01T09:00:00Z\"}}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T10:03:12.833Z",
+  "model": "claude-haiku-4-5"
+}

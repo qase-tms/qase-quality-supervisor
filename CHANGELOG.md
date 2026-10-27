@@ -3,6 +3,40 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.0] - 2026-10-27
+
+### Added
+- **`linking-test-cases` — link a repository's autotests to Qase cases.** A Qase
+  reporter can attach an automated result to a case only when the test carries that
+  case's ID in code; tests without one land in Qase as new cases next to the ones
+  that already describe them. The skill reads the repo's autotests and the project's
+  cases, matches them by meaning rather than title equality, and shows the mapping.
+  Only after you confirm does it write the IDs into the tests in the syntax of the
+  reporter the repo uses, and mark the linked cases Automated.
+
+  It is the one skill that edits code, so it is the most heavily
+  gated: nothing in the code or in Qase changes before the confirmation, each Qase
+  change (creating cases for unmatched tests, updating `automation`) is asked first,
+  and it never deletes. It writes `.qase/link-review.md` (always gitignored) and
+  `.qase/links.json` (committed or local, your choice) and appends to `.gitignore`.
+  Test code stays on the machine; only the title and steps of a case you chose to
+  create from a test reach Qase. Reporter syntax comes from the skill's own
+  references, not from reporter docs, several of which show markers the reporter
+  silently ignores. `SECURITY.md` and the supervisor agent's routing cover it.
+
+### Removed
+- **Usage attribution.** `hooks/mark-run.js` no longer adds `_qase_integration` and
+  `_qase_producer` to Qase MCP calls; the hook, its tests and the end-to-end wire
+  check are gone. The plugin directory flags any hook that changes a tool call's
+  input or approves it, and this one did both (the approval in Codex only). The
+  plugin now ships only the destructive-call guards, which can only block a call,
+  and Node is no longer needed on PATH.
+
+### Changed
+- The plugin manifest now names an icon (`assets/icon.svg`, the Qase logo) and
+  links Qase's privacy policy (`privacyPolicyUrl`), which the plugin directory
+  asks of any plugin that talks to a remote MCP server.
+
 ## [0.3.4] - 2026-10-14
 
 ### Added

@@ -28,14 +28,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # First, and before the toolchain: this needs nothing but bash and sed, and
-      # it guards a failure that is invisible everywhere else — a stale
-      # X-Qase-Integration version is reported to Qase analytics and still passes
-      # the MCP server's validation, so nothing downstream ever complains. Its own
-      # step so a mismatch reads as a version problem in the checks list instead of
-      # a generic "static checks failed". Also run inside verify-plugin.sh, which
-      # is what local runs and the install job use.
-      - name: Version strings agree (manifests, integration marker, README)
+      # First, and before the toolchain: this needs nothing but bash and sed. Its
+      # own step so a mismatch reads as a version problem in the checks list
+      # instead of a generic "static checks failed". Also run inside
+      # verify-plugin.sh, which is what local runs and the install job use.
+      - name: Version strings agree across the manifests
         run: bash scripts/check-version-sync.sh
 
       - name: Version tooling tests
@@ -47,9 +44,10 @@ jobs:
 
       # Pinned: the install job's inventory assertions grep this CLI's
       # human-readable `plugin details` output, which is not a stable API.
-      # Bump deliberately, re-checking those assertions.
+      # Bump deliberately, re-checking those assertions. 2.1.276 and older reject
+      # `icon` and `privacyPolicyUrl` under `plugin validate --strict`.
       - name: Install claude CLI
-        run: npm install -g @anthropic-ai/claude-code@2.1.221
+        run: npm install -g @anthropic-ai/claude-code@2.1.308
 
       - name: Static checks
         run: bash scripts/verify-plugin.sh --static-only
@@ -68,7 +66,7 @@ jobs:
           node-version: '20'
 
       - name: Install claude CLI
-        run: npm install -g @anthropic-ai/claude-code@2.1.221
+        run: npm install -g @anthropic-ai/claude-code@2.1.308
 
       - name: Full verification (install + component inventory)
         run: bash scripts/verify-plugin.sh
@@ -146,8 +144,8 @@ jobs:
         with:
           node-version: '20'
 
-      # Pinned separately from the other jobs: `plugin eval` needs 2.1.269+,
-      # which the 2.1.221 they pin predates.
+      # Pinned separately from the other jobs, which pin for `plugin details`
+      # output; `plugin eval` needs 2.1.269+.
       - name: Install claude CLI
         run: npm install -g @anthropic-ai/claude-code@2.1.276
 

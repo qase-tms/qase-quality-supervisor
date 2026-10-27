@@ -22,6 +22,7 @@ add it once and install (and update) `quality-supervisor` from it.
 | Skill | `assessing-release-readiness` | Five-dimension go / no-go quality gate for a milestone, plan, or release. |
 | Skill | `reporting-quality-pulse` | Visual HTML report card for any period — execution, pass rate, defect backlog, case activity, active users. |
 | Skill | `analyzing-change-impact` | Diff a branch, trace what it reaches, and produce a QA impact analysis + regression/new checklist grounded in existing cases. |
+| Skill | `linking-test-cases` | Match a repo's autotests to Qase cases by meaning and, after you confirm, write the case IDs into the tests and mark the cases Automated. |
 | Agent | `quality-supervisor` | Orchestrator that routes a quality question to the right skill(s) and rolls up results. |
 | Command | `/quality-supervisor:quality-report` | Read-only consolidated sweep: coverage + flakiness + triage + readiness. |
 
@@ -37,9 +38,9 @@ In Claude Code:
 /plugin install quality-supervisor@quality-supervisor
 ```
 
-After a restart, `/plugin` reports the inventory as **7 skills, 1 agent, 1
-PreToolUse hook**. Seven because the CLI counts the `quality-report` command under
-`Skills`; six skills plus one command is what actually ships.
+After a restart, `/plugin` reports the inventory as **8 skills, 1 agent, 1
+PreToolUse hook**. Eight because the CLI counts the `quality-report` command under
+`Skills`; seven skills plus one command is what actually ships.
 
 In Codex:
 
@@ -48,18 +49,17 @@ codex plugin marketplace add qase-tms/qase-quality-supervisor
 codex plugin add quality-supervisor@quality-supervisor
 ```
 
-The six skills arrive namespaced as `quality-supervisor:<skill>` — invoke one with
+The seven skills arrive namespaced as `quality-supervisor:<skill>` — invoke one with
 `$quality-supervisor:analyzing-test-coverage`, or just describe the problem and let
 Codex route to it. The Qase MCP server is registered from `.mcp.json`
 automatically; authenticate it once with `codex mcp login qase`.
 
-The destructive-call guards and usage attribution both work here. Codex will not
+The destructive-call guards work here too. Codex will not
 run a plugin's hooks until you accept its prompt to **trust** them, on the first
 interactive run after install; until you do they are skipped silently, so a fresh
 install has the skills and the MCP server but not yet the guards. `codex exec`
 never prompts, so in non-interactive use they stay inert unless trust was granted
-earlier. What the attribution sends, and the one permission it changes, are in
-[SECURITY.md](SECURITY.md).
+earlier.
 
 On Windows **without Git Bash** the guards do not run at all: Codex has no
 interpreter for the shell scripts, and the PowerShell twins are not registered for
@@ -82,9 +82,12 @@ marketplace if your build supports it.
   never enter the repo.
 - A Qase **project code** to target.
 - For `analyzing-change-impact` only: a **git repository** checked out on a branch
-  that differs from its default branch — it is the one skill that reads code. An
+  that differs from its default branch — it is the one skill that reads a branch diff. An
   issue-tracker MCP is optional; without one it skips acceptance-criteria checks, and
   it never posts anywhere unless you ask it to.
+- For `linking-test-cases` only: a **git repository** with autotests in it, checked out
+  locally — it reads the test code and edits the test files, and nothing in the code or
+  in Qase changes until you confirm its mapping.
 - **Plan:** the hosted endpoint requires an **Enterprise** subscription, and the
   skills' analysis relies on QQL, which requires **Teams or Enterprise**. On
   a Teams plan, use the local server instead (below).
@@ -111,12 +114,6 @@ reachable. Replace `.mcp.json` with:
 Then set `QASE_API_TOKEN` in your environment (create one at `app.qase.io` →
 API tokens). Keep the server name `qase` — the bundled guard hooks match tool
 names by that prefix, and renaming it silently disables them.
-
-Nothing else to set for attribution: the plugin names itself on each call from a
-hook, hosted and self-run alike, so both configurations are counted the same way
-— see [SECURITY.md](SECURITY.md). Attribution needs **MCP server 2.3.0 or
-newer** and Node on your PATH; without either, the calls simply go unattributed
-and everything else works.
 
 The skills expect **MCP server 2.1.1 or newer**. Earlier versions ship broken QQL
 examples in the tool schema — which the model copies and the API rejects — and,
@@ -156,6 +153,7 @@ Ask in your own words — the skills pick themselves up from the question:
 - "Are we ready to ship milestone 2.3?" · "What's blocking the release?"
 - "Give me a quality pulse for WEB for the last two weeks." · "QA report card for August."
 - "What should QA test for the changes on this branch?" · "Impact analysis before I merge."
+- "Link our autotests to their Qase cases." · "Add Qase IDs to the tests in this repo."
 
 ### When you want a guarantee, use the command
 
@@ -185,6 +183,7 @@ way the command does:
 /quality-supervisor:assessing-release-readiness
 /quality-supervisor:reporting-quality-pulse
 /quality-supervisor:analyzing-change-impact
+/quality-supervisor:linking-test-cases
 ```
 
 Use these when you want one specific analysis rather than the whole sweep, and
@@ -226,9 +225,8 @@ which is the part that degrades.
 │   └── superpowers/        # design specs and plans behind each iteration
 ├── evals/                  # Behaviour eval cases and their Qase mocks — see docs/evals.md
 ├── hooks/
-│   ├── hooks.json          # Claude Code: guards + usage attribution
+│   ├── hooks.json          # Claude Code: destructive-call guards
 │   ├── hooks.codex.json    # Codex: guards only (see Install)
-│   ├── mark-run.js         # attributes each Qase call to the part that made it
 │   ├── deny-destructive.sh     # + .ps1 twin, so the guard runs on Windows too
 │   └── deny-destructive-api.sh # + .ps1 twin
 ├── references/
@@ -244,16 +242,15 @@ which is the part that degrades.
 │   ├── analyzing-test-flakiness/
 │   ├── assessing-release-readiness/
 │   ├── reporting-quality-pulse/         # + assets/pulse-template.html
-│   └── analyzing-change-impact/         # + assets/impact-template.html
+│   ├── analyzing-change-impact/         # + assets/impact-template.html
+│   └── linking-test-cases/              # + references/ (one reporter-syntax file per ecosystem)
 ├── tests/
 │   ├── test-branding.sh
 │   ├── test-hook-coverage.sh
 │   ├── test-hook-parity.sh
-│   ├── test-mark-run.sh
 │   ├── test-deny-destructive.sh
 │   ├── test-release-notes.sh
-│   ├── test-version-sync.sh
-│   └── e2e/                    # wire check; needs `claude`, run before a release
+│   └── test-version-sync.sh
 ├── CHANGELOG.md
 ├── LICENSE
 ├── QUICKSTART.md           # install -> first report

@@ -1,5 +1,5 @@
 {
-  "description": "Two jobs, with opposite failure contracts. The deny-* hooks block Qase MCP tool calls that could delete data (any mcp__qase__*delete* call, and any mcp__qase__qase_api call whose method is DELETE) and are fail-closed: an internal error blocks the call. mark-run.js attributes this plugin's Qase calls for usage analytics and is fail-open: any error leaves the call untouched and unmarked.",
+  "description": "Block Qase MCP tool calls that could delete data: any mcp__qase__*delete* call, and any mcp__qase__qase_api call whose method is DELETE. Fail-closed: an internal error blocks the call.",
   "hooks": {
     "PreToolUse": [
       {
@@ -41,56 +41,6 @@
               "${CLAUDE_PLUGIN_ROOT}/hooks/deny-destructive-api.ps1"
             ],
             "shell": "powershell"
-          }
-        ]
-      },
-      {
-        "matcher": "mcp__qase__.*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node",
-            "args": [
-              "${CLAUDE_PLUGIN_ROOT}/hooks/mark-run.js"
-            ]
-          }
-        ]
-      },
-      {
-        "matcher": "Skill",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node",
-            "args": [
-              "${CLAUDE_PLUGIN_ROOT}/hooks/mark-run.js"
-            ]
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node",
-            "args": [
-              "${CLAUDE_PLUGIN_ROOT}/hooks/mark-run.js"
-            ]
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node",
-            "args": [
-              "${CLAUDE_PLUGIN_ROOT}/hooks/mark-run.js"
-            ]
           }
         ]
       }

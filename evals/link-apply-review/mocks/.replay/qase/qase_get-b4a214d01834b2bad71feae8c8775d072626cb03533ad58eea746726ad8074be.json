@@ -1,0 +1,11 @@
+{
+  "input": {
+    "entity": "case",
+    "code": "DEMO",
+    "id": 1
+  },
+  "output": "```json\n{\"status\":true,\"result\":{\"id\":1,\"title\":\"Checkout: cart totals\",\"suite_id\":1,\"automation\":1,\"priority\":1,\"preconditions\":\"Cart is empty\",\"description\":\"\",\"steps\":[{\"position\":1,\"action\":\"Add two items to the cart\",\"expected_result\":\"Both items are listed\"},{\"position\":2,\"action\":\"Open the cart total\",\"expected_result\":\"The total equals the sum of the two prices\"}],\"created\":\"2026-09-01T09:00:00Z\",\"updated\":\"2026-10-01T09:00:00Z\"}}\n```",
+  "verdict": "ok",
+  "recordedAt": "2026-10-26T10:03:05.295Z",
+  "model": "claude-haiku-4-5"
+}
