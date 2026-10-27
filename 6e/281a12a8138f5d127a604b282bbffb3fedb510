@@ -1,0 +1,49 @@
+hooks/hooks.codex.json
+  s_1f77c0f6a4bfac::t_1e31c19b674981 2
+docs/evals.md
+  s_1f77c0f6a4bfac::t_11c863b1d855aa 108-109
+tests/test-hook-parity.sh
+  s_1f77c0f6a4bfac::t_97e77e4837355e 5-6
+scripts/check-version-sync.sh
+  s_1f77c0f6a4bfac::t_97e77e4837355e 6
+docs/releasing.md
+  s_1f77c0f6a4bfac::t_11c863b1d855aa 53-54,61,63
+  s_1f77c0f6a4bfac::t_a4ea06506415d9 7,13,15-16,24
+SECURITY.md
+  s_1f77c0f6a4bfac::t_90683928b3d84f 107
+  s_1f77c0f6a4bfac::t_11c863b1d855aa 108-110
+.githooks/pre-commit
+  s_1f77c0f6a4bfac::t_97e77e4837355e 3-4
+tests/test-version-sync.sh
+  s_1f77c0f6a4bfac::t_97e77e4837355e 10-11,68,129
+hooks/hooks.json
+  s_1f77c0f6a4bfac::t_1e31c19b674981 2
+.github/workflows/validate.yml
+  s_1f77c0f6a4bfac::t_97e77e4837355e 31-35
+scripts/set-version.sh
+  s_1f77c0f6a4bfac::t_97e77e4837355e 7,31
+README.md
+  s_1f77c0f6a4bfac::t_11c863b1d855aa 57,62,228,253
+CHANGELOG.md
+  s_1f77c0f6a4bfac::t_90683928b3d84f 27-34
+.github/workflows/release.yml
+  s_1f77c0f6a4bfac::t_97e77e4837355e 27-28
+scripts/verify-plugin.sh
+  s_1f77c0f6a4bfac::t_97e77e4837355e 159-165
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6e281a12a8138f5d127a604b282bbffb3fedb510",
+  "prompts": {},
+  "sessions": {
+    "s_1f77c0f6a4bfac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "70e4769f-79ef-4354-aaa8-9148214aa099",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
