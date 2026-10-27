@@ -154,7 +154,6 @@ batches — never one call per case:
 
 ```
 SELECT (COUNT(*)) entity = "case" and project = "DEMO" and suiteTree = "Checkout"
-entity = "case" and project = "DEMO" and suiteTree = "Checkout"
 ```
 
 Count first; then fetch full-entity rows (no `SELECT`) with `limit` 100, paging by
