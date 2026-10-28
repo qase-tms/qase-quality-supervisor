@@ -1,0 +1,19 @@
+evals/triage-red-run/prompt.md
+  s_1769ea0cdde857::t_21b6a4a4df12d8 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b175d0d876d2326ad42dec365ec19659ae80e662",
+  "prompts": {},
+  "sessions": {
+    "s_1769ea0cdde857": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f41ea6a-749f-4807-a7f4-e76fff8ac3bb",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
