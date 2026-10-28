@@ -1,0 +1,45 @@
+CHANGELOG.md
+  s_1769ea0cdde857::t_c927a082da21f1 7-16
+  s_1769ea0cdde857::t_d778c06c968613 6
+tests/test-mcp-config.sh
+  s_1769ea0cdde857::t_c6802b25bfd5da 1-50
+QUICKSTART.md
+  s_1769ea0cdde857::t_7f84271113305e 72
+  s_1769ea0cdde857::t_00d1d1334ed2be 52-68
+.claude-plugin/marketplace.json
+  s_1769ea0cdde857::t_d778c06c968613 9
+.mcp.codex.json
+  s_1769ea0cdde857::t_9980358857675b 1-8
+README.md
+  s_1769ea0cdde857::t_7f84271113305e 129
+  s_1769ea0cdde857::t_4a5e78560d96b9 97-125
+  s_1769ea0cdde857::t_b0bae9eeee776d 80-81
+  s_1769ea0cdde857::t_f696d307865d40 54-56
+  s_1769ea0cdde857::t_e291f97735be97 248-249
+.codex-plugin/plugin.json
+  s_1769ea0cdde857::t_d778c06c968613 3
+  s_1769ea0cdde857::t_9980358857675b 27
+SECURITY.md
+  s_1769ea0cdde857::t_eeb2766452f893 21
+  s_1769ea0cdde857::t_ab8b87f87d7b20 36-39
+.claude-plugin/plugin.json
+  s_1769ea0cdde857::t_d778c06c968613 5
+.mcp.json
+  s_1769ea0cdde857::t_2fc7b7dbe0109c 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ebfbbba86133ad81c24ca29c95ab7cd4c7294d16",
+  "prompts": {},
+  "sessions": {
+    "s_1769ea0cdde857": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9f41ea6a-749f-4807-a7f4-e76fff8ac3bb",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
