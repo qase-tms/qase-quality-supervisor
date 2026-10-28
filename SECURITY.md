@@ -18,7 +18,7 @@ untested.
 | Agent | 1 | instructions only |
 | Command | 1 | instructions only |
 | Hooks | 2 scripts | **yes** — they run on every matching tool call |
-| MCP wiring | `.mcp.json` | declares the Qase server; no credentials |
+| MCP wiring | `.mcp.json`, `.mcp.codex.json` | declares the Qase server; no credentials |
 
 The skills, agent, and command are Markdown. They cannot execute anything by
 themselves; they instruct a model, which then calls MCP tools that the host
@@ -33,9 +33,10 @@ fetched at load time. The one external requirement is the Qase MCP server
 
 **Nothing authenticates as the plugin.** Every call runs as the user.
 
-- **Default (hosted):** `.mcp.json` points at `https://mcp.qase.io/mcp`. The
-  client performs an OAuth flow against the user's own Qase login. No token is
-  created, stored, or passed by the plugin.
+- **Default (hosted):** `.mcp.json` points at `https://mcp.qase.io/mcp`, or at
+  `QASE_MCP_URL` when the user sets it (the EU cloud uses
+  `https://mcp-eu.qase.io/mcp`). The client performs an OAuth flow against the
+  user's own Qase login. No token is created, stored, or passed by the plugin.
 - **Alternative (local):** the user runs `@qase/mcp-server` themselves with
   `QASE_API_TOKEN` from their environment. The token stays in their environment;
   `.mcp.json` references it by name, never by value.

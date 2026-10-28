@@ -49,10 +49,27 @@ stores a credential.
 If the flow doesn't start, the usual cause is a client that can't open a browser
 (a headless or remote session). Use 2b there.
 
+**On the EU cloud**, point the plugin at `https://mcp-eu.qase.io/mcp` first. In
+Claude Code, add to `~/.claude/settings.json` and restart:
+
+```json
+{ "env": { "QASE_MCP_URL": "https://mcp-eu.qase.io/mcp" } }
+```
+
+In Codex, add to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.qase]
+url = "https://mcp-eu.qase.io/mcp"
+```
+
+Details, including what happens when you already have a Qase server
+configured: [README → Qase EU cloud](README.md#qase-eu-cloud).
+
 ### 2b. Local — for Teams plans, or headless
 
 Create a token at `app.qase.io` → **Settings → API tokens**, put it in your
-environment, and replace `.mcp.json` with:
+environment, and replace `.mcp.json` (`.mcp.codex.json` in Codex) with:
 
 ```json
 {

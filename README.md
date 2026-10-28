@@ -51,8 +51,9 @@ codex plugin add quality-supervisor@quality-supervisor
 
 The seven skills arrive namespaced as `quality-supervisor:<skill>` — invoke one with
 `$quality-supervisor:analyzing-test-coverage`, or just describe the problem and let
-Codex route to it. The Qase MCP server is registered from `.mcp.json`
-automatically; authenticate it once with `codex mcp login qase`.
+Codex route to it. The Qase MCP server is registered from `.mcp.codex.json`
+automatically; authenticate it once with `codex mcp login qase`. On the EU
+cloud, see [Qase EU cloud](#qase-eu-cloud) first.
 
 The destructive-call guards work here too. Codex will not
 run a plugin's hooks until you accept its prompt to **trust** them, on the first
@@ -76,7 +77,8 @@ marketplace if your build supports it.
 ## Requirements
 
 - **Qase MCP server.** This repo ships `.mcp.json` pointing at the hosted,
-  OAuth-authenticated endpoint (`https://mcp.qase.io/mcp`), so there is no API
+  OAuth-authenticated endpoint (`https://mcp.qase.io/mcp`; on the EU cloud,
+  [`https://mcp-eu.qase.io/mcp`](#qase-eu-cloud)), so there is no API
   token to create or store — your client runs the OAuth flow on first use and
   you authorise with your normal Qase login. Credentials are never bundled and
   never enter the repo.
@@ -92,10 +94,39 @@ marketplace if your build supports it.
   skills' analysis relies on QQL, which requires **Teams or Enterprise**. On
   a Teams plan, use the local server instead (below).
 
+### Qase EU cloud
+
+The EU cloud has its own MCP endpoint, `https://mcp-eu.qase.io/mcp`, and an EU
+account cannot authorise against the default one.
+
+**Claude Code** reads the endpoint from `QASE_MCP_URL`. Set it in
+`~/.claude/settings.json` and restart:
+
+```json
+{ "env": { "QASE_MCP_URL": "https://mcp-eu.qase.io/mcp" } }
+```
+
+Exporting it in the shell that starts `claude` works too. If you already have
+a Qase MCP server of your own on the same URL, Claude Code keeps yours and
+drops the plugin's, so tools are not listed twice — name yours `qase`, or the
+guard hooks will not match it. Without the variable, an EU user with their
+own server gets both, and the plugin's one points at the wrong cloud.
+
+**Codex** does not expand variables in a plugin's MCP config, so it ships a
+fixed `.mcp.codex.json`. Override the server by the same name in
+`~/.codex/config.toml`, which takes precedence over the plugin's:
+
+```toml
+[mcp_servers.qase]
+url = "https://mcp-eu.qase.io/mcp"
+```
+
+Then `codex mcp login qase`.
+
 ### Running the MCP server locally instead
 
 Useful on Teams plans, for development, or where the hosted endpoint isn't
-reachable. Replace `.mcp.json` with:
+reachable. Replace `.mcp.json` (`.mcp.codex.json` in Codex) with:
 
 ```json
 {
@@ -214,7 +245,8 @@ which is the part that degrades.
 │   ├── validate.yml       # CI: manifest validation, secrets scan, hook tests
 │   └── release.yml        # CI: publish a release when a v* tag is pushed
 ├── .codex-plugin/          # Codex plugin manifest (skills, MCP, hooks)
-├── .mcp.json               # Qase MCP server wiring
+├── .mcp.json               # Qase MCP server wiring (Claude Code, QASE_MCP_URL)
+├── .mcp.codex.json         # the same for Codex, which does not expand variables
 ├── agents/
 │   └── quality-supervisor.md
 ├── commands/

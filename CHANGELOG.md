@@ -3,6 +3,17 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.1] - 2026-10-28
+
+### Added
+- **Qase EU cloud.** In Claude Code the MCP endpoint now comes from
+  `QASE_MCP_URL`, defaulting to `https://mcp.qase.io/mcp`; EU users set it to
+  `https://mcp-eu.qase.io/mcp`. Until now the plugin could only reach the default
+  cloud, and an EU user who had their own server got a second, unusable one.
+  Codex does not expand variables in a plugin's MCP config, so it gets a fixed
+  `.mcp.codex.json` and EU users override the `qase` server in
+  `~/.codex/config.toml`. README and QUICKSTART cover both.
+
 ## [0.4.0] - 2026-10-27
 
 ### Added
