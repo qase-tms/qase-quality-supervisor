@@ -1,0 +1,50 @@
+.codex-plugin/plugin.json
+  s_f4ad30ebb5c97f::t_77b0f2d61ef46b 3
+CHANGELOG.md
+  s_f4ad30ebb5c97f::t_77b0f2d61ef46b 6-18
+hooks/hooks.json
+  s_f4ad30ebb5c97f::t_f45e7c336b7096 2,6,27
+QUICKSTART.md
+  s_f4ad30ebb5c97f::t_77b0f2d61ef46b 59
+  s_f4ad30ebb5c97f::t_d7129fb63c67b2 53-58,62
+hooks/hooks.codex.json
+  s_f4ad30ebb5c97f::t_f45e7c336b7096 6,15
+README.md
+  s_f4ad30ebb5c97f::t_77b0f2d61ef46b 111
+  s_f4ad30ebb5c97f::t_d7129fb63c67b2 102-109,114,117-120,122,254-255
+  s_f4ad30ebb5c97f::t_7ed18c3abe2924 110
+.claude-plugin/plugin.json
+  s_f4ad30ebb5c97f::t_77b0f2d61ef46b 5
+tests/test-hook-parity.sh
+  s_f4ad30ebb5c97f::t_840e084f31b1d6 23
+scripts/verify-plugin.sh
+  s_f4ad30ebb5c97f::t_ac7275fc11457a 69
+tests/test-hook-coverage.sh
+  s_f4ad30ebb5c97f::t_840e084f31b1d6 25-39
+tests/test-mcp-config.sh
+  s_f4ad30ebb5c97f::t_840e084f31b1d6 3-6,33-43
+SECURITY.md
+  s_f4ad30ebb5c97f::t_77b0f2d61ef46b 36-39
+.claude-plugin/marketplace.json
+  s_f4ad30ebb5c97f::t_77b0f2d61ef46b 9
+.mcp.json
+  s_f4ad30ebb5c97f::t_f45e7c336b7096 5
+hooks/deny-destructive.sh
+  s_f4ad30ebb5c97f::t_f45e7c336b7096 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a538f6105d14ebde8502e1cda2de5db9b45c476a",
+  "prompts": {},
+  "sessions": {
+    "s_f4ad30ebb5c97f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9dde5f6b-b5bf-48b6-8140-f72a41816df1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
