@@ -20,7 +20,7 @@ guards() {   # destructive matchers declared in $1
 import json, sys, io
 d = json.load(io.open(sys.argv[1], encoding='utf-8'))
 ms = [g.get('matcher','') for g in d['hooks'].get('PreToolUse', [])]
-print('\n'.join(sorted(m for m in ms if 'delete' in m or m == 'mcp__qase__qase_api')))
+print('\n'.join(sorted(m for m in ms if 'delete' in m or m.endswith('qase_api'))))
 " "$1"
 }
 

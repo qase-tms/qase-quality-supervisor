@@ -1,9 +1,9 @@
 {
-  "description": "Block Qase MCP tool calls that could delete data: any mcp__qase__*delete* call, and any mcp__qase__qase_api call whose method is DELETE. Fail-closed: an internal error blocks the call.",
+  "description": "Block Qase MCP tool calls that could delete data: any *delete* call, and any qase_api call whose method is DELETE, on a server the user named qase or on the plugin's own (mcp__plugin_quality-supervisor_qase__*). Fail-closed: an internal error blocks the call.",
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "mcp__qase__.*delete.*",
+        "matcher": "mcp__(qase|plugin_quality-supervisor_qase)__.*delete.*",
         "hooks": [
           {
             "type": "command",
@@ -24,7 +24,7 @@
         ]
       },
       {
-        "matcher": "mcp__qase__qase_api",
+        "matcher": "mcp__(qase|plugin_quality-supervisor_qase)__qase_api",
         "hooks": [
           {
             "type": "command",

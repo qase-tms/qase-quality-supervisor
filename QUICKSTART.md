@@ -50,10 +50,16 @@ If the flow doesn't start, the usual cause is a client that can't open a browser
 (a headless or remote session). Use 2b there.
 
 **On the EU cloud**, point the plugin at `https://mcp-eu.qase.io/mcp` first. In
-Claude Code, add to `~/.claude/settings.json` and restart:
+Claude Code, add your own server and switch the plugin's default one off:
+
+```bash
+claude mcp add --transport http --scope user qase https://mcp-eu.qase.io/mcp
+```
+
+and in `~/.claude/settings.json`:
 
 ```json
-{ "env": { "QASE_MCP_URL": "https://mcp-eu.qase.io/mcp" } }
+{ "deniedMcpServers": [{ "serverUrl": "https://mcp.qase.io/*" }] }
 ```
 
 In Codex, add to `~/.codex/config.toml`:

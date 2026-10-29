@@ -3,6 +3,19 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.2] - 2026-10-29
+
+### Fixed
+- **The MCP endpoint is fixed again.** 0.4.1 read it from `QASE_MCP_URL`, which
+  let the environment decide where the user's Qase OAuth token goes; the plugin
+  directory flags that as a credential forward. `.mcp.json` points at
+  `https://mcp.qase.io/mcp` again. On the EU cloud, add your own `qase` server
+  for `https://mcp-eu.qase.io/mcp` and switch the plugin's off with
+  `deniedMcpServers` — README and QUICKSTART show both.
+- **Delete guards now cover the plugin's own server.** Claude Code names its
+  tools `mcp__plugin_quality-supervisor_qase__*`, which the `mcp__qase__*`
+  matchers never caught; they now match both names.
+
 ## [0.4.1] - 2026-10-28
 
 ### Added

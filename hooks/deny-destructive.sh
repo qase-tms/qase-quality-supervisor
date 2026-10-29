@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # PreToolUse hook: denies any Qase MCP tool call matched by hooks.json's
-# "mcp__qase__.*delete.*" pattern.
+# "mcp__(qase|plugin_quality-supervisor_qase)__.*delete.*" pattern.
 #
 # Fail-closed by design: no jq dependency, and any unexpected internal
 # failure blocks the call (exit 2) rather than letting it through. Per the
