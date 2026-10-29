@@ -99,21 +99,27 @@ marketplace if your build supports it.
 The EU cloud has its own MCP endpoint, `https://mcp-eu.qase.io/mcp`, and an EU
 account cannot authorise against the default one.
 
-**Claude Code** reads the endpoint from `QASE_MCP_URL`. Set it in
-`~/.claude/settings.json` and restart:
+**Claude Code** has no setting that changes a plugin server's URL, and a
+variable in it would let the environment decide where your Qase token goes.
+So the plugin ships the default endpoint, and on the EU cloud you add your own
+server and switch the plugin's off — both once, for every project:
 
-```json
-{ "env": { "QASE_MCP_URL": "https://mcp-eu.qase.io/mcp" } }
+```bash
+claude mcp add --transport http --scope user qase https://mcp-eu.qase.io/mcp
 ```
 
-Exporting it in the shell that starts `claude` works too. If you already have
-a Qase MCP server of your own on the same URL, Claude Code keeps yours and
-drops the plugin's, so tools are not listed twice — name yours `qase`, or the
-guard hooks will not match it. Without the variable, an EU user with their
-own server gets both, and the plugin's one points at the wrong cloud.
+and in `~/.claude/settings.json`:
 
-**Codex** does not expand variables in a plugin's MCP config, so it ships a
-fixed `.mcp.codex.json`. Override the server by the same name in
+```json
+{ "deniedMcpServers": [{ "serverUrl": "https://mcp.qase.io/*" }] }
+```
+
+Name the server `qase`: the guard hooks match `mcp__qase__*` and the plugin's
+own `mcp__plugin_quality-supervisor_qase__*`, nothing else. Without the
+`deniedMcpServers` entry the plugin's server stays listed next to yours,
+unauthorised and pointing at the wrong cloud.
+
+**Codex** reads `.mcp.codex.json`. Override the server by the same name in
 `~/.codex/config.toml`, which takes precedence over the plugin's:
 
 ```toml
@@ -245,8 +251,8 @@ which is the part that degrades.
 │   ├── validate.yml       # CI: manifest validation, secrets scan, hook tests
 │   └── release.yml        # CI: publish a release when a v* tag is pushed
 ├── .codex-plugin/          # Codex plugin manifest (skills, MCP, hooks)
-├── .mcp.json               # Qase MCP server wiring (Claude Code, QASE_MCP_URL)
-├── .mcp.codex.json         # the same for Codex, which does not expand variables
+├── .mcp.json               # Qase MCP server wiring (Claude Code)
+├── .mcp.codex.json         # the same for Codex
 ├── agents/
 │   └── quality-supervisor.md
 ├── commands/

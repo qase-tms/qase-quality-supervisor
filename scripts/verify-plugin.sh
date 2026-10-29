@@ -66,7 +66,7 @@ echo "==> Destructive-call guards declared and executable"
 # `claude plugin details` reports hook EVENTS, not matcher entries, so it
 # cannot tell one guard from two. Assert both matchers and both scripts here,
 # where it is actually observable.
-for matcher in 'mcp__qase__\.\*delete\.\*' 'mcp__qase__qase_api'; do
+for matcher in 'mcp__\(qase\|plugin_quality-supervisor_qase\)__\.\*delete\.\*' 'mcp__\(qase\|plugin_quality-supervisor_qase\)__qase_api'; do
   if ! grep -qE "\"matcher\"[[:space:]]*:[[:space:]]*\"${matcher}\"" hooks/hooks.json; then
     echo "FAIL: hooks/hooks.json does not declare a matcher for '${matcher//\\/}'." >&2
     exit 1

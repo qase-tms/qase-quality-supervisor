@@ -22,5 +22,20 @@ for guard in deny-destructive deny-destructive-api; do
   fi
 done
 
+# Claude Code names a plugin server's tools mcp__plugin_<plugin>_<server>__*, and
+# a user's own server named qase gives mcp__qase__*; a guard must catch both.
+if ! /usr/bin/python3 -c "
+import json, re, sys, io
+ms = [g['matcher'] for g in json.load(io.open(sys.argv[1], encoding='utf-8'))['hooks']['PreToolUse']]
+for prefix in ('mcp__qase__', 'mcp__plugin_quality-supervisor_qase__'):
+    for tool in ('qase_case_delete', 'qase_api'):
+        if not any(re.fullmatch(m, prefix + tool) for m in ms):
+            print(prefix + tool); sys.exit(1)
+    if any(re.fullmatch(m, prefix + 'qql_search') for m in ms):
+        print(prefix + 'qql_search is guarded too'); sys.exit(1)
+" "$HOOKS_JSON"; then
+  fail "hooks.json matchers miss a Qase tool name (see above)"
+fi
+
 if [ "$failures" -gt 0 ]; then exit 1; fi
 echo "All destructive matchers are guarded on both shells."

@@ -2,7 +2,7 @@
   "mcpServers": {
     "qase": {
       "type": "http",
-      "url": "${QASE_MCP_URL:-https://mcp.qase.io/mcp}"
+      "url": "https://mcp.qase.io/mcp"
     }
   }
 }

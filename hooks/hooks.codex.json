@@ -3,7 +3,7 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "mcp__qase__.*delete.*",
+        "matcher": "mcp__(qase|plugin_quality-supervisor_qase)__.*delete.*",
         "hooks": [
           {
             "type": "command",
@@ -12,7 +12,7 @@
         ]
       },
       {
-        "matcher": "mcp__qase__qase_api",
+        "matcher": "mcp__(qase|plugin_quality-supervisor_qase)__qase_api",
         "hooks": [
           {
             "type": "command",
