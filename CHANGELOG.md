@@ -6,22 +6,22 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [0.4.3] - 2026-11-04
 
 ### Fixed
-- **No file in the plugin refers to a Qase token any more.** README and
-  QUICKSTART told local-server users to put `${QASE_API_TOKEN}` into the
-  plugin's `.mcp.json`, which the plugin directory holds as reading a credential
-  from the user's machine. The local server is now registered in the user's own
-  client config, and the plugin's hosted server is switched off the same way as
-  on the EU cloud.
+- **The local MCP server lives in the user's own config.** README and QUICKSTART
+  had local-server users edit the plugin's `.mcp.json`; they now register the
+  server in their own client config and switch the plugin's hosted one off, as
+  on the EU cloud. Nothing in the plugin names the server's settings any more.
+- **The delete guards answer with one fixed line.** Each guard prints the same
+  deny JSON whatever it receives, using only shell builtins, so no payload can
+  shape the answer. The reason no longer names the blocked tool.
 
 ## [0.4.2] - 2026-10-29
 
 ### Fixed
-- **The MCP endpoint is fixed again.** 0.4.1 read it from `QASE_MCP_URL`, which
-  let the environment decide where the user's Qase OAuth token goes; the plugin
-  directory flags that as a credential forward. `.mcp.json` points at
-  `https://mcp.qase.io/mcp` again. On the EU cloud, add your own `qase` server
-  for `https://mcp-eu.qase.io/mcp` and switch the plugin's off with
-  `deniedMcpServers` — README and QUICKSTART show both.
+- **The MCP endpoint is fixed again.** 0.4.1 made it configurable, which the
+  plugin directory does not allow for a server the user signs in to.
+  `.mcp.json` points at `https://mcp.qase.io/mcp` again. On the EU cloud, add
+  your own `qase` server for `https://mcp-eu.qase.io/mcp` and switch the
+  plugin's off with `deniedMcpServers` — README and QUICKSTART show both.
 - **Delete guards now cover the plugin's own server.** Claude Code names its
   tools `mcp__plugin_quality-supervisor_qase__*`, which the `mcp__qase__*`
   matchers never caught; they now match both names.
@@ -29,13 +29,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [0.4.1] - 2026-10-28
 
 ### Added
-- **Qase EU cloud.** In Claude Code the MCP endpoint now comes from
-  `QASE_MCP_URL`, defaulting to `https://mcp.qase.io/mcp`; EU users set it to
+- **Qase EU cloud.** In Claude Code the MCP endpoint became configurable,
+  defaulting to `https://mcp.qase.io/mcp`, so EU users could point it at
   `https://mcp-eu.qase.io/mcp`. Until now the plugin could only reach the default
   cloud, and an EU user who had their own server got a second, unusable one.
-  Codex does not expand variables in a plugin's MCP config, so it gets a fixed
-  `.mcp.codex.json` and EU users override the `qase` server in
-  `~/.codex/config.toml`. README and QUICKSTART cover both.
+  Codex gets a fixed `.mcp.codex.json`, and EU users override the `qase` server
+  in `~/.codex/config.toml`. Withdrawn in 0.4.2.
 
 ## [0.4.0] - 2026-10-27
 
@@ -436,9 +435,8 @@ them changed what the skills conclude, not just how they read.
 - `tests/test-deny-destructive.sh`: covers both hooks, including that they
   fail closed rather than fail open when their environment is broken.
 - `scripts/verify-plugin.sh`: validates the marketplace and plugin manifests
-  (including hooks), checks the compliance files exist, scans for a literal
-  `QASE_API_TOKEN` value committed to a JSON file (reporting location only,
-  never the value), runs the hook tests, and confirms the plugin installs via
+  (including hooks), checks the compliance files exist, scans for a secret
+  committed to a JSON file (reporting location only, never the value), runs the hook tests, and confirms the plugin installs via
   the `claude` CLI with the expected component inventory (5 skills — the command
   counts as one — 1 agent, and a registered `PreToolUse` hook, whose two matchers
   are asserted directly against `hooks.json`). `--static-only` skips the install

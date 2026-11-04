@@ -1,8 +1,7 @@
 #!/bin/bash
 #
 # Claude Code reads .mcp.json, Codex reads .mcp.codex.json. Both must name the
-# server qase (the guard hooks match by it) and point at the same literal URL:
-# the plugin directory policy rejects a URL the environment can redirect.
+# server qase (the guard hooks match by it) and point at the one fixed endpoint.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -29,16 +28,11 @@ read -r codex_name codex_url <<<"$(read_server "$ROOT/.mcp.codex.json")"
 [ "$codex_name" = "qase" ] && pass ".mcp.codex.json names the server qase" \
   || fail ".mcp.codex.json names the server '$codex_name', the guard hooks expect qase"
 
-[ "$claude_url" = "$codex_url" ] && pass "both files point at the same endpoint" \
-  || fail ".mcp.json url '$claude_url' differs from .mcp.codex.json url '$codex_url'"
-
+ENDPOINT="https://mcp.qase.io/mcp"
 for pair in ".mcp.json $claude_url" ".mcp.codex.json $codex_url"; do
   read -r file url <<<"$pair"
-  case "$url" in
-    *'$'*) fail "$file url '$url' uses a variable" ;;
-    https://*) pass "$file url is a literal https endpoint" ;;
-    *) fail "$file url '$url' is not an https endpoint" ;;
-  esac
+  [ "$url" = "$ENDPOINT" ] && pass "$file points at $ENDPOINT" \
+    || fail "$file points at '$url', expected $ENDPOINT"
 done
 
 declared="$(/usr/bin/python3 -c "
