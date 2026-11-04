@@ -1,34 +1,20 @@
 # PowerShell twin of deny-destructive-api.sh, for Windows without Git Bash.
 #
-# Mirrors its twin's two deliberate choices:
-#  1. Fail-closed — any internal failure exits 2 rather than letting a DELETE
-#     through. Only "exit 0 + deny JSON" and "exit 2" block; every other
-#     non-zero exit is non-blocking and the call proceeds.
-#  2. Detection is deliberately over-broad — ANY "method": "delete" anywhere in
-#     the payload denies, rather than resolving tool_input.method precisely. A
-#     decoy or nested method field can only cause an unnecessary denial, never
-#     an unnoticed deletion.
+# Mirrors its twin: over-broad on purpose (ANY "method": "delete" in the payload
+# denies), the same fixed deny line, and exit 2 on any internal failure, since
+# every other non-zero exit lets the call through.
 $ErrorActionPreference = 'Stop'
 
 try {
     $raw = [Console]::In.ReadToEnd()
 
-    if ($raw -imatch '"method"\s*:\s*"delete"') {
-        $reason = 'DELETE via the qase_api escape hatch is disabled in Quality Supervisor - skills never delete Qase data, including through the raw API passthrough.'
-        $out = @{
-            hookSpecificOutput = @{
-                hookEventName            = 'PreToolUse'
-                permissionDecision       = 'deny'
-                permissionDecisionReason = $reason
-            }
-        } | ConvertTo-Json -Depth 5 -Compress
-        [Console]::Out.Write($out)
+    if ($raw -imatch '"method"[^"]*"delete"') {
+        [Console]::Out.Write('{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"DELETE through qase_api is disabled in Quality Supervisor: skills never delete Qase data."}}')
     }
 
-    # Anything else: no output, normal permission flow continues.
     exit 0
 }
 catch {
-    [Console]::Error.WriteLine("deny-destructive-api.ps1: unexpected internal error - blocking call as a precaution.")
+    [Console]::Error.WriteLine("deny-destructive-api.ps1: internal error, blocking the call.")
     exit 2
 }

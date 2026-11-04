@@ -1,29 +1,16 @@
 # PowerShell twin of deny-destructive.sh, for Windows without Git Bash, where the
-# .sh guard is never executed and a hook that cannot run does not block.
+# .sh guard never runs and a hook that cannot run does not block.
 #
-# FAIL-CLOSED, exactly like its twin: any internal failure exits 2 rather than
-# letting the call through. Per the PreToolUse contract only "exit 0 + deny JSON"
-# and "exit 2" block; every other non-zero exit lets the tool proceed.
+# Same fixed deny line as its twin. Only "exit 0 + deny JSON" and "exit 2" block;
+# any other exit lets the call through, so an internal failure exits 2.
 $ErrorActionPreference = 'Stop'
 
 try {
-    $raw = [Console]::In.ReadToEnd()
-    $toolName = 'an unknown tool'
-    if ($raw -match '"tool_name"\s*:\s*"([^"]*)"') { $toolName = $Matches[1] }
-
-    $reason = "This plugin never deletes data in Qase. Blocked $toolName."
-    $out = @{
-        hookSpecificOutput = @{
-            hookEventName            = 'PreToolUse'
-            permissionDecision       = 'deny'
-            permissionDecisionReason = $reason
-        }
-    } | ConvertTo-Json -Depth 5 -Compress
-
-    [Console]::Out.Write($out)
+    [void][Console]::In.ReadToEnd()
+    [Console]::Out.Write('{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"Destructive tools are disabled in Quality Supervisor: skills never delete Qase data."}}')
     exit 0
 }
 catch {
-    [Console]::Error.WriteLine("deny-destructive.ps1: internal error - blocking call as a precaution.")
+    [Console]::Error.WriteLine("deny-destructive.ps1: internal error, blocking the call.")
     exit 2
 }

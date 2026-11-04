@@ -10,75 +10,33 @@ fail() {
   exit 1
 }
 
-minimal_bin="$(mktemp -d)"
-broken_bin="$(mktemp -d)"
-cleanup() {
-  rm -rf "$minimal_bin" "$broken_bin"
-}
-trap cleanup EXIT
-
-# minimal_bin: only what the hooks themselves use (cat, sed, head, tr), with
-# jq genuinely unresolvable — proves the hooks have no jq dependency.
-for cmd in cat sed head tr; do
-  ln -s "$(command -v "$cmd")" "$minimal_bin/$cmd"
-done
-if PATH="$minimal_bin" command -v jq >/dev/null 2>&1; then
-  fail "test setup broken: jq is still resolvable inside the minimal PATH"
-fi
-
-# broken_bin: missing sed/head/tr entirely, to simulate a genuine internal
-# failure (not just malformed input) and prove the hooks fail closed.
-ln -s "$(command -v cat)" "$broken_bin/cat"
-
-# --- deny-destructive.sh: normal deny case ----------------------------------
+# --- deny-destructive.sh: denies whatever reaches it -----------------------
 
 output="$(echo '{"tool_name":"mcp__qase__qase_case_delete","tool_input":{"id":123}}' | "$HOOK")"
-
 decision="$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecision')"
-reason="$(echo "$output" | jq -r '.hookSpecificOutput.permissionDecisionReason')"
-
 if [ "$decision" != "deny" ]; then
   fail "permissionDecision was '$decision', expected 'deny'"
 fi
-if [[ "$reason" != *"mcp__qase__qase_case_delete"* ]]; then
-  fail "reason did not mention the blocked tool: $reason"
-fi
-
 echo "PASS: deny-destructive.sh blocks mcp__qase__qase_case_delete"
 
-# --- deny-destructive.sh: fail-closed, jq absent + malformed stdin ----------
+# --- deny-destructive.sh: no PATH and malformed stdin still deny -----------
 #
-# The only acceptable outcomes are: exit 2 (blocking per the PreToolUse
-# contract), or exit 0 with a deny decision on stdout. Any other exit code
-# would be a non-blocking error under that contract, i.e. a fail-open bug.
+# Only exit 2 or exit 0 with a deny block the call; anything else is fail-open.
 
+guard_empty_bin="$(mktemp -d)"
 set +e
-fc_output="$(printf '%s' 'not valid json {{{' | PATH="$minimal_bin" "$HOOK" 2>/dev/null)"
+fc_output="$(printf '%s' 'not valid json {{{' | PATH="$guard_empty_bin" /bin/bash "$HOOK" 2>/dev/null)"
 fc_exit=$?
 set -e
+rm -rf "$guard_empty_bin"
 
 if [ "$fc_exit" -eq 2 ]; then
-  echo "PASS: deny-destructive.sh fails closed (exit 2) with jq absent + malformed stdin"
-elif [ "$fc_exit" -eq 0 ] && printf '%s' "$fc_output" | grep -q '"permissionDecision"[[:space:]]*:[[:space:]]*"deny"'; then
-  echo "PASS: deny-destructive.sh fails closed (deny JSON) with jq absent + malformed stdin"
+  echo "PASS: deny-destructive.sh fails closed (exit 2) with an empty PATH"
+elif [ "$fc_exit" -eq 0 ] && printf '%s' "$fc_output" | grep -q '"permissionDecision":"deny"'; then
+  echo "PASS: deny-destructive.sh denies with an empty PATH and malformed stdin"
 else
   fail "deny-destructive.sh did not fail closed: exit=$fc_exit output=$fc_output"
 fi
-
-# --- deny-destructive.sh: fail-closed, genuine internal failure -------------
-#
-# sed/head are entirely missing (not just jq): the hook cannot safely build
-# its JSON output and must block (exit 2), not emit malformed output.
-
-set +e
-broken_output="$(echo '{"tool_name":"x"}' | PATH="$broken_bin" "$HOOK" 2>/dev/null)"
-broken_exit=$?
-set -e
-
-if [ "$broken_exit" -ne 2 ]; then
-  fail "deny-destructive.sh did not fail closed with sed/head missing: exit=$broken_exit output=$broken_output"
-fi
-echo "PASS: deny-destructive.sh fails closed (exit 2) when sed/head are missing"
 
 # --- deny-destructive-api.sh: DELETE method is denied -----------------------
 
@@ -141,7 +99,7 @@ echo "PASS: deny-destructive-api.sh still denies when a decoy method follows a r
 # looks like a hook failure but isn't.
 
 empty_bin="$(mktemp -d)"
-trap 'rm -rf "$minimal_bin" "$broken_bin" "$empty_bin"' EXIT
+trap 'rm -rf "$empty_bin"' EXIT
 
 set +e
 nopath_output="$(echo '{"tool_name":"mcp__qase__qase_api","tool_input":{"method":"DELETE"}}' | PATH="$empty_bin" /bin/bash "$API_HOOK" 2>/dev/null)"
