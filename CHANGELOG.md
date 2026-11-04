@@ -3,6 +3,16 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.4.3] - 2026-11-04
+
+### Fixed
+- **No file in the plugin refers to a Qase token any more.** README and
+  QUICKSTART told local-server users to put `${QASE_API_TOKEN}` into the
+  plugin's `.mcp.json`, which the plugin directory holds as reading a credential
+  from the user's machine. The local server is now registered in the user's own
+  client config, and the plugin's hosted server is switched off the same way as
+  on the EU cloud.
+
 ## [0.4.2] - 2026-10-29
 
 ### Fixed

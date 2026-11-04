@@ -132,25 +132,16 @@ Then `codex mcp login qase`.
 ### Running the MCP server locally instead
 
 Useful on Teams plans, for development, or where the hosted endpoint isn't
-reachable. Replace `.mcp.json` (`.mcp.codex.json` in Codex) with:
+reachable. Set up [`@qase/mcp-server`](https://www.npmjs.com/package/@qase/mcp-server)
+by its own instructions, with an API token from `app.qase.io` → API tokens, and
+register it in your own client config, not in the plugin: the plugin never
+reads the token. Then switch the plugin's hosted server off, as on the EU cloud:
+in Claude Code add the same `deniedMcpServers` entry to `~/.claude/settings.json`;
+in Codex define `[mcp_servers.qase]` in `~/.codex/config.toml`, which takes
+precedence over the plugin's.
 
-```json
-{
-  "mcpServers": {
-    "qase": {
-      "command": "npx",
-      "args": ["-y", "@qase/mcp-server"],
-      "env": {
-        "QASE_API_TOKEN": "${QASE_API_TOKEN}"
-      }
-    }
-  }
-}
-```
-
-Then set `QASE_API_TOKEN` in your environment (create one at `app.qase.io` →
-API tokens). Keep the server name `qase` — the bundled guard hooks match tool
-names by that prefix, and renaming it silently disables them.
+Name the server `qase` — the bundled guard hooks match tool names by that
+prefix, and renaming it silently disables them.
 
 The skills expect **MCP server 2.1.1 or newer**. Earlier versions ship broken QQL
 examples in the tool schema — which the model copies and the API rejects — and,

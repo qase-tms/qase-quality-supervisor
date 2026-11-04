@@ -74,20 +74,12 @@ configured: [README → Qase EU cloud](README.md#qase-eu-cloud).
 
 ### 2b. Local — for Teams plans, or headless
 
-Create a token at `app.qase.io` → **Settings → API tokens**, put it in your
-environment, and replace `.mcp.json` (`.mcp.codex.json` in Codex) with:
-
-```json
-{
-  "mcpServers": {
-    "qase": {
-      "command": "npx",
-      "args": ["-y", "@qase/mcp-server"],
-      "env": { "QASE_API_TOKEN": "${QASE_API_TOKEN}" }
-    }
-  }
-}
-```
+Set up [`@qase/mcp-server`](https://www.npmjs.com/package/@qase/mcp-server) by
+its own instructions, with a token from `app.qase.io` → **Settings → API
+tokens**, and register it in your own client config, not in the plugin. Then
+switch the plugin's hosted server off: in Claude Code, the same
+`deniedMcpServers` entry as for the EU cloud above; in Codex, your
+`[mcp_servers.qase]` in `~/.codex/config.toml` already takes precedence.
 
 Keep the server name `qase`. The bundled guards match tool names by that prefix,
 and renaming it disables them silently.

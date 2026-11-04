@@ -38,9 +38,9 @@ fetched at load time. The one external requirement is the Qase MCP server
   URL is never read from the environment, so nothing can redirect the user's
   token elsewhere. The client performs an OAuth flow against the
   user's own Qase login. No token is created, stored, or passed by the plugin.
-- **Alternative (local):** the user runs `@qase/mcp-server` themselves with
-  `QASE_API_TOKEN` from their environment. The token stays in their environment;
-  `.mcp.json` references it by name, never by value.
+- **Alternative (local):** the user runs `@qase/mcp-server` themselves and
+  registers it in their own client config with their own token. No file in the
+  plugin reads, references, or forwards that token.
 
 **Verified:** `scripts/verify-plugin.sh` scans the repository on every push and
 pull request for a literal token committed to a JSON file, and fails the build if
