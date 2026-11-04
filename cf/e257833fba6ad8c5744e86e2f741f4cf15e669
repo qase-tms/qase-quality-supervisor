@@ -1,0 +1,32 @@
+CHANGELOG.md
+  s_48aeb1fc3cca7e::t_9014e87f6e1af0 438-439
+  s_48aeb1fc3cca7e::t_dc733cd0e8aab9 9-15,20-24,32-33,36-37
+hooks/deny-destructive-api.ps1
+  s_48aeb1fc3cca7e::t_2f588ba671846e 3-5,11-12,18
+tests/test-mcp-config.sh
+  s_48aeb1fc3cca7e::t_ed068008d25b26 4,31,34-35
+hooks/deny-destructive.sh
+  s_48aeb1fc3cca7e::t_b1e947db3e11d1 3-4,6-8,11,13,15
+tests/test-deny-destructive.sh
+  s_48aeb1fc3cca7e::t_7f46d7b6886104 13,22,24,26,28,31,34-36,102
+hooks/deny-destructive-api.sh
+  s_48aeb1fc3cca7e::t_1e1c4753fd3f7c 3-6,8-13,15-16,19,27,29-30
+hooks/deny-destructive.ps1
+  s_48aeb1fc3cca7e::t_56cecfe30078d3 2,4-5,9-10,14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cfe257833fba6ad8c5744e86e2f741f4cf15e669",
+  "prompts": {},
+  "sessions": {
+    "s_48aeb1fc3cca7e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "df5b3df5-e0b1-4fd5-bc9d-7036c9d4dd8f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
