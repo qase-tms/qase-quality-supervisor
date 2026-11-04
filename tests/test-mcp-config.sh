@@ -2,8 +2,7 @@
 #
 # Claude Code reads .mcp.json, Codex reads .mcp.codex.json. Both must name the
 # server qase (the guard hooks match by it) and point at the same literal URL:
-# a variable in it lets the environment choose where the user's OAuth token
-# goes, which the plugin directory policy rejects as a credential forward.
+# the plugin directory policy rejects a URL the environment can redirect.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
