@@ -1,0 +1,45 @@
+tests/test-openai-package.sh
+  s_8ff087ebec1818::t_15b6d4f19a697d 155-156
+  s_8ff087ebec1818::t_22ef964b5e69be 1-154,157-173
+scripts/build-openai-package.sh
+  s_8ff087ebec1818::t_a1752d40dbd3fd 1-53
+openai/plugin.json
+  s_8ff087ebec1818::t_b3234a5f2bf009 19
+  s_8ff087ebec1818::t_be2d95f8c9fd28 1-18,20-91
+openai/mcp.json
+  s_8ff087ebec1818::t_6076e3d7f25799 1-17
+.github/workflows/release.yml
+  s_8ff087ebec1818::t_a2599007fc3877 55-60,65
+.github/workflows/validate.yml
+  s_8ff087ebec1818::t_019beb83a2150c 41-46
+.gitignore
+  s_8ff087ebec1818::t_ee2682083a67ee 19-22
+CHANGELOG.md
+  s_8ff087ebec1818::t_94d38a6f8b7a35 6-16
+README.md
+  s_8ff087ebec1818::t_92e30e5f3f1f79 77-82,255-257,270-272,279,294
+docs/releasing.md
+  s_8ff087ebec1818::t_1a788ee9321259 7,14,25,45-46,103-124
+scripts/check-version-sync.sh
+  s_8ff087ebec1818::t_0d488a317c71eb 6-7,47-55
+scripts/set-version.sh
+  s_8ff087ebec1818::t_5247c26d7ff6ad 5-7,60
+tests/test-version-sync.sh
+  s_8ff087ebec1818::t_f3bf3e5699c2a2 10-11,28,51-58,101-114,132-134
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a0b6e9adc365820e888e7412986aaf3d9ebaccc0",
+  "prompts": {},
+  "sessions": {
+    "s_8ff087ebec1818": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f0872b50-3d94-4efb-9b15-c03af76ea0dc",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
