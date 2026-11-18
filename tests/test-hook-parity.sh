@@ -60,6 +60,29 @@ else
   pass "the Codex manifest points at the Codex hook file"
 fi
 
+# The guards match tools by server name, so a renamed server is silently unguarded.
+for f in .mcp.json .mcp.codex.json; do
+  names="$(/usr/bin/python3 -c "
+import json, sys, io
+print(' '.join(json.load(io.open(sys.argv[1], encoding='utf-8'))['mcpServers']))
+" "$ROOT/$f")"
+  if [ "$names" = "qase" ]; then
+    pass "$f declares the one server the guards expect, qase"
+  else
+    fail "$f declares servers '$names', the guard hooks expect only qase"
+  fi
+done
+
+declared_mcp="$(/usr/bin/python3 -c "
+import json, io
+print(json.load(io.open('$ROOT/.codex-plugin/plugin.json', encoding='utf-8')).get('mcpServers',''))
+")"
+if [ "$declared_mcp" != "./.mcp.codex.json" ]; then
+  fail ".codex-plugin/plugin.json declares mcpServers '$declared_mcp', expected ./.mcp.codex.json"
+else
+  pass "the Codex manifest points at the Codex MCP file"
+fi
+
 
 if [ "$failures" -gt 0 ]; then exit 1; fi
 echo "Hook parity checks passed."
