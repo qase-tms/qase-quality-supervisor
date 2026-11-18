@@ -1,0 +1,19 @@
+tests/test-hook-parity.sh
+  s_48aeb1fc3cca7e::t_2b8256b3e32926 63-85
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "06f9671c2f5fe2ddb99c9d07b7f8d65865bbf01a",
+  "prompts": {},
+  "sessions": {
+    "s_48aeb1fc3cca7e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "df5b3df5-e0b1-4fd5-bc9d-7036c9d4dd8f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
