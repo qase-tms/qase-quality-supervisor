@@ -170,6 +170,29 @@ before 2.1.0, a `qase_triage_defect` that reported linking it never performed.
   See [SECURITY.md](SECURITY.md).
 - **Human-in-the-loop.** Bulk writes require a sample and a yes first.
 
+## What the guard hooks run
+
+`hooks/hooks.json` registers two `PreToolUse` guards, each as a shell script and
+its PowerShell twin. Claude Code runs the shell scripts through bash (Git Bash on
+Windows) and the twins on Windows through:
+
+```
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ${CLAUDE_PLUGIN_ROOT}/hooks/<guard>.ps1
+```
+
+- `powershell.exe` is Windows PowerShell that ships with Windows; nothing is
+  downloaded or installed.
+- `-NoProfile` skips the user's PowerShell profile, so the guard starts fast and
+  nothing from the profile runs inside it.
+- `-ExecutionPolicy Bypass -File` lets PowerShell run that one script from the
+  plugin's own folder, as in the Windows hook example in the Claude Code docs. It
+  changes no policy on the machine.
+
+Each guard (`deny-destructive.*`, `deny-destructive-api.*`) reads the tool call,
+and either prints one fixed `deny` answer or prints nothing. It never approves a
+call or changes its input, installs no package, uses no registry, and makes no
+network request.
+
 ## Usage examples
 
 Ask in your own words — the skills pick themselves up from the question:
