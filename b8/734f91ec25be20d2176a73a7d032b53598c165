@@ -1,0 +1,19 @@
+README.md
+  s_48aeb1fc3cca7e::t_243358d7b4a62a 173-195
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b8734f91ec25be20d2176a73a7d032b53598c165",
+  "prompts": {},
+  "sessions": {
+    "s_48aeb1fc3cca7e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "df5b3df5-e0b1-4fd5-bc9d-7036c9d4dd8f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
