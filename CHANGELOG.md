@@ -3,6 +3,17 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+- **A package for the ChatGPT and Codex plugin directory.**
+  `scripts/build-openai-package.sh` builds the ZIP the directory takes: the seven
+  skills, the shared QQL reference and the hosted Qase MCP server with OAuth sign-in,
+  plus the listing copy and the review test cases from `openai/plugin.json`. It
+  leaves the hooks out, because the directory rejects packages that carry them.
+  `tests/test-openai-package.sh` holds the ZIP to the directory's upload and
+  submission rules in CI, and each release attaches the package built from its tag.
+
 ## [0.4.3] - 2026-11-04
 
 ### Fixed

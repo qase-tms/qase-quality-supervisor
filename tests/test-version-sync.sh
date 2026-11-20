@@ -7,8 +7,8 @@
 # asserting on the real repository could only ever confirm the happy path, and the
 # whole point of the check is what it does when the version strings drift.
 #
-# The version lives in three manifests: one per harness plus the marketplace,
-# which cannot read each other.
+# The version lives in four manifests: one per harness, the marketplace and the
+# OpenAI package, which cannot read each other.
 
 set -uo pipefail
 
@@ -25,7 +25,7 @@ fail() { echo "FAIL: $1" >&2; failures=$((failures + 1)); }
 make_fixture() {
   local version="$1" root
   root="$(mktemp -d)"
-  mkdir -p "$root/.claude-plugin" "$root/.codex-plugin"
+  mkdir -p "$root/.claude-plugin" "$root/.codex-plugin" "$root/openai"
   cat > "$root/.claude-plugin/plugin.json" <<EOJ
 {
   "name": "quality-supervisor",
@@ -47,6 +47,14 @@ EOJ
   "version": "$version",
   "description": "fixture",
   "skills": "./skills/"
+}
+EOJ
+  cat > "$root/openai/plugin.json" <<EOJ
+{
+  "\$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "quality-supervisor",
+  "version": "$version",
+  "description": "fixture"
 }
 EOJ
   echo "$root"
@@ -90,6 +98,20 @@ else
 fi
 rm -rf "$root"
 
+# --- check: a drifting OpenAI package manifest is caught -------------------
+#
+# The OpenAI directory refuses an upload whose version did not change, so a
+# package left at the previous version cannot even be resubmitted.
+
+root="$(make_fixture 0.1.0)"
+sed -i.bak 's|"version": "0.1.0"|"version": "0.0.9"|' "$root/openai/plugin.json"
+if bash "$CHECK" "$root" >/dev/null 2>&1; then
+  fail "check-version-sync missed a stale openai/plugin.json"
+else
+  pass "check-version-sync catches a stale OpenAI package manifest"
+fi
+rm -rf "$root"
+
 # --- check: an unreadable plugin version is a failure, not a pass ----------
 
 root="$(make_fixture 0.1.0)"
@@ -107,8 +129,9 @@ root="$(make_fixture 0.1.0)"
 if bash "$SET_VERSION" 0.2.0 "$root" >/dev/null 2>&1 && bash "$CHECK" "$root" >/dev/null 2>&1; then
   if grep -q '"version": "0.2.0"' "$root/.claude-plugin/plugin.json" &&
     grep -q '"version": "0.2.0"' "$root/.claude-plugin/marketplace.json" &&
-    grep -q '"version": "0.2.0"' "$root/.codex-plugin/plugin.json"; then
-    pass "set-version bumps all three manifests"
+    grep -q '"version": "0.2.0"' "$root/.codex-plugin/plugin.json" &&
+    grep -q '"version": "0.2.0"' "$root/openai/plugin.json"; then
+    pass "set-version bumps all four manifests"
   else
     fail "set-version left a copy behind"
   fi

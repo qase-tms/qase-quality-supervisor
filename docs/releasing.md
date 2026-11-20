@@ -4,13 +4,14 @@ For maintainers. Users of the plugin need nothing here.
 
 ## Bump the version with the script, not by hand
 
-The version appears in three places:
+The version appears in four places:
 
 | File | Why it carries the version |
 |------|----------------------------|
 | `.claude-plugin/plugin.json` | The source of truth. |
 | `.claude-plugin/marketplace.json` | What the marketplace offers. |
 | `.codex-plugin/plugin.json` | The Codex manifest. |
+| `openai/plugin.json` | The OpenAI plugin directory package, which refuses an upload whose version did not change. |
 
 It is repeated rather than interpolated because no manifest can read the
 others.
@@ -21,7 +22,7 @@ So bump in one command:
 scripts/set-version.sh 0.2.0
 ```
 
-It rewrites all three, refuses a non-semver argument, and re-runs the consistency
+It rewrites all four, refuses a non-semver argument, and re-runs the consistency
 check. It rewrites by pattern rather than by the current value, so it also repairs
 a repository that has already drifted.
 
@@ -41,7 +42,8 @@ git push origin v0.4.0
 
 `.github/workflows/release.yml` takes it from there: it asserts the tag matches the
 version in the manifests, re-runs the version-sync check, extracts that version's
-`CHANGELOG.md` section, and publishes the GitHub release. Tag format is `v<version>`,
+`CHANGELOG.md` section, builds the OpenAI plugin package, and publishes the GitHub
+release with the package attached. Tag format is `v<version>`,
 annotated, message `Quality Supervisor <version>` — matching the tags already in the
 repository.
 
@@ -98,3 +100,25 @@ first two commands and by CI.
 The full run installs and uninstalls `quality-supervisor@quality-supervisor`
 through the `claude` CLI and removes that marketplace registration on exit —
 including one you added by hand. Expect to re-add it afterwards.
+
+## Updating the OpenAI plugin directory listing
+
+The ChatGPT and Codex plugin directory takes a ZIP in the portable Agent Plugins
+layout and rejects packages with lifecycle hooks, so its package is assembled from
+`openai/` (manifest, listing copy, review test cases, `mcp.json`) plus the skills and
+`references/`, without the hooks:
+
+```bash
+scripts/build-openai-package.sh      # writes dist/quality-supervisor-openai-<version>.zip
+bash tests/test-openai-package.sh    # the directory's upload and submission rules
+```
+
+Every release also attaches this ZIP, built from the tagged tree. Upload that one at
+platform.openai.com/plugins (**Upload new version** on an existing plugin), so the
+directory always carries a released version. Changes to the listing copy or the
+review test cases need a new version; tool changes on the Qase MCP server do not, as
+the directory rescans the server daily.
+
+The reviewer's demo-account credentials and the demo video URL are entered in the
+portal, never in `openai/plugin.json`: the directory rejects credentials in the
+package.

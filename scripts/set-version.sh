@@ -2,9 +2,9 @@
 #
 # Sets the plugin version everywhere it appears, in one command.
 #
-# The version lives in three places — the Claude Code plugin manifest, the Codex
-# plugin manifest, and the marketplace manifest — because none of them can read
-# the others. This script is the single entry point, and
+# The version lives in four places — the Claude Code plugin manifest, the Codex
+# plugin manifest, the marketplace manifest and the OpenAI package manifest —
+# because none of them can read the others. This script is the single entry point, and
 # scripts/check-version-sync.sh is the net under it.
 #
 # Deliberately rewrites by pattern rather than by the current value, so it also
@@ -57,6 +57,7 @@ echo "==> Setting version to $NEW_VERSION"
 set_manifest_version .claude-plugin/plugin.json
 set_manifest_version .claude-plugin/marketplace.json
 set_manifest_version .codex-plugin/plugin.json
+set_manifest_version openai/plugin.json
 
 echo "==> Verifying"
 bash "$SCRIPT_DIR/check-version-sync.sh" "$REPO_ROOT"

@@ -52,11 +52,17 @@ jobs:
           echo "--- notes ---"
           cat release-notes.md
 
+      # The ZIP uploaded to the OpenAI plugin directory is built from the tagged
+      # tree and attached to the release, so the submitted package is traceable
+      # to a release rather than to someone's working copy.
+      - name: Build the OpenAI plugin package
+        run: echo "OPENAI_ZIP=$(bash scripts/build-openai-package.sh dist)" >> "$GITHUB_ENV"
+
       - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
+          gh release create "$GITHUB_REF_NAME" "$OPENAI_ZIP" \
             --title "$GITHUB_REF_NAME — Quality Supervisor" \
             --notes-file release-notes.md \
             --verify-tag

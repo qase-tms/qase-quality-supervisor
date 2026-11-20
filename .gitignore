@@ -16,3 +16,7 @@ evals/results/
 # accident. The templates under skills/*/assets/ are tracked; these outputs are not.
 quality-pulse*.html
 impact-analysis*.html
+
+# The OpenAI plugin package that scripts/build-openai-package.sh writes. Built
+# from the tree on demand and attached to each GitHub release.
+dist/

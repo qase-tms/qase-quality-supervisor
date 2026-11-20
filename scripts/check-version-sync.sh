@@ -3,7 +3,8 @@
 # Asserts that every place carrying this plugin's version agrees with
 # .claude-plugin/plugin.json, which is the single source of truth.
 #
-# Three manifests repeat the version, because none of them can read the others.
+# Three manifests repeat the version, because none of them can read the others,
+# and the OpenAI plugin directory package carries a fourth.
 #
 # Called by scripts/verify-plugin.sh (so CI enforces it on every push) and by
 # .githooks/pre-commit (so a release bump is caught before the push). Both share
@@ -43,4 +44,12 @@ if [ "$codex_version" != "$plugin_version" ]; then
   fail ".codex-plugin/plugin.json is version ${codex_version}, but .claude-plugin/plugin.json is ${plugin_version}."
 fi
 
-echo "version $plugin_version is consistent across both plugin manifests and marketplace.json"
+# The OpenAI directory refuses a new upload whose version did not change, and a
+# package that trails the plugin would describe an older release.
+openai_version="$(sed -nE 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' openai/plugin.json | head -1)"
+[ -n "$openai_version" ] || fail "could not read \"version\" from openai/plugin.json."
+if [ "$openai_version" != "$plugin_version" ]; then
+  fail "openai/plugin.json is version ${openai_version}, but .claude-plugin/plugin.json is ${plugin_version}."
+fi
+
+echo "version $plugin_version is consistent across the plugin manifests, marketplace.json and the OpenAI package"
