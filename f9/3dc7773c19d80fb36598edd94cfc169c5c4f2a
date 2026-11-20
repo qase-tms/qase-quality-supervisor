@@ -1,0 +1,23 @@
+QUICKSTART.md
+  s_48aeb1fc3cca7e::t_2ecfcc85d675bf 11,74
+docs/gui-smoke-check.md
+  s_48aeb1fc3cca7e::t_2ecfcc85d675bf 64-65
+README.md
+  s_48aeb1fc3cca7e::t_2ecfcc85d675bf 93-94,133
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f93dc7773c19d80fb36598edd94cfc169c5c4f2a",
+  "prompts": {},
+  "sessions": {
+    "s_48aeb1fc3cca7e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "df5b3df5-e0b1-4fd5-bc9d-7036c9d4dd8f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
