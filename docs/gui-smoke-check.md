@@ -61,9 +61,8 @@ unverified rather than merely untested-in-this-client.
 **Note if:**
 - no browser opens, or the flow starts but doesn't return;
 - it succeeds but the next question re-prompts (token not persisted);
-- you get a plan error. Hosted needs **Enterprise**; QQL needs **Teams or
-  Enterprise**. On Teams, switch to the local server per QUICKSTART step 2b and
-  note that you did — the rest of this check is still valid.
+- you get a plan error. Hosted works on any paid plan; QQL needs **Teams or
+  Enterprise**.
 
 ## 3. One real report — 4 min
 

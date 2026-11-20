@@ -8,8 +8,7 @@ takes real time is the authorisation click.
 - A Qase project you can read, and its **project code** — the short uppercase
   prefix on your case IDs (`DEMO-42` → `DEMO`).
 - A Qase plan of **Teams or Enterprise**. The analysis runs on QQL, which
-  lower plans don't include. The hosted connection additionally needs
-  **Enterprise**; on Teams, use the local server in step 2b.
+  lower plans don't include. The hosted connection works on any paid plan.
 
 ## 1. Install the plugin
 
@@ -72,7 +71,7 @@ url = "https://mcp-eu.qase.io/mcp"
 Details, including what happens when you already have a Qase server
 configured: [README → Qase EU cloud](README.md#qase-eu-cloud).
 
-### 2b. Local — for Teams plans, or headless
+### 2b. Local — for headless sessions
 
 Set up [`@qase/mcp-server`](https://www.npmjs.com/package/@qase/mcp-server) by
 its own instructions, with a token from `app.qase.io` → **Settings → API

@@ -90,9 +90,8 @@ marketplace if your build supports it.
 - For `linking-test-cases` only: a **git repository** with autotests in it, checked out
   locally — it reads the test code and edits the test files, and nothing in the code or
   in Qase changes until you confirm its mapping.
-- **Plan:** the hosted endpoint requires an **Enterprise** subscription, and the
-  skills' analysis relies on QQL, which requires **Teams or Enterprise**. On
-  a Teams plan, use the local server instead (below).
+- **Plan:** the hosted endpoint is available on all paid plans, and the
+  skills' analysis relies on QQL, which requires **Teams or Enterprise**.
 
 ### Qase EU cloud
 
@@ -131,7 +130,7 @@ Then `codex mcp login qase`.
 
 ### Running the MCP server locally instead
 
-Useful on Teams plans, for development, or where the hosted endpoint isn't
+Useful for development, headless sessions, or where the hosted endpoint isn't
 reachable. Set up [`@qase/mcp-server`](https://www.npmjs.com/package/@qase/mcp-server)
 by its own instructions, with an API token from `app.qase.io` → API tokens, and
 register it in your own client config, not in the plugin: the plugin never
