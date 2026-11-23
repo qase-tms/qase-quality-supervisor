@@ -37,28 +37,28 @@
         "test_cases": {
           "positive": [
             {
-              "description": "Coverage analysis of a project: finds where testing is thin without changing anything.",
-              "prompt": "Where are the test coverage gaps in Qase project DEMO?",
-              "tools_triggered": "qase_project_context, qql_search",
-              "expected_behavior": "Reads the project's suite tree and cases, then reports empty or thin suites, cases that were never run and the share of manual versus automated cases, with counts from Qase. Makes no changes."
+              "description": "Coverage analysis of a project: manual cases and the smallest suites, without changing anything.",
+              "prompt": "Which test cases in Qase project DEMO are still manual, and which suites have the fewest cases?",
+              "tools_triggered": "qase_project_context, qql_search, qase_api, qase_get",
+              "expected_behavior": "Reads the project's suite tree and cases, reports how many cases are manual versus automated with the manual cases listed, and ranks the suites by case count, naming the smallest. Makes no changes."
             },
             {
-              "description": "Failure triage of the most recent completed test run.",
-              "prompt": "Triage the failures in the most recent completed test run of Qase project DEMO.",
-              "tools_triggered": "qql_search, qase_get",
-              "expected_behavior": "Finds the latest completed run, groups its failed results by error signature and classifies each group as a likely product bug, automation issue, environment issue or flaky test, citing the run and case IDs. Offers to file defects but files none without confirmation."
+              "description": "Failure triage of a specific test run.",
+              "prompt": "Triage the failures in test run #7 of Qase project DEMO.",
+              "tools_triggered": "qase_project_context, qase_api, qql_search",
+              "expected_behavior": "Reads run 7's stats, fetches its failed results with their stack traces, groups them by error signature and uses each case's result history to label every group as a likely product bug, automation issue, environment issue or flaky test, citing the case IDs. Offers to file defects but files none without confirmation."
             },
             {
-              "description": "Flakiness analysis over recent runs.",
-              "prompt": "Which tests in Qase project DEMO were flaky over the last 30 days?",
-              "tools_triggered": "qql_search",
-              "expected_behavior": "Searches results from the last 30 days and lists cases that both passed and failed, separately from cases that failed every time, with pass and fail counts per case. Makes no changes."
+              "description": "Release readiness assessment of a set of CI runs with a go or no-go verdict.",
+              "prompt": "Are CI builds #1042 to #1044 in Qase project DEMO good enough to release? Give me a go or no-go.",
+              "tools_triggered": "qase_project_context, qql_search, qase_api",
+              "expected_behavior": "Finds the three runs, reports execution and pass rate from their stats, checks open defects and returns a go or no-go verdict that names the consistently failing cases and any blocking defect and states the bar it applied. Makes no changes."
             },
             {
-              "description": "Release readiness assessment with a go or no-go verdict.",
-              "prompt": "Is Qase project DEMO ready to release? Give me a go or no-go.",
-              "tools_triggered": "qase_project_context, qql_search",
-              "expected_behavior": "Reads the project's milestones, recent runs and open defects and returns a go or no-go verdict with the blocking failures and defects listed by ID. Makes no changes."
+              "description": "Filing a defect for a failed test after explicit user confirmation.",
+              "prompt": "File a defect in Qase project DEMO for the deactivated-user login failure in test run #7.",
+              "tools_triggered": "qase_api, qql_search, qase_triage_defect",
+              "expected_behavior": "Reads the failing result in run 7, checks that no open defect already covers it, then shows the defect it is about to file with the run, case and error and asks for confirmation. After the user confirms, files exactly one defect in project DEMO and returns its ID."
             },
             {
               "description": "Creating a test case after explicit user confirmation.",

@@ -162,6 +162,14 @@ for name in names:
                 parts.append(part)
         check("/".join(parts) in archive.namelist(), f"{name.removeprefix(root)} links to {link}, which is packaged")
 
+    # A bare `references/x.md` reads as the skill's own folder; when the file
+    # is the plugin's shared one, the skill has to spell out where it sits.
+    for ref in sorted(set(re.findall(r"`(references/[^`\s<>]+)`", text))):
+        if f"{base}/{ref}" in archive.namelist():
+            continue
+        check(f"../../{ref}" in text and root + ref in archive.namelist(),
+              f"{name.removeprefix(root)} says where the shared {ref} sits")
+
 sys.exit(1 if failures else 0)
 EOF
 status=$?

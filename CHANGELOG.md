@@ -14,6 +14,16 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `tests/test-openai-package.sh` holds the ZIP to the directory's upload and
   submission rules in CI, and each release attaches the package built from its tag.
 
+### Fixed
+- **Triage reads case history from REST when the search index is behind.** The
+  history check used QQL alone; where the index misses API-recorded results it
+  came back empty or one-sided, and a flaky case read as a persistent failure.
+- **The quality pulse counts new and updated cases with `now()`.** A date string
+  in the QQL filter fails with a server error on some Qase instances.
+- **Every skill says where the shared QQL reference sits.** The pulse and
+  change-impact skills named `references/qql.md` without the `../../`, which
+  points into the skill's own folder; the package test now catches that.
+
 ## [0.4.3] - 2026-11-04
 
 ### Fixed

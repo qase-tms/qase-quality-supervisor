@@ -31,7 +31,8 @@ This is a **period overview**, not a scoped release decision. "Are we ready to s
 - QQL access (Teams/Enterprise) for the case-activity counts. If `qql_search`
   returns a permission error, say so and report the rest of the card without the
   new/updated case tiles rather than dropping the whole pulse.
-- **Read `references/qql.md` before composing any QQL query.** Field names are not
+- **Read the plugin's `references/qql.md` before composing any QQL query.** It sits two
+  levels up from this skill's directory (`../../references/qql.md`). Field names are not
   uniform across entities, and a wrong one is a hard error rather than an empty
   result.
 
@@ -60,10 +61,11 @@ Pull these, scoped to the project code and the resolved window. Key gotchas are 
   - **Gotcha:** the run list is sorted by **id ascending**, so the *most recent* runs are at the *highest offset* (near `total`), not offset 0. Page from the end — fetch the last page (`offset = total - limit`), and keep paging backwards until a run's `start_time` falls before your window start. `limit` is **capped at 100** on this endpoint — don't request more or it errors.
   - Read each run's `start_time` and `stats` (`passed`/`failed`/`untested`/`in_progress`/etc.).
 - **Defects:** `qase_api GET /v1/defect/{CODE}?limit=100`. Count `status == "open"` (standing backlog); count how many were `created_at` inside the window (new this period); tally high-severity open defects (`severity` in blocker/critical).
-- **New / updated cases:** use QQL — it supports date attributes on cases (unlike runs). Use the resolved window start:
-  - `entity = "case" and project = "CODE" and created >= "YYYY-MM-DD"` → new cases
-  - `entity = "case" and project = "CODE" and updated >= "YYYY-MM-DD"` → touched cases
-  - For a bounded range also add `and created <= "YYYY-MM-DD"`.
+- **New / updated cases:** use QQL — it supports date attributes on cases (unlike runs). Express the window as days back from today with `now()`, not as a date string: on some Qase instances a literal like `created >= "2026-11-16"` fails with a server error while `now("-7d")` works everywhere.
+  - `entity = "case" and project = "CODE" and created >= now("-Nd")` → new cases
+  - `entity = "case" and project = "CODE" and updated >= now("-Nd")` → touched cases
+  - For a window that ends before today also add `and created <= now("-Md")`.
+  - If these queries still error, and the project's case count from `qase_project_context` is small enough to page, count from `qase_api GET /v1/case/{CODE}?limit=100` (`created_at` / `updated_at`) instead; otherwise drop the two case tiles and say why.
   - **Gotcha:** QQL does **not** expose a `created` attribute on the `run` entity — don't filter runs by date in QQL; use run `start_time` from the REST list instead.
 - **Active users:** collect the distinct `user_id` (runs) and `member_id` (defects, cases) that appear inside the window, then resolve each to a name/title via the `qase_project_context` users list, or `qase_get entity="user" id=<id>` for ids not in the first page. Note what each did (ran suites, filed defects, authored cases).
 
