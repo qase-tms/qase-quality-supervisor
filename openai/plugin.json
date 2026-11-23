@@ -55,16 +55,16 @@
               "expected_behavior": "Finds the three runs, reports execution and pass rate from their stats, checks open defects and returns a go or no-go verdict that names the consistently failing cases and any blocking defect and states the bar it applied. Makes no changes."
             },
             {
-              "description": "Filing a defect for a failed test after explicit user confirmation.",
+              "description": "Filing a defect for a failed test the user asked about.",
               "prompt": "File a defect in Qase project DEMO for the deactivated-user login failure in test run #7.",
               "tools_triggered": "qase_api, qql_search, qase_triage_defect",
-              "expected_behavior": "Reads the failing result in run 7, checks that no open defect already covers it, then shows the defect it is about to file with the run, case and error and asks for confirmation. After the user confirms, files exactly one defect in project DEMO and returns its ID."
+              "expected_behavior": "Reads the failing result in run 7 and checks that no open defect already covers it, then files exactly one defect in project DEMO with the run, case and error in its description and returns its ID. Nothing is deleted or changed besides the new defect."
             },
             {
-              "description": "Creating a test case after explicit user confirmation.",
+              "description": "Creating a test case the user asked for.",
               "prompt": "Create a test case titled 'Password reset link expires after 24 hours' in Qase project DEMO.",
               "tools_triggered": "qase_project_context, qase_case_upsert",
-              "expected_behavior": "Shows the case it is about to create and asks for confirmation. After the user confirms, creates exactly one case with that title in project DEMO and returns its ID."
+              "expected_behavior": "Creates exactly one test case with that title in project DEMO, in the suite that fits it, and returns its ID. Nothing is deleted or changed besides the new case."
             }
           ],
           "negative": [
