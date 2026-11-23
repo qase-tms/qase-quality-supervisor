@@ -31,6 +31,9 @@ This is a **period overview**, not a scoped release decision. "Are we ready to s
 - QQL access (Teams/Enterprise) for the case-activity counts. If `qql_search`
   returns a permission error, say so and report the rest of the card without the
   new/updated case tiles rather than dropping the whole pulse.
+- A tool named here may not be loaded yet: some clients load only part of a long
+  tool list and keep the rest behind their own tool search. Find it with that
+  search before concluding it is unavailable.
 - **Read the plugin's `references/qql.md` before composing any QQL query.** It sits two
   levels up from this skill's directory (`../../references/qql.md`). Field names are not
   uniform across entities, and a wrong one is a hard error rather than an empty

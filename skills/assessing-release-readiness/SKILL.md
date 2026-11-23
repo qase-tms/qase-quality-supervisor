@@ -47,6 +47,10 @@ GO.
 
 ## Tools
 
+A tool named here may not be loaded yet: some clients load only part of a long
+tool list and keep the rest behind their own tool search. Find it with that
+search before concluding it is unavailable.
+
 - `qase_project_context` — project, milestones, environments. Call first.
 - `qql_search` — scope resolution, defects, flaky cases.
 - `qase_api` — run listings and stats, and the REST cross-check in step 6.

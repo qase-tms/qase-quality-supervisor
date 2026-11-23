@@ -41,6 +41,10 @@ Repository-agnostic: infer the stack from the repo rather than assuming one.
 
 ## Tools
 
+A tool named here may not be loaded yet: some clients load only part of a long
+tool list and keep the rest behind their own tool search. Find it with that
+search before concluding it is unavailable.
+
 - `qase_project_context` — project metadata and the suite tree. Call first.
 - `qql_search` — find candidate cases and filter by automation state.
 - `qase_get` — read a matched case's steps to confirm it covers the area.

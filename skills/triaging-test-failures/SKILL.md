@@ -32,6 +32,10 @@ differ per entity and a wrong name is a hard error, not an empty result.
 
 ## Tools
 
+A tool named here may not be loaded yet: some clients load only part of a long
+tool list and keep the rest behind their own tool search. Find it with that
+search before concluding it is unavailable.
+
 - `qase_project_context` — project metadata. Call first.
 - `qql_search` — find the run, check per-case history.
 - `qase_api` — fetch the run's failing results (see step 3: QQL cannot do this).

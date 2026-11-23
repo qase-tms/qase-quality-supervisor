@@ -20,6 +20,10 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   came back empty or one-sided, and a flaky case read as a persistent failure.
 - **The quality pulse counts new and updated cases with `now()`.** A date string
   in the QQL filter fails with a server error on some Qase instances.
+- **Skills look a tool up before calling it missing.** ChatGPT loaded 27 of the
+  server's 42 tools and kept `qql_search` and `qase_triage_defect` behind its own
+  tool search; the coverage skill then reported QQL as unavailable. Every skill
+  now says to search for a named tool before concluding it is not there.
 - **Every skill says where the shared QQL reference sits.** The pulse and
   change-impact skills named `references/qql.md` without the `../../`, which
   points into the skill's own folder; the package test now catches that.
