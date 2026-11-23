@@ -5,6 +5,8 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.4] - 2026-11-23
+
 ### Added
 - **A package for the ChatGPT and Codex plugin directory.**
   `scripts/build-openai-package.sh` builds the ZIP the directory takes: the seven
