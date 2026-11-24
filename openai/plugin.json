@@ -1,0 +1,91 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "quality-supervisor",
+  "version": "0.4.4",
+  "description": "Agentic QA quality intelligence for Qase: coverage gaps, failure triage, flakiness versus regression, release readiness, and linking automated tests to Qase cases, driven through the Qase MCP server with Qase as the system of record.",
+  "author": {
+    "name": "Qase",
+    "url": "https://qase.io"
+  },
+  "homepage": "https://github.com/qase-tms/qase-quality-supervisor#readme",
+  "repository": "https://github.com/qase-tms/qase-quality-supervisor",
+  "license": "MIT",
+  "keywords": ["qase", "qa", "testing", "test-management", "quality", "flaky-tests", "release-readiness"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Quality Supervisor",
+        "shortDescription": "QA quality insights for Qase",
+        "longDescription": "Quality Supervisor answers the questions QA leads, managers and engineers ask about their testing in Qase, the test management platform, and backs every answer with the records it read.\n\nWhat it does:\n- Coverage gaps: finds empty or thin suites, cases that were never run, stale cases, and how much of a project is still manual.\n- Failure triage: groups the failures of a test run by error signature and separates real product bugs from automation, environment and flaky noise.\n- Flakiness: finds tests that both pass and fail across runs and tells them apart from tests that are simply broken.\n- Release readiness: gives an evidence-backed go or no-go for a milestone, test plan or set of runs, with the blockers listed.\n- Linking automated tests to Qase cases by what they test, not by name.\n\nWho it is for: teams that keep their test cases, runs and defects in Qase. It needs a Qase account; you sign in with Qase when you first connect, and every action uses your own permissions.\n\nWhat it changes: by default it only reads. It writes to Qase only when you ask for it and confirm, for example to create test cases for a coverage gap, mark a case as flaky, set a case's automation status or file a defect from a triaged failure. None of its workflows delete Qase data, and the Qase server deletes nothing without your explicit confirmation.\n\nLimitations: it works with Qase only, not with other test management tools. Search results come from Qase's search index, which can lag a few minutes behind the newest runs and results.",
+        "developerName": "Qase",
+        "category": "Developer Tools",
+        "capabilities": ["Read", "Write"],
+        "websiteURL": "https://qase.io",
+        "supportURL": "https://github.com/qase-tms/qase-quality-supervisor/issues",
+        "privacyPolicyURL": "https://qase.io/privacy",
+        "termsOfServiceURL": "https://qase.io/terms",
+        "defaultPrompt": [
+          "Where are the test coverage gaps in Qase project ABC?",
+          "Why did last night's run fail?",
+          "Is project ABC ready to release?"
+        ],
+        "brandColor": "#4F46DC",
+        "composerIcon": "./assets/logo.png",
+        "logo": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Coverage analysis of a project: manual cases and the smallest suites, without changing anything.",
+              "prompt": "Which test cases in Qase project DEMO are still manual, and which suites have the fewest cases?",
+              "tools_triggered": "qase_project_context, qql_search, qase_api, qase_get",
+              "expected_behavior": "Reads the project's suite tree and cases, reports how many cases are manual versus automated with the manual cases listed, and ranks the suites by case count, naming the smallest. Makes no changes."
+            },
+            {
+              "description": "Failure triage of a specific test run.",
+              "prompt": "Triage the failures in test run #7 of Qase project DEMO.",
+              "tools_triggered": "qase_project_context, qase_api, qql_search",
+              "expected_behavior": "Reads run 7's stats, fetches its failed results with their stack traces, groups them by error signature and uses each case's result history to label every group as a likely product bug, automation issue, environment issue or flaky test, citing the case IDs. Offers to file defects but files none without confirmation."
+            },
+            {
+              "description": "Release readiness assessment of a set of CI runs with a go or no-go verdict.",
+              "prompt": "Are CI builds #1042 to #1044 in Qase project DEMO good enough to release? Give me a go or no-go.",
+              "tools_triggered": "qase_project_context, qql_search, qase_api",
+              "expected_behavior": "Finds the three runs, reports execution and pass rate from their stats, checks open defects and returns a go or no-go verdict that names the consistently failing cases and any blocking defect and states the bar it applied. Makes no changes."
+            },
+            {
+              "description": "Filing a defect for a failed test the user asked about.",
+              "prompt": "File a defect in Qase project DEMO for the deactivated-user login failure in test run #7.",
+              "tools_triggered": "qase_api, qql_search, qase_triage_defect",
+              "expected_behavior": "Reads the failing result in run 7 and checks that no open defect already covers it, then files exactly one defect in project DEMO with the run, case and error in its description and returns its ID. Nothing is deleted or changed besides the new defect."
+            },
+            {
+              "description": "Creating a test case the user asked for.",
+              "prompt": "Create a test case titled 'Password reset link expires after 24 hours' in Qase project DEMO.",
+              "tools_triggered": "qase_project_context, qase_case_upsert",
+              "expected_behavior": "Creates exactly one test case with that title in project DEMO, in the suite that fits it, and returns its ID. Nothing is deleted or changed besides the new case."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Unrelated request. Expected: Quality Supervisor is not used and no Qase tool is called; the assistant answers without the plugin or says it cannot help with weather.",
+              "prompt": "What's the weather in Berlin today?"
+            },
+            {
+              "description": "Another test management tool. Expected: no Qase tool is called; the assistant explains that Quality Supervisor works only with Qase and cannot read TestRail.",
+              "prompt": "Show me the failed tests from my TestRail project MOBILE."
+            },
+            {
+              "description": "Request outside QA analysis. Expected: no Qase tool is called; the assistant does not use the plugin to write marketing content.",
+              "prompt": "Write a LinkedIn post announcing our new product launch."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "release_notes": "First release of Quality Supervisor for ChatGPT and Codex: coverage gaps, failure triage, flakiness, release readiness and linking automated tests to Qase cases."
+      }
+    }
+  }
+}

@@ -38,6 +38,12 @@ jobs:
       - name: Version tooling tests
         run: bash tests/test-version-sync.sh
 
+      # Builds the OpenAI plugin directory ZIP and holds it to the directory's
+      # upload and submission rules, so a broken package fails here and not in
+      # the portal.
+      - name: OpenAI package
+        run: bash tests/test-openai-package.sh
+
       - uses: actions/setup-node@v7
         with:
           node-version: '20'

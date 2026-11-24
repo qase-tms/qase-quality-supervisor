@@ -74,6 +74,12 @@ work; you run them one at a time.
 In Cowork, install the packaged `.plugin` file directly, or add this repo as a
 marketplace if your build supports it.
 
+For the ChatGPT and Codex plugin directory, the plugin ships as a separate package
+built from `openai/` (see [docs/releasing.md](docs/releasing.md)). The directory
+does not accept hooks, so that package carries the skills and the Qase MCP server
+without the destructive-call guards. Deletions stay gated there by the Qase MCP
+server itself, which deletes nothing without the user's explicit confirmation.
+
 ## Requirements
 
 - **Qase MCP server.** This repo ships `.mcp.json` pointing at the hosted,
@@ -268,6 +274,9 @@ which is the part that degrades.
 ├── .mcp.codex.json         # the same for Codex
 ├── agents/
 │   └── quality-supervisor.md
+├── assets/
+│   ├── icon.svg            # plugin icon
+│   └── logo.png            # the same at 512 px, for the OpenAI directory
 ├── commands/
 │   └── quality-report.md
 ├── docs/
@@ -280,12 +289,16 @@ which is the part that degrades.
 │   ├── hooks.codex.json    # Codex: guards only (see Install)
 │   ├── deny-destructive.sh     # + .ps1 twin, so the guard runs on Windows too
 │   └── deny-destructive-api.sh # + .ps1 twin
+├── openai/
+│   ├── plugin.json         # OpenAI directory package: listing, review test cases
+│   └── mcp.json            # Qase MCP server with OAuth (DCR) for that package
 ├── references/
 │   └── qql.md              # verified QQL field/enum reference the skills read
 ├── scripts/
 │   ├── verify-plugin.sh    # local verification (also run by CI)
 │   ├── check-version-sync.sh  # asserts every copy of the version agrees
 │   ├── set-version.sh      # bumps all four copies in one command
+│   ├── build-openai-package.sh  # the ZIP for the OpenAI plugin directory
 │   └── release-notes.sh    # extracts a version's CHANGELOG section for a release
 ├── skills/
 │   ├── analyzing-test-coverage/
@@ -300,6 +313,7 @@ which is the part that degrades.
 │   ├── test-hook-coverage.sh
 │   ├── test-hook-parity.sh
 │   ├── test-deny-destructive.sh
+│   ├── test-openai-package.sh
 │   ├── test-release-notes.sh
 │   └── test-version-sync.sh
 ├── CHANGELOG.md

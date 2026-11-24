@@ -32,6 +32,10 @@ differ per entity and a wrong name is a hard error, not an empty result.
 
 ## Tools
 
+A tool named here may not be loaded yet: some clients load only part of a long
+tool list and keep the rest behind their own tool search. Find it with that
+search before concluding it is unavailable.
+
 - `qase_project_context` — project metadata. Call first.
 - `qql_search` — find the run, check per-case history.
 - `qase_api` — fetch the run's failing results (see step 3: QQL cannot do this).
@@ -131,7 +135,15 @@ entity = "result" and project = "CODE" and caseId = 234 ORDER BY ended DESC
 ```
 
 Note `caseId` (not `case`, which is the title) and `ended` (results have no
-`created`). Mixed pass/fail history means flaky. **Failures only, never a pass,
+`created`). The search index can miss results that REST still returns — this
+run's own failures are the tell: if the query does not include them, the index
+is behind, so read the history from REST instead:
+
+```
+GET /v1/result/{code}?case_id=234,235&limit=100
+```
+
+Mixed pass/fail history means flaky. **Failures only, never a pass,
 means the opposite** — that is a real, persistent failure, so treat it as a bug
 candidate rather than noise.
 

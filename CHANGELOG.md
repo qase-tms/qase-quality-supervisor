@@ -3,6 +3,33 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+## [0.4.4] - 2026-11-23
+
+### Added
+- **A package for the ChatGPT and Codex plugin directory.**
+  `scripts/build-openai-package.sh` builds the ZIP the directory takes: the seven
+  skills, the shared QQL reference and the hosted Qase MCP server with OAuth sign-in,
+  plus the listing copy and the review test cases from `openai/plugin.json`. It
+  leaves the hooks out, because the directory rejects packages that carry them.
+  `tests/test-openai-package.sh` holds the ZIP to the directory's upload and
+  submission rules in CI, and each release attaches the package built from its tag.
+
+### Fixed
+- **Triage reads case history from REST when the search index is behind.** The
+  history check used QQL alone; where the index misses API-recorded results it
+  came back empty or one-sided, and a flaky case read as a persistent failure.
+- **The quality pulse counts new and updated cases with `now()`.** A date string
+  in the QQL filter fails with a server error on some Qase instances.
+- **Skills look a tool up before calling it missing.** ChatGPT loaded 27 of the
+  server's 42 tools and kept `qql_search` and `qase_triage_defect` behind its own
+  tool search; the coverage skill then reported QQL as unavailable. Every skill
+  now says to search for a named tool before concluding it is not there.
+- **Every skill says where the shared QQL reference sits.** The pulse and
+  change-impact skills named `references/qql.md` without the `../../`, which
+  points into the skill's own folder; the package test now catches that.
+
 ## [0.4.3] - 2026-11-04
 
 ### Fixed

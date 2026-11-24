@@ -70,6 +70,10 @@ them rather than quoting raw slugs at the user.
 
 ## Tools
 
+A tool named here may not be loaded yet: some clients load only part of a long
+tool list and keep the rest behind their own tool search. Find it with that
+search before concluding it is unavailable.
+
 - `qase_project_context` — project metadata. Call first.
 - `qql_search` — all the counting below. Use aggregation, not row fetching.
 - `qase_api` — the suite listing (`GET /v1/suite/{code}`), which is the only way

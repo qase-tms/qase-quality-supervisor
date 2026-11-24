@@ -41,6 +41,10 @@ review file and appending it to `.gitignore`; steps 9–11 write.
 
 ## Tools
 
+A tool named here may not be loaded yet: some clients load only part of a long
+tool list and keep the rest behind their own tool search. Find it with that
+search before concluding it is unavailable.
+
 - `qase_project_context` — the suite tree. Call first.
 - `qql_search` — the case inventory, in batches.
 - `qase_get` — steps and preconditions of shortlisted candidates; existence and live

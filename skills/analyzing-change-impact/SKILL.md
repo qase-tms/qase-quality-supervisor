@@ -34,11 +34,16 @@ Repository-agnostic: infer the stack from the repo rather than assuming one.
   didn't give one, ask — never guess. Teams often keep one shared project for this;
   ask once and reuse it for the run.
 - QQL access (Teams/Enterprise) for the coverage step.
-- **Read `references/qql.md` before composing any QQL query.** Field names are not
+- **Read the plugin's `references/qql.md` before composing any QQL query.** It sits two
+  levels up from this skill's directory (`../../references/qql.md`). Field names are not
   uniform across entities, and a wrong one is a hard error rather than an empty
   result.
 
 ## Tools
+
+A tool named here may not be loaded yet: some clients load only part of a long
+tool list and keep the rest behind their own tool search. Find it with that
+search before concluding it is unavailable.
 
 - `qase_project_context` — project metadata and the suite tree. Call first.
 - `qql_search` — find candidate cases and filter by automation state.
