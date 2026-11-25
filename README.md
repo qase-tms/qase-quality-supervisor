@@ -23,6 +23,7 @@ add it once and install (and update) `quality-supervisor` from it.
 | Skill | `reporting-quality-pulse` | Visual HTML report card for any period — execution, pass rate, defect backlog, case activity, active users. |
 | Skill | `analyzing-change-impact` | Diff a branch, trace what it reaches, and produce a QA impact analysis + regression/new checklist grounded in existing cases. |
 | Skill | `linking-test-cases` | Match a repo's autotests to Qase cases by meaning and, after you confirm, write the case IDs into the tests and mark the cases Automated. |
+| Skill | `prioritizing-automation-candidates` | Rank manual cases by the manual QA time automating them would save; recommend the layer (e2e/API/unit) and, from your team's hours per test, ROI, payback and what a budget buys. |
 | Agent | `quality-supervisor` | Orchestrator that routes a quality question to the right skill(s) and rolls up results. |
 | Command | `/quality-supervisor:quality-report` | Read-only consolidated sweep: coverage + flakiness + triage + readiness. |
 
@@ -38,9 +39,9 @@ In Claude Code:
 /plugin install quality-supervisor@quality-supervisor
 ```
 
-After a restart, `/plugin` reports the inventory as **8 skills, 1 agent, 1
-PreToolUse hook**. Eight because the CLI counts the `quality-report` command under
-`Skills`; seven skills plus one command is what actually ships.
+After a restart, `/plugin` reports the inventory as **9 skills, 1 agent, 1
+PreToolUse hook**. Nine because the CLI counts the `quality-report` command under
+`Skills`; eight skills plus one command is what actually ships.
 
 In Codex:
 
@@ -49,7 +50,7 @@ codex plugin marketplace add qase-tms/qase-quality-supervisor
 codex plugin add quality-supervisor@quality-supervisor
 ```
 
-The seven skills arrive namespaced as `quality-supervisor:<skill>` — invoke one with
+The eight skills arrive namespaced as `quality-supervisor:<skill>` — invoke one with
 `$quality-supervisor:analyzing-test-coverage`, or just describe the problem and let
 Codex route to it. The Qase MCP server is registered from `.mcp.codex.json`
 automatically; authenticate it once with `codex mcp login qase`. On the EU
@@ -210,6 +211,7 @@ Ask in your own words — the skills pick themselves up from the question:
 - "Give me a quality pulse for WEB for the last two weeks." · "QA report card for August."
 - "What should QA test for the changes on this branch?" · "Impact analysis before I merge."
 - "Link our autotests to their Qase cases." · "Add Qase IDs to the tests in this repo."
+- "Which test cases should we automate next in WEB?" · "We have 80 hours for automation — what should we automate?"
 
 ### When you want a guarantee, use the command
 
@@ -240,6 +242,7 @@ way the command does:
 /quality-supervisor:reporting-quality-pulse
 /quality-supervisor:analyzing-change-impact
 /quality-supervisor:linking-test-cases
+/quality-supervisor:prioritizing-automation-candidates
 ```
 
 Use these when you want one specific analysis rather than the whole sweep, and
@@ -307,7 +310,8 @@ which is the part that degrades.
 │   ├── assessing-release-readiness/
 │   ├── reporting-quality-pulse/         # + assets/pulse-template.html
 │   ├── analyzing-change-impact/         # + assets/impact-template.html
-│   └── linking-test-cases/              # + references/ (one reporter-syntax file per ecosystem)
+│   ├── linking-test-cases/              # + references/ (one reporter-syntax file per ecosystem)
+│   └── prioritizing-automation-candidates/  # + references/data-sources.md (verified QQL and REST forms)
 ├── tests/
 │   ├── test-branding.sh
 │   ├── test-hook-coverage.sh

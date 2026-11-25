@@ -46,7 +46,7 @@ expect_signature() {
 # report template inside SKILL.md.
 for skill in analyzing-test-coverage analyzing-test-flakiness \
              assessing-release-readiness triaging-test-failures \
-             linking-test-cases; do
+             linking-test-cases prioritizing-automation-candidates; do
   expect_signature "skills/$skill/SKILL.md" "$skill skill" 2
 done
 

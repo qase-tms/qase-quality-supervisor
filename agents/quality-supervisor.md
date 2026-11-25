@@ -64,6 +64,7 @@ Delegate to the matching Quality Supervisor skill and follow its workflow:
 - A pulse / report card over a period → **reporting-quality-pulse**
 - What to test for a branch / PR, blast radius of a change → **analyzing-change-impact**
 - Link autotests to cases / add Qase IDs to tests / why results land as new cases → **linking-test-cases**
+- Which cases to automate next / automation ROI / where manual QA time goes → **prioritizing-automation-candidates**
 
 Two of these hand off to each other, and getting it wrong inverts the advice:
 
@@ -93,6 +94,14 @@ the linked cases Automated, and can create cases for tests that have none. Route
 when the subject is IDs in test code. "Which cases aren't automated yet" or "where are
 the coverage gaps" is a question about Qase and stays with analyzing-test-coverage;
 "what should we test for this branch" stays with analyzing-change-impact.
+
+prioritizing-automation-candidates and analyzing-test-coverage both talk about manual
+cases, and answer different questions. Coverage **lists** what is still manual or never
+run; prioritizing **ranks** the manual cases by the tester time automating them would
+save, from how often and how long they actually run, and prices them with the team's
+own hours per test. "Which cases are still manual" is coverage; "which should we
+automate first", "what's the ROI" or "we have 80 hours, what do we automate" is
+prioritizing.
 
 reporting-quality-pulse and assessing-release-readiness sound alike and are not.
 The pulse describes a **window of time** and grades it; readiness judges a **named scope**
