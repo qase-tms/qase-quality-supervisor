@@ -1,0 +1,61 @@
+CHANGELOG.md
+  s_90c937e60bf73c::t_35653e9bbef695 8-26
+.claude-plugin/marketplace.json
+  s_90c937e60bf73c::t_2574f1b07a0e1c 9
+.claude-plugin/plugin.json
+  s_90c937e60bf73c::t_e6bb4fb7098a9f 5
+.codex-plugin/plugin.json
+  s_90c937e60bf73c::t_e504966b71e44c 3
+QUICKSTART.md
+  s_90c937e60bf73c::t_916ea63b3425ae 30,33,36-38
+README.md
+  s_90c937e60bf73c::t_33fa05d6b5b550 26,42-44,53,214,245,313-314
+SECURITY.md
+  s_90c937e60bf73c::t_b12affb60ab5d4 17,95-105
+agents/quality-supervisor.md
+  s_90c937e60bf73c::t_e08a5471877935 67,98-105
+evals/automation-next/graders/asked-about-demo.md
+  s_90c937e60bf73c::t_20ec5ee1968cb5 1-5
+evals/automation-next/graders/no-case-upsert.md
+  s_90c937e60bf73c::t_3cffab8fa34a3b 1-7
+evals/automation-next/graders/no-coverage-skill.md
+  s_90c937e60bf73c::t_3ff2b1ae3e1878 1-8
+evals/automation-next/graders/no-invented-effort.md
+  s_90c937e60bf73c::t_6efdc97d3ec555 1-16
+evals/automation-next/graders/skill-fired.md
+  s_90c937e60bf73c::t_e4899100b63f54 1-5
+evals/automation-next/mocks/qase/qql_search.md
+  s_90c937e60bf73c::t_101641d3335167 1-49
+evals/automation-next/prompt.md
+  s_90c937e60bf73c::t_a90670c63b26ea 1-8
+evals/automation-share/graders/no-candidates-skill.md
+  s_90c937e60bf73c::t_34556ef412e18f 1-8
+openai/plugin.json
+  s_90c937e60bf73c::t_5a2fd6fa9bf0c3 4-5,19
+scripts/verify-plugin.sh
+  s_90c937e60bf73c::t_8cc9a625e6c1f7 132-133,146
+skills/analyzing-test-coverage/SKILL.md
+  s_90c937e60bf73c::t_7e0dbf59102710 9-11
+skills/prioritizing-automation-candidates/SKILL.md
+  s_90c937e60bf73c::t_6f4ecbcf6536cb 1-586
+skills/prioritizing-automation-candidates/references/data-sources.md
+  s_90c937e60bf73c::t_13d3136c4bf3c0 1-204
+tests/test-branding.sh
+  s_90c937e60bf73c::t_e45a31380fd7f2 49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4d56c06a4273311b547568d0df75f0b3ce926512",
+  "prompts": {},
+  "sessions": {
+    "s_90c937e60bf73c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0c21ffe9-8832-42db-8764-440cb494303c",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
