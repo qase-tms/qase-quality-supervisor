@@ -72,6 +72,17 @@ The command and the agent have no Codex equivalent, so `/quality-report` and the
 `quality-supervisor` agent are Claude Code only. The skills they orchestrate all
 work; you run them one at a time.
 
+In Cursor, install **Quality Supervisor** from the Cursor Marketplace. To try a
+branch before it is listed, clone the repository into
+`~/.cursor/plugins/local/quality-supervisor` and run **Developer: Reload Window**.
+Cursor reads `.cursor-plugin/plugin.json`, which points it at `.mcp.cursor.json`
+for the Qase server (sign in through OAuth on first use) and at
+`hooks/hooks.cursor.json` for the guard. The guard denies every `qase_*_delete`
+call and fails closed. A `DELETE` through `qase_api` is not intercepted there:
+Cursor treats an empty hook answer as a block, so a guard on `qase_api` would
+stop its reads too. The Qase MCP server asks for confirmation before any
+`DELETE` instead.
+
 In Cowork, install the packaged `.plugin` file directly, or add this repo as a
 marketplace if your build supports it.
 
@@ -273,13 +284,15 @@ which is the part that degrades.
 │   ├── validate.yml       # CI: manifest validation, secrets scan, hook tests
 │   └── release.yml        # CI: publish a release when a v* tag is pushed
 ├── .codex-plugin/          # Codex plugin manifest (skills, MCP, hooks)
+├── .cursor-plugin/         # Cursor plugin manifest (points at the Cursor MCP and hook files)
 ├── .mcp.json               # Qase MCP server wiring (Claude Code)
 ├── .mcp.codex.json         # the same for Codex
+├── .mcp.cursor.json        # the same for Cursor
 ├── agents/
 │   └── quality-supervisor.md
 ├── assets/
 │   ├── icon.svg            # plugin icon
-│   └── logo.png            # the same at 512 px, for the OpenAI directory
+│   └── logo.png            # the same at 512 px, for the OpenAI directory and Cursor
 ├── commands/
 │   └── quality-report.md
 ├── docs/
@@ -290,6 +303,7 @@ which is the part that degrades.
 ├── hooks/
 │   ├── hooks.json          # Claude Code: destructive-call guards
 │   ├── hooks.codex.json    # Codex: guards only (see Install)
+│   ├── hooks.cursor.json   # Cursor: the delete guard (see Install)
 │   ├── deny-destructive.sh     # + .ps1 twin, so the guard runs on Windows too
 │   └── deny-destructive-api.sh # + .ps1 twin
 ├── openai/
