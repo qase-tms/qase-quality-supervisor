@@ -14,7 +14,7 @@ untested.
 
 | Component | Count | Can it act? |
 |---|---|---|
-| Skills | 7 | instructions only — no code executes |
+| Skills | 8 | instructions only — no code executes |
 | Agent | 1 | instructions only |
 | Command | 1 | instructions only |
 | Hooks | 2 scripts | **yes** — they run on every matching tool call |
@@ -92,8 +92,17 @@ still apply to it.
 `quality-pulse-<CODE>-<date>.html` and `impact-analysis-<branch>-<date>.html` — in the
 working directory, or wherever the user asks. Those reports stay local and go
 nowhere on their own. Both skills are instructed not to write outside that directory
-and to ask before overwriting. Apart from `linking-test-cases` above, no other skill
-writes to disk.
+and to ask before overwriting.
+
+**One skill computes in a local script.** `prioritizing-automation-candidates` saves
+the query responses it reads to scratch files and runs its arithmetic (working-time
+intervals, medians, ROI) over them in a script the model writes, so that no figure is
+estimated in its head. The script reads only those files and sends nothing anywhere.
+Its one Qase write, offered after the report and run only on a yes, sets the selected
+cases to "To be automated" and adds a tag (`qase_case_upsert`); it never marks a case
+Automated.
+
+Apart from these and `linking-test-cases` above, no other skill writes to disk.
 
 **One skill can reach outside Qase, and only when told to.**
 `analyzing-change-impact` will post its report as a comment on an issue tracker

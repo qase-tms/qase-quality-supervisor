@@ -5,6 +5,25 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.5] - 2026-11-25
+
+### Added
+- **Which manual tests to automate next.** The new
+  `prioritizing-automation-candidates` skill ranks a project's manual cases by the
+  tester time automating them would save. It measures that time from the gaps between
+  a tester's results in regression runs rather than the UI timer, merges cloned cases
+  into one test, and recommends for each the layer (e2e, API, unit), the number of
+  tests and how hard it is, with a full and a lean variant. ROI, payback, break-even
+  and the best set for a budget come only from the team's own hours per test; without
+  them the report shows manual time and difficulty. Critical cases come first. Its one
+  write, after approval, marks selected cases "To be automated" with a tag; it never
+  marks a case Automated. The `automation-next` eval case covers its routing.
+
+### Changed
+- **Coverage hands automation-priority questions over.** `analyzing-test-coverage`
+  still lists which cases are manual; "which should we automate first" and automation
+  ROI now route to the new skill, in the agent and in both skill descriptions.
+
 ## [0.4.4] - 2026-11-23
 
 ### Added

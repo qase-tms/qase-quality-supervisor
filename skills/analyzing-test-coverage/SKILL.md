@@ -6,7 +6,9 @@ description: >-
   missing tests; which cases are still manual, not automated, or yet to be
   automated; which cases have never been run or executed; which suites are empty,
   thin, or hold no cases; how much of the project is automated; which cases are
-  stale or outdated; or wants test cases drafted to close a gap.
+  stale or outdated; or wants test cases drafted to close a gap. Not for which
+  manual cases to automate first or the ROI of automating them — that is
+  prioritizing-automation-candidates.
 ---
 
 # Quality Supervisor — Coverage / Gap Analysis
