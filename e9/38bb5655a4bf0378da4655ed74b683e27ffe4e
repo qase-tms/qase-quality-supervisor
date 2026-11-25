@@ -1,0 +1,42 @@
+tests/test-cursor-plugin.sh
+  s_48aeb1fc3cca7e::t_6ac5914fc79d08 1-91
+.mcp.cursor.json
+  s_48aeb1fc3cca7e::t_75d39cf2a95727 1-7
+.cursor-plugin/plugin.json
+  s_48aeb1fc3cca7e::t_75d39cf2a95727 1-28
+docs/releasing.md
+  s_48aeb1fc3cca7e::t_cf93ce81b03a33 7,15,26
+scripts/check-version-sync.sh
+  s_48aeb1fc3cca7e::t_e931e73d5642be 7-8,56-59
+  s_48aeb1fc3cca7e::t_cf93ce81b03a33 62
+  s_48aeb1fc3cca7e::t_61ecad3613e683 60-61
+hooks/hooks.cursor.json
+  s_48aeb1fc3cca7e::t_9485758454ed4c 7
+  s_48aeb1fc3cca7e::t_75d39cf2a95727 1-6,8-13
+scripts/set-version.sh
+  s_48aeb1fc3cca7e::t_f43017f2b1ec4c 5-6
+  s_48aeb1fc3cca7e::t_e931e73d5642be 61
+CHANGELOG.md
+  s_48aeb1fc3cca7e::t_75a3418288b956 8-15
+tests/test-version-sync.sh
+  s_48aeb1fc3cca7e::t_e931e73d5642be 28,59-65,122-132,151-153
+README.md
+  s_48aeb1fc3cca7e::t_d7395b478ced24 295
+  s_48aeb1fc3cca7e::t_75a3418288b956 75-85,287,290,306
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e938bb5655a4bf0378da4655ed74b683e27ffe4e",
+  "prompts": {},
+  "sessions": {
+    "s_48aeb1fc3cca7e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "df5b3df5-e0b1-4fd5-bc9d-7036c9d4dd8f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Dmitrii Gridnev <dgridnev@qase.io>"
+    }
+  }
+}
