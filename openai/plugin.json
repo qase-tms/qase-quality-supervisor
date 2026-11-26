@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "quality-supervisor",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Agentic QA quality intelligence for Qase: coverage gaps, failure triage, flakiness versus regression, release readiness, linking automated tests to Qase cases, and which manual tests to automate next, driven through the Qase MCP server with Qase as the system of record.",
   "author": {
     "name": "Qase",

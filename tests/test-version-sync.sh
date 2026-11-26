@@ -25,7 +25,7 @@ fail() { echo "FAIL: $1" >&2; failures=$((failures + 1)); }
 make_fixture() {
   local version="$1" root
   root="$(mktemp -d)"
-  mkdir -p "$root/.claude-plugin" "$root/.codex-plugin" "$root/openai"
+  mkdir -p "$root/.claude-plugin" "$root/.codex-plugin" "$root/openai" "$root/.cursor-plugin"
   cat > "$root/.claude-plugin/plugin.json" <<EOJ
 {
   "name": "quality-supervisor",
@@ -52,6 +52,13 @@ EOJ
   cat > "$root/openai/plugin.json" <<EOJ
 {
   "\$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "quality-supervisor",
+  "version": "$version",
+  "description": "fixture"
+}
+EOJ
+  cat > "$root/.cursor-plugin/plugin.json" <<EOJ
+{
   "name": "quality-supervisor",
   "version": "$version",
   "description": "fixture"
@@ -112,6 +119,17 @@ else
 fi
 rm -rf "$root"
 
+# --- check: a drifting Cursor manifest is caught --------------------------
+
+root="$(make_fixture 0.1.0)"
+sed -i.bak 's|"version": "0.1.0"|"version": "0.0.8"|' "$root/.cursor-plugin/plugin.json"
+if bash "$CHECK" "$root" >/dev/null 2>&1; then
+  fail "check-version-sync missed a stale .cursor-plugin/plugin.json"
+else
+  pass "check-version-sync catches a stale Cursor manifest"
+fi
+rm -rf "$root"
+
 # --- check: an unreadable plugin version is a failure, not a pass ----------
 
 root="$(make_fixture 0.1.0)"
@@ -130,8 +148,9 @@ if bash "$SET_VERSION" 0.2.0 "$root" >/dev/null 2>&1 && bash "$CHECK" "$root" >/
   if grep -q '"version": "0.2.0"' "$root/.claude-plugin/plugin.json" &&
     grep -q '"version": "0.2.0"' "$root/.claude-plugin/marketplace.json" &&
     grep -q '"version": "0.2.0"' "$root/.codex-plugin/plugin.json" &&
-    grep -q '"version": "0.2.0"' "$root/openai/plugin.json"; then
-    pass "set-version bumps all four manifests"
+    grep -q '"version": "0.2.0"' "$root/openai/plugin.json" &&
+    grep -q '"version": "0.2.0"' "$root/.cursor-plugin/plugin.json"; then
+    pass "set-version bumps all five manifests"
   else
     fail "set-version left a copy behind"
   fi

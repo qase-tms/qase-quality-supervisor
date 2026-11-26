@@ -4,7 +4,7 @@ For maintainers. Users of the plugin need nothing here.
 
 ## Bump the version with the script, not by hand
 
-The version appears in four places:
+The version appears in five places:
 
 | File | Why it carries the version |
 |------|----------------------------|
@@ -12,6 +12,7 @@ The version appears in four places:
 | `.claude-plugin/marketplace.json` | What the marketplace offers. |
 | `.codex-plugin/plugin.json` | The Codex manifest. |
 | `openai/plugin.json` | The OpenAI plugin directory package, which refuses an upload whose version did not change. |
+| `.cursor-plugin/plugin.json` | The Cursor manifest. |
 
 It is repeated rather than interpolated because no manifest can read the
 others.
@@ -22,7 +23,7 @@ So bump in one command:
 scripts/set-version.sh 0.2.0
 ```
 
-It rewrites all four, refuses a non-semver argument, and re-runs the consistency
+It rewrites all five, refuses a non-semver argument, and re-runs the consistency
 check. It rewrites by pattern rather than by the current value, so it also repairs
 a repository that has already drifted.
 

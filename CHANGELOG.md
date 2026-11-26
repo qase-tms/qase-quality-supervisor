@@ -3,7 +3,15 @@
 All notable changes to this project are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.4.6] - 2026-11-26
+
+### Added
+- **A Cursor plugin.** `.cursor-plugin/plugin.json` lets Cursor install the
+  plugin from this repository: the skills, the agent, the command and the hosted
+  Qase MCP server. Its guard, `hooks/hooks.cursor.json`, denies every
+  `qase_*_delete` call and fails closed. `tests/test-cursor-plugin.sh` holds the
+  manifest to the Cursor Marketplace checklist and runs the guard under bash and
+  PowerShell.
 
 ## [0.4.5] - 2026-11-25
 

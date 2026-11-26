@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "echo '{\"permission\":\"deny\",\"user_message\":\"Quality Supervisor blocked a Qase delete: its skills never delete Qase data.\",\"agent_message\":\"Destructive Qase tools are disabled in Quality Supervisor. Do not retry; tell the user to delete it in Qase if they need to.\"}'",
+        "matcher": ".*qase_[a-z_]*delete.*",
+        "failClosed": true,
+        "timeout": 10
+      }
+    ]
+  }
+}

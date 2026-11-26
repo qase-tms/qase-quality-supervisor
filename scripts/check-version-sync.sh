@@ -4,7 +4,8 @@
 # .claude-plugin/plugin.json, which is the single source of truth.
 #
 # Three manifests repeat the version, because none of them can read the others,
-# and the OpenAI plugin directory package carries a fourth.
+# the OpenAI plugin directory package carries a fourth, and the Cursor manifest
+# a fifth.
 #
 # Called by scripts/verify-plugin.sh (so CI enforces it on every push) and by
 # .githooks/pre-commit (so a release bump is caught before the push). Both share
@@ -52,4 +53,10 @@ if [ "$openai_version" != "$plugin_version" ]; then
   fail "openai/plugin.json is version ${openai_version}, but .claude-plugin/plugin.json is ${plugin_version}."
 fi
 
-echo "version $plugin_version is consistent across the plugin manifests, marketplace.json and the OpenAI package"
+cursor_version="$(sed -nE 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/p' .cursor-plugin/plugin.json | head -1)"
+[ -n "$cursor_version" ] || fail "could not read \"version\" from .cursor-plugin/plugin.json."
+if [ "$cursor_version" != "$plugin_version" ]; then
+  fail ".cursor-plugin/plugin.json is version ${cursor_version}, but .claude-plugin/plugin.json is ${plugin_version}."
+fi
+
+echo "version $plugin_version is consistent across the plugin manifests, marketplace.json, the OpenAI package and the Cursor manifest"
